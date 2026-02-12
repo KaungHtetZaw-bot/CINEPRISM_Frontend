@@ -25,7 +25,7 @@ const Navbar = () => {
         paddingBottom,
         backdropFilter
       }}
-      className="fixed top-0 w-full bg-[rgba(18, 18, 18, 0)] flex justify-between items-center px-8 z-50"
+      className="fixed top-0 w-full bg-[rgba(18, 18, 18, 0)] flex justify-between items-center md:px-25 px-8 z-50"
     >
       <Logo />  
 

@@ -39,12 +39,11 @@ const Hero = ({ movie }: { movie: any }) => {
                 className="w-full px-6 py-5 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 text-white outline-none focus:border-cinema-gold transition-all text-lg"
               />
             </div>
-            <button className="w-full md:w-auto whitespace-nowrap bg-cinema-gold text-black px-10 py-5 rounded-xl font-extrabold text-lg hover:bg-gold-light hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+            <button className="w-full md:w-auto max-w-50 whitespace-nowrap bg-cinema-gold text-black md:px-10 px-5 md:py-5 py-2.5 rounded-xl font-extrabold text-lg hover:bg-gold-light hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
               Get Started
               <span className="text-2xl">›</span>
             </button>
           </div>
-          
           <p className="text-sm text-white/60">
             Only new members are eligible for this offer.
           </p>

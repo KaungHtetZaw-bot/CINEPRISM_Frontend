@@ -20,53 +20,55 @@
   --font-sans: 'Inter', sans-serif;
 }
 
-.dark, [data-theme='dark'] {
-  /* Light Mode - "Gallery White" */
-  --bg-app: #fafafa;
-  --bg-surface: #ffffff;
-  --text-main: #0a0a0a;
-  --text-muted: #e1dede;
-  --accent: #e2b616;
-  --bg-input: #57575a; 
-  --border-input: rgba(0, 0, 0, 0.05);
-  --skeleton-bg: #fafafa;
-  
-  /* For Framer Motion useTransform */
-  --bg-app-rgb: 250, 250, 250;
-}
-
+/* 1. THE DEFAULT: Obsidian Midnight (Dark Mode) */
 :root {
-  /* Dark Mode - "Obsidian Midnight" */
   --bg-app: #080809;
   --bg-surface: #121214;
   --text-main: #ffffff;
   --text-muted: #b0b0b5;
+  --text-secondary: #71717a;
   --accent: #e2b616;
   --bg-input: #1a1a1c; 
   --border-input: rgba(255, 255, 255, 0.06);
-  --skeleton-bg: #b0b0b5;
-  --text-secondary: #71717a;
-  /* For Framer Motion useTransform */
+  --skeleton-bg: #1a1a1c;
   --bg-app-rgb: 8, 8, 9;
+  
+  /* Force the browser UI (scrollbars, etc) to dark mode */
+  color-scheme: dark;
 }
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+/* 2. THE OPTIONAL: Gallery White (Light Mode) */
+.light, [data-theme='light'] {
+  --bg-app: #fafafa;
+  --bg-surface: #ffffff;
+  --text-main: #0a0a0a;
+  --text-muted: #71717a;
+  --text-secondary: #a1a1aa;
+  --accent: #e2b616;
+  --bg-input: #f4f4f5; 
+  --border-input: rgba(0, 0, 0, 0.05);
+  --skeleton-bg: #e4e4e7;
+  --bg-app-rgb: 250, 250, 250;
+  
+  color-scheme: light;
 }
 
+/* Utilities */
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
-    display: none; /* Safari/Chrome */
+    display: none;
   }
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE/Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer components {
+  .nav-btn {
+    @apply absolute top-1/2 -translate-y-1/2 z-30 
+           bg-transparent backdrop-blur-sm rounded-full p-2 
+           text-white/80 hover:text-cinema-gold 
+           transition-all duration-300;
   }
 }
