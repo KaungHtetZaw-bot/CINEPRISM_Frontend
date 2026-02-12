@@ -1,33 +1,53 @@
-import React from 'react';
-
+import { getImageUrl } from '../../utils/imagePath';
 const Hero = ({ movie }: { movie: any }) => {
-  if (!movie) return <div className="h-[70vh] bg-zinc-900 animate-pulse" />;
+  const isLoading = !movie;
 
   return (
-    <div className="relative h-[70vh] w-full overflow-hidden mb-12">
-      {/* Background Image with Gradient Overlay */}
-      <img 
-        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} 
-        className="w-full h-full object-cover"
-        alt="Hero Background"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-app via-app/40 to-transparent" />
+    <div className="relative h-screen w-full overflow-hidden bg-app">
+      {isLoading ? (
+        <div className="w-full h-full bg-surface" />
+      ) : (
+        <img 
+          src={getImageUrl(movie.backdrop_path, 'original')}
+          className="w-full h-full object-cover animate-in fade-in duration-1000 scale-105"
+          alt="Hero Background"
+        />
+      )}
+      <div className="absolute inset-0 bg-black/40 z-10" />
+      <div className="absolute inset-0 bg-linear-to-t from-app via-app/20 to-transparent z-10" />
       
-      {/* Hero Content */}
-      <div className="absolute bottom-12 left-8 md:left-16 max-w-2xl">
-        <h1 className="text-4xl md:text-6xl font-black mb-4 text-white drop-shadow-lg">
-          {movie.title}
-        </h1>
-        <p className="text-muted text-lg mb-6 line-clamp-3">
-          {movie.overview}
-        </p>
-        <div className="flex gap-4">
-          <button className="bg-cinema-gold text-black px-8 py-3 rounded-lg font-bold hover:scale-105 transition">
-            Play Now
-          </button>
-          <button className="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-3 rounded-lg font-bold hover:bg-white/20 transition">
-            + Watchlist
-          </button>
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-20">
+        <div className="max-w-3xl space-y-6 animate-in fade-in zoom-in duration-1000">
+          
+          <p className="text-cinema-gold font-bold tracking-[0.4em] uppercase text-sm">
+            Unlimited Entertainment
+          </p>
+          
+          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter drop-shadow-2xl">
+            Movies, TV shows, <br /> and more.
+          </h1>
+          
+          <p className="text-xl text-white/90 font-medium max-w-xl mx-auto">
+            Watch anywhere. Cancel anytime. Ready to watch? Enter your email to start your membership.
+          </p>
+
+          <div className="flex flex-col md:flex-row items-center gap-3 w-full max-w-2xl mx-auto pt-4">
+            <div className="relative w-full">
+              <input 
+                type="email" 
+                placeholder="Email address" 
+                className="w-full px-6 py-5 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 text-white outline-none focus:border-cinema-gold transition-all text-lg"
+              />
+            </div>
+            <button className="w-full md:w-auto whitespace-nowrap bg-cinema-gold text-black px-10 py-5 rounded-xl font-extrabold text-lg hover:bg-gold-light hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+              Get Started
+              <span className="text-2xl">›</span>
+            </button>
+          </div>
+          
+          <p className="text-sm text-white/60">
+            Only new members are eligible for this offer.
+          </p>
         </div>
       </div>
     </div>

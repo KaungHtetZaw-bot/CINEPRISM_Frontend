@@ -1,14 +1,11 @@
-import React from 'react'
-
 const MovieSkeleton = () => {
   return (
-    <div className="rounded-xl overflow-hidden bg-surface border border-glass-border">
-      <div className="aspect-2/3 w-full bg-muted/20 animate-pulse" />
-      <div className="p-3 space-y-2">
-        <div className="h-4 w-3/4 bg-muted/20 animate-pulse rounded" />
-        <div className="h-3 w-1/4 bg-muted/20 animate-pulse rounded" />
+    <div className="rounded-xl overflow-hidden bg-surface border border-input-border shadow-sm">
+      <div className="aspect-2/3 w-full bg-input-bg relative overflow-hidden">
+        <div className="absolute inset-0 -translate-x-full animate-[shimmer_1.5s_infinite] 
+          bg-linear-to-r from-transparent via-main/5 to-transparent" />
       </div>
     </div>
   );
 };
-export default MovieSkeleton
+export default MovieSkeleton;

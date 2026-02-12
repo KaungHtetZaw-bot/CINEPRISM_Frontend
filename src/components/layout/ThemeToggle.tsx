@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon } from 'lucide-react'; // Import the actual components
+import { Sun, Moon } from 'lucide-react';
 
 const ThemeToggle = () => {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Initial check on load
     setIsDark(document.documentElement.classList.contains('dark'));
   }, []);
 
@@ -32,14 +31,15 @@ const ThemeToggle = () => {
         transition-all duration-300
         hover:scale-110 active:scale-95
         flex items-center justify-center
+        bg-main/10 hover:bg-main/20 active:bg-main/30
+        shadow-md shadow-black/20
       "
       aria-label="Toggle Theme"
     >
-      {/* Lucide icons are cleaner and respond to CSS colors */}
       {isDark ? (
-        <Sun size={20} strokeWidth={2.5} />
+        <Sun size={20} strokeWidth={2.5} color='yellow' />
       ) : (
-        <Moon size={20} strokeWidth={2.5} />
+        <Moon size={20} strokeWidth={2.5} color='white' />
       )}
     </button>
   );

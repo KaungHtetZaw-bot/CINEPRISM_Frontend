@@ -22,7 +22,7 @@ export default defineConfig({
     host: true,
     proxy: {
       "/api": {
-        target: "http://192.168.110.127:8000",
+        target: "http://192.168.110.129:8000",
         changeOrigin: true,
         secure: false,
       },
