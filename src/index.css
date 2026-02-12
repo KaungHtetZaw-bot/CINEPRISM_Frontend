@@ -66,7 +66,7 @@
 
 @layer components {
   .nav-btn {
-    @apply absolute top-1/2 -translate-y-1/2 z-30 
+    @apply absolute top-1/2 -translate-y-1/2 z-50 
            bg-transparent backdrop-blur-sm rounded-full p-2 
            text-white/80 hover:text-cinema-gold 
            transition-all duration-300;
