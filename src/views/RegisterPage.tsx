@@ -1,42 +1,76 @@
 import { Link } from "react-router-dom";
 import AuthLayout from "../components/auth/AuthLayout";
 import OTPModal from "../components/auth/OTPModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate,useLocation } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { registerUser, verifyOTP } from "../store/slices/authSlice";
+import Alert from "../components/ui/Alert";
 
-// src/pages/RegisterPage.tsx
+
 const RegisterPage = () => {
-    const [email, setEmail] = useState("");
-    const [showOTP, setShowOTP] = useState(false);
+  const { error } = useAppSelector(state => state.auth);
+  const [showAlert, setShowAlert] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: location.state?.email || '',
+    password: '',
+  });
+  const [showOTP, setShowOTP] = useState(false);
 
-    const handleInitialSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Logic: 1. Validate form, 2. Call backend to send OTP, 3. Show Popup
-    setShowOTP(true);
+  const handleInitialSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  if (!formData.name || !formData.email || !formData.password) {
+    alert('Please fill in all fields');
+    return;
+  }
+
+  try {
+    await dispatch(registerUser(formData)).unwrap();
+    setShowOTP(true); 
+  } catch (error: any) {
+    alert(error || 'Registration failed. Try a different email.');
+  }
+};
+
+  const handleVerifyComplete = async (code: string) => {
+    try {
+      await dispatch(verifyOTP({ email: formData.email, code })).unwrap();
+      navigate('/browse'); 
+    } catch (error: any) {
+      alert('Invalid code. Please try again.');
+    }
   };
 
-  const handleVerifyComplete = (code: string) => {
-    console.log("Verifying code on backend:", code);
-    // On success:
-    // navigate('/browse'); 
-  };
+  useEffect(() => {
+    if (error) setShowAlert(true);
+  }, [error]);
   return (
     <AuthLayout title="Sign Up">
       <form onSubmit={handleInitialSubmit} className="flex flex-col gap-4">
         <input 
           type="text" 
           placeholder="Full Name" 
+          value={formData.name}
+          onChange={(e) => setFormData({...formData, name: e.target.value})}
           className="auth-input"
         />
         <input 
           type="email" 
           placeholder="Email address" 
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formData.email}
+          onChange={(e) => setFormData({...formData, email: e.target.value})}
           className="auth-input"
         />
         <input 
           type="password" 
           placeholder="Create Password" 
+          value={formData.password}
+          onChange={(e)=> setFormData({...formData,password:e.target.value})}
           className="auth-input"
         />
         <button type="submit" className="auth-btn">
@@ -51,10 +85,17 @@ const RegisterPage = () => {
 
       <OTPModal 
         isOpen={showOTP} 
-        email={email} 
+        email={formData.email} 
         onClose={() => setShowOTP(false)}
         onVerify={handleVerifyComplete}
       />
+      {showAlert && error && (
+        <Alert 
+          message={error} 
+          type="error" 
+          onClose={() => setShowAlert(false)} 
+        />
+      )}
     </AuthLayout>
   );
 };

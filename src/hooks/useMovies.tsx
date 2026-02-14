@@ -12,9 +12,7 @@ export const useMovies = () => {
       try {
         setIsLoading(true);
         const response = await api.get('/media/trending');
-        
         const data = response.data.results || response.data;
-        console.log('Fetched movies:', data);
         setMovies(data);
         setError(null);
       } catch (err: any) {

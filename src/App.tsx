@@ -3,7 +3,6 @@ import './App.css';
 import LandingPage from './views/LandingPage';
 // import HomePage from './pages/Home';
 import ProtectedRoute from './routes/ProtectedRoute';
-import { AuthProvider } from './context/AuthContext';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import LoginPage from './views/LoginPage';
@@ -13,15 +12,14 @@ import Home from './views/Home';
 const App = () => {
   return (
     <Provider store={store}>
-      <AuthProvider>
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/browse" element={<Home />} />
 
           <Route element={<ProtectedRoute />}>
+          <Route path="/browse" element={<Home />} />
             {/* When authenticated, these render inside the Browse Layout */}
             {/* <Route path="/browse" element={<BrowsePage />} />
             <Route path="/movie/:id" element={<MovieDetail />} />
@@ -29,7 +27,6 @@ const App = () => {
           </Route>
         </Routes>
       </Router>
-    </AuthProvider>
     </Provider>
   );
 }

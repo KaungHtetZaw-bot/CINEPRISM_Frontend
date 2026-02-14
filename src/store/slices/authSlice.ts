@@ -1,33 +1,31 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../../api/axios';
 
-const API_URL = 'http://your-laravel-api.test/api';
+
 
 // 1. Register Thunk
 export const registerUser = createAsyncThunk('auth/register', async (userData: any, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API_URL}/register`, userData);
+    const response = await api.post(`/register`, userData);
     return response.data; // Success triggers the OTP Modal
   } catch (err: any) {
     return rejectWithValue(err.response.data);
   }
 });
 
-// 2. OTP Verification Thunk
 export const verifyOTP = createAsyncThunk('auth/verify', async (otpData: { email: string, code: string }, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API_URL}/verify-code`, otpData);
+    const response = await api.post(`/verify-code`, otpData);
     return response.data;
   } catch (err: any) {
     return rejectWithValue(err.response.data);
   }
 });
 
-// 3. Login Thunk
 export const loginUser = createAsyncThunk('auth/login', async (credentials: any, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, credentials);
-    return response.data; // Contains 'access_token'
+    const response = await api.post(`/login`, credentials);
+    return response.data;
   } catch (err: any) {
     return rejectWithValue(err.response.data);
   }

@@ -1,6 +1,16 @@
+import { useState } from 'react';
 import { getImageUrl } from '../../utils/imagePath';
+import { useNavigate } from 'react-router-dom';
 const Hero = ({ movie }: { movie: any }) => {
   const isLoading = !movie;
+  const navigate = useNavigate();
+  const [email,setEmail] = useState<string>('');
+    const goWithEmail = () => {
+      navigate('/register', { state: { email } });
+      if (email.trim()) {
+      navigate('/register', { state: { email } });
+    }
+    };
 
   return (
     <div className="relative h-screen w-full overflow-hidden bg-app">
@@ -35,11 +45,13 @@ const Hero = ({ movie }: { movie: any }) => {
             <div className="relative w-full">
               <input 
                 type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email address" 
                 className="w-full px-6 py-5 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 text-white outline-none focus:border-cinema-gold transition-all text-lg"
               />
             </div>
-            <button className="w-full md:w-auto max-w-50 whitespace-nowrap bg-cinema-gold text-black md:px-10 px-5 md:py-5 py-2.5 rounded-xl font-extrabold text-lg hover:bg-gold-light hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+            <button onClick={()=>goWithEmail()} className="w-full md:w-auto max-w-50 whitespace-nowrap bg-cinema-gold text-black md:px-10 px-5 md:py-5 py-2.5 rounded-xl font-extrabold text-lg hover:bg-gold-light hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
               Get Started
               <span className="text-2xl">›</span>
             </button>

@@ -12,9 +12,13 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = store.getState().auth.token;
+
+    const backupToken = localStorage.getItem('token');
+
+    const activeToken = token || backupToken;
     
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (activeToken) {
+      config.headers.Authorization = `Bearer ${activeToken}`;
     }
     return config;
   },

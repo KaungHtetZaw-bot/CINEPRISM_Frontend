@@ -4,13 +4,13 @@ import { fetchTrending, fetchPopular } from '../store/slices/mediaSlice';
 import Sidebar from '../components/layout/Sidebar';
 import BottomNav from '../components/layout/BottomNav';
 import MovieGrid from '../components/movie/MovieGrid';
-import { EllipsisVertical } from 'lucide-react';
+// import { EllipsisVertical } from 'lucide-react';
 import Logo from '../components/layout/Logo';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   
-  const { trending, popular, status } = useAppSelector((state) => state.media);
+  const { trending, popularMovies, popularTV, status } = useAppSelector((state) => state.media);
   const isLoading = status === 'loading';
 
   useEffect(() => {
@@ -21,8 +21,15 @@ const Home = () => {
 
   const sections = [
     { title: "Trending Now", data: trending },
-    { title: "Popular Movies", data: popular.filter(m => m.type === 'movie') },
-    { title: "Binge-worthy TV Shows", data: popular.filter(m => m.type === 'tv') },
+    { 
+      title: "Popular Movies", 
+      // The '|| []' ensures filter is never called on undefined
+      data: popularMovies || []
+    },
+    { 
+      title: "Binge-worthy TV Shows", 
+      data: popularTV || []
+    },
   ];
 
   return (
@@ -31,9 +38,9 @@ const Home = () => {
         <Sidebar />
       </div>
 
-      <main className="flex-1 overflow-x-hidden relative">
-        <div className='sticky top-0 z-50 bg-[#0a0a0b]/80 backdrop-blur-md p-4 md:p-6 border-b border-white/5'>
-          <div className="max-w-2xl mx-auto relative flex flex-col">
+      <main className="flex-1 overflow-x-hidden relative sm:pt-5">
+        <div className='sm:hidden  sticky top-0 z-50 bg-[#0a0a0b]/80 backdrop-blur-md p-4 md:p-6 border-b border-white/5'>
+          <div className="max-w-2xl mx-auto relative  flex flex-col">
             <Logo />
             {/* <button className="p-2 hover:bg-white/5 rounded-full transition-colors text-dim hover:text-white">
               <EllipsisVertical size={24} />

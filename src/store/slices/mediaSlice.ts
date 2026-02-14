@@ -4,7 +4,8 @@ import type { Movie } from '../../types/movie';
 
 interface MovieState {
   trending: Movie[];
-  popular: Movie[];
+  popularMovies: Movie[]; // New
+  popularTV: Movie[];
   favorites: Movie[];
   searchResult: Movie[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -13,7 +14,8 @@ interface MovieState {
 
 const initialState: MovieState = {
   trending: [],
-  popular: [],
+  popularMovies: [],
+  popularTV: [],
   favorites: [],
   searchResult: [],
   status: 'idle',
@@ -61,7 +63,9 @@ const movieSlice = createSlice({
         state.error = action.error.message || 'Something went wrong';
       })
       .addCase(fetchPopular.fulfilled, (state, action) => {
-        state.popular = action.payload;
+        const type = action.meta.arg; // 'movie' or 'tv' passed from the dispatch
+        if (type === 'movie') state.popularMovies = action.payload;
+        if (type === 'tv') state.popularTV = action.payload;
       })
       .addCase(searchMedia.fulfilled, (state, action) => {
         state.searchResult = action.payload;
