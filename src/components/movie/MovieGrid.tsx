@@ -19,23 +19,11 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies, isLoading, limit }) => {
   }, [inView, isLoading, movies.length]);
 
   return (
-    <section className="py-8 px-6 md:px-12">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+    <section className="py-8 pr-2">
+      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
         {movies.map((movie, index) => (
-          <div key={`${movie.id}-${index}`} className="relative group pl-8 mb-4">
-            <span 
-              className="absolute -left-4 bottom-[-10%] z-10 
-                        text-[8rem] font-black leading-none
-                        select-none pointer-events-none
-                        transition-all duration-500
-                        group-hover:bottom-[0%]
-                        text-transparent bg-clip-text bg-linear-to-t from-default-400 to-transparent
-                        [text-shadow:2px_2px_10px_rgba(0,0,0,0.8)]
-                        [-webkit-text-stroke:2px_rgba(255,255,255,0.5)]"
-            >
-              {index + 1}
-            </span>
-            <div className="relative z-20 transition-transform duration-500 group-hover:-translate-y-2">
+          <div key={`${movie.id}-${index}`} className="relative group mb-4">
+            <div className="relative z-20">
               <MovieCard movie={movie} />
             </div>
           </div>
