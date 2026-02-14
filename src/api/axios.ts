@@ -1,11 +1,38 @@
 import axios from 'axios';
+import { store } from '../store';
 
 const api = axios.create({
-  // If you're using TMDB for now: https://api.themoviedb.org/3
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://192.168.110.127:8000/api',
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 });
+
+api.interceptors.request.use(
+  (config) => {
+    const token = store.getState().auth.token;
+    
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Optional: Force logout user if token expires
+      // store.dispatch(logout()); 
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;

@@ -8,4 +8,5 @@ export interface Movie {  // Ensure 'export' is right here
   vote_average: number;
   overview: string;
   release_date: string;
+  type: 'movie' | 'tv';
 }
