@@ -12,7 +12,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
         />
       </div>
 
-      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+      {/* <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
         <h3 className="text-white font-bold text-sm leading-tight mb-1">{movie.title}</h3>
         <div className="flex items-center justify-between">
           <span className="text-cinema-gold font-bold text-xs">★ {movie?.vote_average ? movie.vote_average.toFixed(1) : '0.0'}</span>
@@ -20,7 +20,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
             Details
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
