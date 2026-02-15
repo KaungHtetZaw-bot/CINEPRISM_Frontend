@@ -1,87 +1,188 @@
-import MovieRow from '../components/movie/MovieRow';
 import Navbar from '../components/layout/Navbar';
 import Hero from '../components/movie/Hero';
 import { useMovies } from '../hooks/useMovies';
-import { ChevronRight } from 'lucide-react';
 import tvDisplay from '../assets/images/tv_display.png';
+import React, { useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import MovieCard from '../components/movie/MovieCard';
+import MovieSkeleton from '../components/movie/MovieSkeleton';
+import type { Movie } from '../types/movie';
 
-const LandingPage = () => {
-  const FeatureSection = () => {
-      return (
-        <section className="md:py-16 py-8 px-4 md:px-24 bg-app">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
-            <div className="flex-1 text-center md:text-left">
-              <h2 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
-                Enjoy on your <span className="text-cinema-gold">TV.</span>
-              </h2>
-              <p className="text-xl md:text-2xl text-muted font-medium">
-                Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.
-              </p>
-            </div>
-            <div className="flex-1 relative">
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-500/20 blur-[100px] -z-10" />
-              
-              <div className="relative z-10 rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl">
-                <img 
-                  src={tvDisplay} 
-                  alt="TV Display" 
-                  className="rounded-lg w-full h-auto"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-      );
-    };
-  const Footer = () => {
-    const links = [
-      ['FAQ', 'Investor Relations', 'Ways to Watch', 'Corporate Information', 'Only on Netflix'],
-      ['Help Center', 'Jobs', 'Terms of Use', 'Contact Us'],
-      ['Account', 'Redeem Gift Cards', 'Privacy', 'Speed Test'],
-      ['Media Center', 'Buy Gift Cards', 'Cookie Preferences', 'Legal Notices']
-    ];
+interface MovieRowProps {
+  movies: Movie[];
+  isLoading: boolean;
+  limit?: number;
+}
 
-    return (
-      <footer className="bg-app pt-20 pb-12 px-6 md:px-12">
-        <div className="max-w-250 mx-auto">
-          <p className="text-dim mb-8 hover:underline cursor-pointer">
-            Questions? Contact us.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-            {links.map((column, colIndex) => (
-              <ul key={colIndex} className="flex flex-col gap-3">
-                {column.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-dim text-sm hover:underline">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ))}
-          </div>
-          <div className="mb-8">
-            <div className="relative inline-block">
-              <select className="bg-black border border-white/20 text-dim text-sm py-2 pl-4 pr-10 rounded-md appearance-none focus:ring-1 focus:ring-cinema-gold outline-none">
-                <option>English</option>
-                <option>Myanmar (Burma)</option>
-              </select>
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg className="w-4 h-4 text-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-                </svg>
+const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+
+  const updateScrollIndicators = () => {
+    if (rowRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = rowRef.current;
+      setShowLeftArrow(scrollLeft > 10);
+      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 50;
+      setShowRightArrow(!isAtEnd);
+    }
+  };
+
+  useEffect(() => {
+    const el = rowRef.current;
+    if (el) {
+      el.addEventListener('scroll', updateScrollIndicators);
+      updateScrollIndicators();
+    }
+    return () => el?.removeEventListener('scroll', updateScrollIndicators);
+  }, [isLoading, movies]);
+
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (rowRef.current) {
+      const { scrollLeft, clientWidth } = rowRef.current;
+      const offset = direction === 'left' ? -clientWidth * 0.8 : clientWidth * 0.8;
+      rowRef.current.scrollTo({ left: scrollLeft + offset, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section className="py-8 flex justify-center items-center">
+      <div className="relative w-full group/row md:px-30 px-5"> 
+        {!isLoading && (
+          <>
+            <button 
+              onClick={() => handleScroll('left')}
+              className={`nav-btn md:left-2 -left-2 z-30 transition-all duration-300 ${
+                showLeftArrow ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+            >
+              <ChevronLeft size={48} strokeWidth={1} />
+            </button>
+            <button 
+              onClick={() => handleScroll('right')}
+              className={`nav-btn md:right-2 -right-2 z-30 transition-all duration-300 ${
+                showRightArrow ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+            >
+              <ChevronRight size={48} strokeWidth={1} />
+            </button>
+          </>
+        )}
+        <div 
+          ref={rowRef}
+          className="flex flex-row overflow-x-auto overflow-y-hidden gap-6 pb-4 no-scrollbar snap-x scroll-smooth"
+        >
+          {isLoading ? (
+            Array.from({ length: limit || 6 }).map((_, i) => (
+              <div key={`skeleton-${i}`} className="lg:w-45 md:w-45 sm:w-35 w-30 shrink-0">
+                <MovieSkeleton />
               </div>
-            </div>
-          </div>
-          <p className="text-dim text-xs">
-            © 2026 YourCinema. All rights reserved. Built with precision for the best viewing experience.
-          </p>
+            ))
+          ) : (
+            movies.map((movie, index) => (
+              <div 
+                key={`${movie.id}-${index}`} 
+                className="shrink-0 snap-start relative px-2.5"
+              >
+                
+                <div className="lg:w-45 md:w-44 sm:w-33 w-30">
+                  <MovieCard movie={movie} />
+                </div>
+                <span className="absolute -bottom-4 -left-1 z-0 
+                     text-[8rem] font-black leading-none
+                     text-black [-webkit-text-stroke:4px_var(--text-main)]
+                     opacity-40 select-none pointer-events-none">
+                  {index + 1}
+                </span>
+              </div>
+            ))
+          )}
         </div>
-      </footer>
+      </div>
+    </section>
+  );
+};
+
+const FeatureSection = () => {
+    return (
+      <section className="md:py-16 py-8 px-4 md:px-24 bg-app">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
+          <div className="flex-1 text-center md:text-left">
+            <h2 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
+              Enjoy on your <span className="text-cinema-gold">TV.</span>
+            </h2>
+            <p className="text-xl md:text-2xl text-muted font-medium">
+              Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.
+            </p>
+          </div>
+          <div className="flex-1 relative">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-500/20 blur-[100px] -z-10" />
+            
+            <div className="relative z-10 rounded-2xl border border-white/10 bg-surface p-4 shadow-2xl">
+              <img 
+                src={tvDisplay} 
+                alt="TV Display" 
+                className="rounded-lg w-full h-auto"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
     );
   };
-    const { movies, isLoading } = useMovies();
-    const heroMovie = movies[0]; 
+
+const Footer = () => {
+  const links = [
+    ['FAQ', 'Investor Relations', 'Ways to Watch', 'Corporate Information', 'Only on Netflix'],
+    ['Help Center', 'Jobs', 'Terms of Use', 'Contact Us'],
+    ['Account', 'Redeem Gift Cards', 'Privacy', 'Speed Test'],
+    ['Media Center', 'Buy Gift Cards', 'Cookie Preferences', 'Legal Notices']
+  ];
+
+  return (
+    <footer className="bg-app pt-20 pb-12 px-6 md:px-12">
+      <div className="max-w-250 mx-auto">
+        <p className="text-dim mb-8 hover:underline cursor-pointer">
+          Questions? Contact us.
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          {links.map((column, colIndex) => (
+            <ul key={colIndex} className="flex flex-col gap-3">
+              {column.map((link) => (
+                <li key={link}>
+                  <a href="#" className="text-dim text-sm hover:underline">
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
+        <div className="mb-8">
+          <div className="relative inline-block">
+            <select className="bg-black border border-white/20 text-dim text-sm py-2 pl-4 pr-10 rounded-md appearance-none focus:ring-1 focus:ring-cinema-gold outline-none">
+              <option>English</option>
+              <option>Myanmar (Burma)</option>
+            </select>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <svg className="w-4 h-4 text-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <p className="text-dim text-xs">
+          © 2026 YourCinema. All rights reserved. Built with precision for the best viewing experience.
+        </p>
+      </div>
+    </footer>
+  );
+};
+
+
+const LandingPage = () => {
+  const { movies, isLoading } = useMovies();
+  const heroMovie = movies[0]; 
   return (
     <div className="min-h-screen bg-app text-white selection:bg-amber-400 selection:text-black">
       <Navbar />
