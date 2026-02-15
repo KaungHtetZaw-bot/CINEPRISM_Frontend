@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { store } from '../store';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://192.168.110.127:8000/api',
@@ -11,14 +10,10 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = store.getState().auth.token;
-
-    const backupToken = localStorage.getItem('token');
-
-    const activeToken = token || backupToken;
+    const token = localStorage.getItem('token');
     
-    if (activeToken) {
-      config.headers.Authorization = `Bearer ${activeToken}`;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -32,8 +27,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Optional: Force logout user if token expires
-      // store.dispatch(logout()); 
+      localStorage.removeItem('token');
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }

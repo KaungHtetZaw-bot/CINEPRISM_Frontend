@@ -41,9 +41,11 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
     }
   };
 
+  const cardWidthClasses = "lg:w-[180px] md:w-[170px] sm:w-[140px] w-[120px] shrink-0 snap-start relative px-2.5";
+
   return (
     <section className="py-8 flex justify-center items-center">
-      <div className="relative w-full group/row md:px-30 px-5"> 
+      <div className="relative w-full group/row"> 
         {!isLoading && (
           <>
             <button 
@@ -52,7 +54,7 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
                 showLeftArrow ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
               }`}
             >
-              <ChevronLeft size={48} strokeWidth={1} />
+              <ChevronLeft size={30} strokeWidth={1} />
             </button>
             <button 
               onClick={() => handleScroll('right')}
@@ -60,7 +62,7 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
                 showRightArrow ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
               }`}
             >
-              <ChevronRight size={48} strokeWidth={1} />
+              <ChevronRight size={30} strokeWidth={1} />
             </button>
           </>
         )}
@@ -69,30 +71,25 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
           className="flex flex-row overflow-x-auto overflow-y-hidden gap-6 pb-4 no-scrollbar snap-x scroll-smooth"
         >
           {isLoading ? (
-            Array.from({ length: limit || 6 }).map((_, i) => (
-              <div key={`skeleton-${i}`} className="lg:w-45 md:w-45 sm:w-35 w-30 shrink-0">
-                <MovieSkeleton />
+          Array.from({ length: limit || 6 }).map((_, i) => (
+            <div key={`skeleton-${i}`} className={cardWidthClasses}>
+              <MovieSkeleton />
+            </div>
+          ))
+        ) : (
+          <>
+            {movies.map((movie, index) => (
+              <div key={`${movie.id}-${index}`} className={cardWidthClasses}>
+                <MovieCard movie={movie} />
               </div>
-            ))
-          ) : (
-            movies.map((movie, index) => (
-              <div 
-                key={`${movie.id}-${index}`} 
-                className="shrink-0 snap-start relative px-2.5"
-              >
-                
-                <div className="lg:w-45 md:w-44 sm:w-33 w-30">
-                  <MovieCard movie={movie} />
-                </div>
-                <span className="absolute -bottom-4 -left-1 z-0 
-                     text-[8rem] font-black leading-none
-                     text-black [-webkit-text-stroke:4px_var(--text-main)]
-                     opacity-40 select-none pointer-events-none">
-                  {index + 1}
-                </span>
-              </div>
-            ))
-          )}
+            ))}
+            
+            {/* The "More" Card - matches dimensions of actual cards */}
+            <div className={`${cardWidthClasses} flex items-center justify-center border border-white/10 rounded-lg hover:bg-white/5 cursor-pointer transition-colors`}>
+              <span className="text-dim font-medium">View All</span>
+            </div>
+          </>
+        )}
         </div>
       </div>
     </section>

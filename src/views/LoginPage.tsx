@@ -6,12 +6,13 @@ import { loginUser } from '../store/slices/authSlice';
 import Alert from '../components/ui/Alert';
 
 const LoginPage = () => {
+  
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-  const { error } = useAppSelector(state => state.auth);
+  const { error ,loading } = useAppSelector(state => state.auth);
   const [showAlert, setShowAlert] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -47,8 +48,8 @@ const LoginPage = () => {
           placeholder="Password" 
           className="auth-input"
         />
-        <button type="submit" className="auth-btn">
-          Sign In
+        <button type="submit" className="auth-btn" disabled={loading}>
+          {loading ? 'Authenticating...' : 'Sign In'}
         </button>
       </form>
       

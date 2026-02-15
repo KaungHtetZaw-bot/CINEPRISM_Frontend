@@ -2,6 +2,7 @@
 
 export interface Movie {  // Ensure 'export' is right here
   id: number;
+  name: string; // For TV shows
   title: string;
   poster_path: string;
   backdrop_path: string;
@@ -9,4 +10,5 @@ export interface Movie {  // Ensure 'export' is right here
   overview: string;
   release_date: string;
   type: 'movie' | 'tv';
+  media_type?: string;
 }
