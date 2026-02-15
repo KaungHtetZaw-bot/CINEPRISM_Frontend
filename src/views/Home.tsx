@@ -3,9 +3,10 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchTrending, fetchPopular } from '../store/slices/mediaSlice';
 import Sidebar from '../components/layout/Sidebar';
 import BottomNav from '../components/layout/BottomNav';
-import MovieGrid from '../components/movie/MovieGrid';
 // import { EllipsisVertical } from 'lucide-react';
 import Logo from '../components/layout/Logo';
+import MovieRow from '../components/movie/MovieRow';
+import Spotlight from '../components/movie/Spotlight';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +24,6 @@ const Home = () => {
     { title: "Trending Now", data: trending },
     { 
       title: "Popular Movies", 
-      // The '|| []' ensures filter is never called on undefined
       data: popularMovies || []
     },
     { 
@@ -31,6 +31,8 @@ const Home = () => {
       data: popularTV || []
     },
   ];
+
+  const spotlightMovie = trending[0];
 
   return (
     <div className="flex min-h-screen bg-app">
@@ -44,16 +46,17 @@ const Home = () => {
             <Logo />
             {/* <button className="p-2 hover:bg-white/5 rounded-full transition-colors text-dim hover:text-white">
               <EllipsisVertical size={24} />
-            </button> */}
+              </button> */}
           </div>
         </div>
+        <Spotlight movie={spotlightMovie} isLoading={isLoading} />
         <div className="pb-24 m-0 relative z-10 space-y-12">
           {sections.map((section) => (
-            <div key={section.title} className="px-4 md:px-6">
+            <div key={section.title} className="m-0 px-4 md:px-6">
               <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">
                 {section.title}
               </h2>
-              <MovieGrid movies={section.data} isLoading={isLoading} />
+              <MovieRow movies={section.data.slice(0, 10)} isLoading={isLoading} />
             </div>
           ))}
         </div>
