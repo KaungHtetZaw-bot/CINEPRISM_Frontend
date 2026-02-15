@@ -63,7 +63,7 @@ const movieSlice = createSlice({
         state.error = action.error.message || 'Something went wrong';
       })
       .addCase(fetchPopular.fulfilled, (state, action) => {
-        const type = action.meta.arg; // 'movie' or 'tv' passed from the dispatch
+        const type = action.meta.arg;
         if (type === 'movie') state.popularMovies = action.payload;
         if (type === 'tv') state.popularTV = action.payload;
       })

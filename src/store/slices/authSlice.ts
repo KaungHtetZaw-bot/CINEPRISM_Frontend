@@ -50,11 +50,21 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
         state.isAuthenticated = true;
         state.token = action.payload.access_token;
         state.user = action.payload.user;
         localStorage.setItem('token', action.payload.access_token);
+      })
+      .addCase(loginUser.rejected, (state, action: any) => {
+        state.loading = false;
+        // This ensures your Alert component in LoginPage gets the message
+        state.error = action.payload?.message || 'Invalid credentials'; 
       })
       .addCase(registerUser.rejected, (state, action: any) => {
         state.error = action.payload.message;
