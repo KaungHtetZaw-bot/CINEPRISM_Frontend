@@ -8,6 +8,7 @@ import { store } from './store';
 import LoginPage from './views/LoginPage';
 import RegisterPage from './views/RegisterPage';
 import Home from './views/Home';
+import RecentPage from './views/RecentPage';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
 
           <Route element={<ProtectedRoute />}>
           <Route path="/browse" element={<Home />} />
+          <Route path='/recent' element={<RecentPage />} />
             {/* When authenticated, these render inside the Browse Layout */}
             {/* <Route path="/browse" element={<BrowsePage />} />
             <Route path="/movie/:id" element={<MovieDetail />} />
