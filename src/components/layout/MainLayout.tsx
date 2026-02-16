@@ -1,22 +1,25 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
-import Logo from './Logo';
+import MobileHeader from './MobileHeader';
 
 const MainLayout = () => {
   return (
-    <div className="flex min-h-screen bg-app text-white">
-      <div className="sm:block hidden">
+    <div className="flex min-h-screen bg-app text-white overflow-hidden">
+      <aside className="hidden sm:block">
         <Sidebar />
-      </div>
-      <main className="flex-1 overflow-x-hidden relative">
-        <div className="sm:hidden w-full top-0 z-5 p-4 border-b border-white/5">
-          <Logo />
+      </aside>
+
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
+        <MobileHeader />
+
+        <main className="flex-1 overflow-y-auto overflow-x-hidden pb-24 sm:pb-0">
+          <Outlet />
+        </main>
+
+        <div>
+          <BottomNav />
         </div>
-        <Outlet />
-      </main>
-      <div className="sm:hidden">
-        <BottomNav />
       </div>
     </div>
   );

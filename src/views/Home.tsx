@@ -24,10 +24,10 @@ useEffect(() => {
     <>
       <Spotlight movie={spotlightMovie} isLoading={isLoading} />
       <div className='h-[20vh]'></div>
-      <div className="pb-24 -mt-32 relative space-y-12">
+      <div className="pb-24 -mt-32 relative">
         {sections.map((section) => (
           <div key={section.title} className="px-4 md:px-6">
-            <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-2">
+            <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">
               {section.title}
             </h2>
             <MovieRow movies={section.data.slice(0, 10)} isLoading={isLoading} />
