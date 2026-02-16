@@ -1,16 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAppSelector } from '../store/hooks';
+import { useAuthStore } from '../store/useAuthStore';
 
 const ProtectedRoute = () => {
-  // Check Redux state instead of Context
-  const { token } = useAppSelector((state) => state.auth);
-
-  // While checking the token on initial load, you might want a loading state
-  if (status === 'loading') {
-    return <div className="bg-app min-h-screen" />; // Or a spinner
+  const { token, isLoading } = useAuthStore();
+  if (isLoading) {
+    return <div className="bg-app min-h-screen" />;
   }
-
-  // If there's a token, show the content (Outlet), otherwise send to landing
   return token ? <Outlet /> : <Navigate to="/" replace />;
 };
 

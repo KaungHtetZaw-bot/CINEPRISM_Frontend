@@ -1,20 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../components/auth/AuthLayout';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { loginUser } from '../store/slices/authSlice';
+import { useAuthStore } from "../store/useAuthStore"
 import Alert from '../components/ui/Alert';
 
 const LoginPage = () => {
-  
+  const { login, error,isLoading } = useAuthStore();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
-  const { error ,loading } = useAppSelector(state => state.auth);
   const [showAlert, setShowAlert] = useState(false);
-  const dispatch = useAppDispatch();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,9 +20,8 @@ const LoginPage = () => {
       return;
     }
     try {
-      const result = await dispatch(loginUser(formData)).unwrap();
-      console.log('Login successful:', result.access_token);
-      console.log('User data:', result.user);
+      const result = await login(formData);
+      console.log('Login successful:', result);
       navigate('/browse');
     } catch (err: any) {
       setShowAlert(true);
@@ -48,8 +44,8 @@ const LoginPage = () => {
           placeholder="Password" 
           className="auth-input"
         />
-        <button type="submit" className="auth-btn" disabled={loading}>
-          {loading ? 'Authenticating...' : 'Sign In'}
+        <button type="submit" className="auth-btn" disabled={isLoading}>
+          {isLoading ? 'Authenticating...' : 'Sign In'}
         </button>
       </form>
       

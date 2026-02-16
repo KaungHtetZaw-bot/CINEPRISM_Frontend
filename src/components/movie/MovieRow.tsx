@@ -3,6 +3,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MovieCard from './MovieCard';
 import MovieSkeleton from './MovieSkeleton';
 import type { Movie } from '../../types/movie';
+import { useNavigate } from 'react-router-dom';
+import { useMediaStore } from '../../store/useMediaStore';
 
 interface MovieRowProps {
   movies: Movie[];
@@ -12,9 +14,17 @@ interface MovieRowProps {
 
 const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
   const rowRef = useRef<HTMLDivElement>(null);
+  const { addToRecent } = useMediaStore();
+  const navigate = useNavigate();
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
 
+  const handleMovieClick = (movie: Movie) => {
+    addToRecent(movie);
+    const mediaType = movie.type || movie.media_type || (movie.title ? 'movie' : 'tv');
+    
+    navigate(`/details/${mediaType}/${movie.id}`);
+  };
   const updateScrollIndicators = () => {
     if (rowRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = rowRef.current;
@@ -23,6 +33,12 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
       setShowRightArrow(!isAtEnd);
     }
   };
+  useEffect(() => {
+  if (!isLoading && rowRef.current) {
+    rowRef.current.scrollTo({ left: 0, behavior: 'instant' });
+    updateScrollIndicators();
+  }
+}, [isLoading]);
 
   useEffect(() => {
     const el = rowRef.current;
@@ -67,6 +83,7 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
           </>
         )}
         <div 
+          key={isLoading ? 'loading' : 'content'}
           ref={rowRef}
           className="flex flex-row overflow-x-auto overflow-y-hidden gap-6 pb-4 no-scrollbar snap-x scroll-smooth"
         >
@@ -79,14 +96,19 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
         ) : (
           <>
             {movies.map((movie, index) => (
-              <div key={`${movie.id}-${index}`} className={cardWidthClasses}>
+              <div key={`${movie.id}-${index}`} className={cardWidthClasses} onClick={() => handleMovieClick(movie)} >
                 <MovieCard movie={movie} />
               </div>
             ))}
             
             {/* The "More" Card - matches dimensions of actual cards */}
-            <div className={`${cardWidthClasses} flex items-center justify-center border border-white/10 rounded-lg hover:bg-white/5 cursor-pointer transition-colors`}>
-              <span className="text-dim font-medium">View All</span>
+            <div className={`${cardWidthClasses} group`}>
+              <div className="aspect-2/3 w-full flex flex-col items-center justify-center border border-dashed border-white/20 rounded-xl hover:bg-white/5 hover:border-cinema-gold transition-all group-active:scale-95">
+                <div className="p-3 rounded-full bg-white/5 text-dim group-hover:text-cinema-gold mb-2">
+                  <ChevronRight size={24} />
+                </div>
+                <span className="text-dim group-hover:text-white font-bold text-sm tracking-tight">View All</span>
+              </div>
             </div>
           </>
         )}

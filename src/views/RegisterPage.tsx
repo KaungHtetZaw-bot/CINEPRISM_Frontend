@@ -3,15 +3,13 @@ import AuthLayout from "../components/auth/AuthLayout";
 import OTPModal from "../components/auth/OTPModal";
 import { useEffect, useState } from "react";
 import { useNavigate,useLocation } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { registerUser, verifyOTP } from "../store/slices/authSlice";
+import { useAuthStore } from "../store/useAuthStore";
 import Alert from "../components/ui/Alert";
 
 
 const RegisterPage = () => {
-  const { error } = useAppSelector(state => state.auth);
+  const { register, verifyOTP, error } = useAuthStore();
   const [showAlert, setShowAlert] = useState(false);
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
@@ -30,7 +28,7 @@ const RegisterPage = () => {
   }
 
   try {
-    await dispatch(registerUser(formData)).unwrap();
+    await register(formData);
     setShowOTP(true); 
   } catch (error: any) {
     alert(error || 'Registration failed. Try a different email.');
@@ -39,7 +37,7 @@ const RegisterPage = () => {
 
   const handleVerifyComplete = async (code: string) => {
     try {
-      await dispatch(verifyOTP({ email: formData.email, code })).unwrap();
+      await verifyOTP({ email: formData.email, code });
       navigate('/browse'); 
     } catch (error: any) {
       alert('Invalid code. Please try again.');
