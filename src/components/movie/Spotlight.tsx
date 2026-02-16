@@ -4,7 +4,7 @@ const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/original";
 
 const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) => {
   if (isLoading || !movie) {
-    return <div className="h-[70vh] w-full bg-neutral-900 animate-pulse" />;
+    return <div className="h-[85vh] w-full bg-neutral-900 animate-pulse" />;
   }
 
   return (
