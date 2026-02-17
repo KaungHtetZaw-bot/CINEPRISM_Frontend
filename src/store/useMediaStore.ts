@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import api from '../api/axios';
 import type{ Movie } from '../types/movie';
+import { persist,createJSONStorage } from 'zustand/middleware';
 
 interface MediaState {
   trending: Movie[];
@@ -21,6 +22,7 @@ interface MediaState {
   removeFromRecent: (id: number, type: string) => Promise<void>;
   searchMedia: (query: string) => Promise<void>;
   clearSearch: () => void;
+  fetchWithCache:(key:keyof MediaState,endpoint:string)=>void;
 }
 
 export const useMediaStore = create<MediaState>((set, get) => ({
@@ -32,23 +34,25 @@ export const useMediaStore = create<MediaState>((set, get) => ({
   searchResults:[],
   isLoading: false,
 
-  fetchTrending: async () => {
-    set({ isLoading: true });
-    const { data } = await api.get('/media/trending');
-    set({ trending: data, isLoading: false });
+  fetchWithCache: async (key: keyof MediaState,endpoint:string) => {
+    const currentData = get()[key];
+    if(!currentData || (Array.isArray(currentData) && currentData.length === 0)){
+      set({isLoading:true});
+    }
+    try {
+      const { data } = await api.get(endpoint);
+      set({[key]:data,isLoading:false})
+    } catch (error) {
+      set({ isLoading: false });
+          console.error(`Error fetching ${key}:`, error);
+    }
   },
 
-  fetchPopularMovies: async () => {
-    set({ isLoading: true });
-    const { data } = await api.get('/media/popular/movie');
-    set({ popularMovies: data, isLoading: false });
-  },
+  fetchTrending: async () => get().fetchWithCache('trending','/media/trending'),
 
-  fetchPopularTV: async () => {
-    set({ isLoading: true });
-    const { data } = await api.get('/media/popular/tv');
-    set({ popularTV: data, isLoading: false });
-  },
+  fetchPopularMovies: async () => get().fetchWithCache("popularMovies",'/media/popular/movie'),
+
+  fetchPopularTV: async () => get().fetchWithCache('popularTV','/media/popular/tv'),
 
   fetchDetails: async (id, type) => {
     set({ isLoading: true, selectedMedia: null });
@@ -56,10 +60,7 @@ export const useMediaStore = create<MediaState>((set, get) => ({
     set({ selectedMedia: data, isLoading: false });
   },
 
-  fetchRecent: async () => {
-    const { data } = await api.get('/recentlist');
-    set({ history: data });
-  },
+  fetchRecent: async () => get().fetchWithCache('history','recentlist'),
 
   addToRecent: async (movie) => {
     const currentHistory = get().history;
