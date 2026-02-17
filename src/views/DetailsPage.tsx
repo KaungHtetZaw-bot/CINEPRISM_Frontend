@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Play, Plus, Star, Info, Calendar } from 'lucide-react';
 import { useMediaStore } from '../store/useMediaStore';
+import MovieDetailSkeleton from '../components/skeleton/MovieDetailSkeleton';
 // import MovieRow from '../components/movie/MovieRow';
 
 const Details = () => {
@@ -16,7 +17,7 @@ const Details = () => {
   }, [id, type, fetchDetails]);
 
   if (isLoading || !selectedMedia) {
-    return <div className="h-screen flex items-center justify-center bg-app text-cinema-gold">Loading...</div>;
+    return <MovieDetailSkeleton/>;
   }
 
   const movie = selectedMedia;

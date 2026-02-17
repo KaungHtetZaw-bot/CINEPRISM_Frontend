@@ -5,7 +5,7 @@ import tvDisplay from '../assets/images/tv_display.png';
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MovieCard from '../components/movie/MovieCard';
-import MovieSkeleton from '../components/movie/MovieSkeleton';
+import MovieSkeleton from '../components/skeleton/MovieSkeleton';
 import type { Movie } from '../types/movie';
 
 interface MovieRowProps {

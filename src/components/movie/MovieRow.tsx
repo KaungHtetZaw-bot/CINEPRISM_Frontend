@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MovieCard from './MovieCard';
-import MovieSkeleton from './MovieSkeleton';
+import MovieSkeleton from '../skeleton/MovieSkeleton';
 import type { Movie } from '../../types/movie';
 import { useNavigate } from 'react-router-dom';
 import { useMediaStore } from '../../store/useMediaStore';
@@ -33,21 +33,21 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
       setShowRightArrow(!isAtEnd);
     }
   };
-  useEffect(() => {
-  if (!isLoading && rowRef.current) {
-    rowRef.current.scrollTo({ left: 0, behavior: 'instant' });
-    updateScrollIndicators();
-  }
-}, [isLoading]);
 
   useEffect(() => {
-    const el = rowRef.current;
-    if (el) {
-      el.addEventListener('scroll', updateScrollIndicators);
-      updateScrollIndicators();
-    }
-    return () => el?.removeEventListener('scroll', updateScrollIndicators);
-  }, [isLoading, movies]);
+  const el = rowRef.current;
+  if (!el) return;
+  if (!isLoading) {
+    el.scrollTo({ left: 0, behavior: 'instant' });
+  }
+  updateScrollIndicators();
+
+  el.addEventListener('scroll', updateScrollIndicators);
+
+  return () => {
+    el.removeEventListener('scroll', updateScrollIndicators);
+  };
+}, [isLoading, movies]);
 
   const handleScroll = (direction: 'left' | 'right') => {
     if (rowRef.current) {
@@ -101,7 +101,6 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
               </div>
             ))}
             
-            {/* The "More" Card - matches dimensions of actual cards */}
             <div className={`${cardWidthClasses} group`}>
               <div className="aspect-2/3 w-full flex flex-col items-center justify-center border border-dashed border-white/20 rounded-xl hover:bg-white/5 hover:border-cinema-gold transition-all group-active:scale-95">
                 <div className="p-3 rounded-full bg-white/5 text-dim group-hover:text-cinema-gold mb-2">
