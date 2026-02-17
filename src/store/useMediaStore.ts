@@ -8,7 +8,9 @@ interface MediaState {
   popularTV: Movie[];
   selectedMedia: Movie | null;
   history: Movie[];
+  searchResults:Movie[];
   isLoading: boolean;
+  
   
   fetchTrending: () => Promise<void>;
   fetchPopularMovies: () => Promise<void>;
@@ -17,6 +19,8 @@ interface MediaState {
   fetchRecent: () => Promise<void>;
   addToRecent: (movie: Movie) => Promise<void>;
   removeFromRecent: (id: number, type: string) => Promise<void>;
+  searchMedia: (query: string) => Promise<void>;
+  clearSearch: () => void;
 }
 
 export const useMediaStore = create<MediaState>((set, get) => ({
@@ -25,6 +29,7 @@ export const useMediaStore = create<MediaState>((set, get) => ({
   popularTV: [],
   selectedMedia: null,
   history: [],
+  searchResults:[],
   isLoading: false,
 
   fetchTrending: async () => {
@@ -79,4 +84,19 @@ export const useMediaStore = create<MediaState>((set, get) => ({
       },
     });
   },
+
+  searchMedia: async (query: string) => {
+    if (!query) return;
+    set({ isLoading: true });
+    try {
+      const { data } = await api.get('/media/search', {
+        params: { query: query }
+      });
+      console.log("search",data)
+      set({ searchResults: data, isLoading: false });
+    } catch (error) {
+      set({ isLoading: false });
+    }
+  },
+  clearSearch: () => set({ searchResults: [] }),
 }));
