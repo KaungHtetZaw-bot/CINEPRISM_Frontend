@@ -8,6 +8,7 @@ import Home from './views/Home';
 import RecentPage from './views/RecentPage';
 import Details from './views/DetailsPage';
 import MainLayout from './components/layout/MainLayout';
+import SearchPage from './views/SearchPage';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/browse" element={<Home />} />
           <Route path="/recent" element={<RecentPage />} />
           <Route path="/details/:type/:id" element={<Details />} />
+          <Route path='/search' element={<SearchPage/>}/>
           {/* <Route path="/settings" element={<SettingsPage />} /> */}
         </Route>
         </Route>
