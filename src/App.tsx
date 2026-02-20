@@ -9,6 +9,8 @@ import RecentPage from './views/RecentPage';
 import Details from './views/DetailsPage';
 import MainLayout from './components/layout/MainLayout';
 import SearchPage from './views/SearchPage';
+import MoviePage from './views/MoviePage';
+import TvSeriesPage from './views/TvSeriesPage';
 
 const App = () => {
   return (
@@ -24,6 +26,8 @@ const App = () => {
           <Route path="/recent" element={<RecentPage />} />
           <Route path="/details/:type/:id" element={<Details />} />
           <Route path='/search' element={<SearchPage/>}/>
+          <Route path='/movies' element={<MoviePage/>} />
+          <Route path='/tv-shows' element={<TvSeriesPage/>} />
           {/* <Route path="/settings" element={<SettingsPage />} /> */}
         </Route>
         </Route>
