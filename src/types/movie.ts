@@ -31,10 +31,32 @@ export interface Movie {
   episode_run_time?: number[];
   status?: string;
   tagline?: string;
+  vote_count:number;
+  production_companies?: {
+    id: number;
+    name: string;
+    logo_path: string | null;
+    origin_country: string;
+  }[];
   videos?: {
     results: Video[];
   };
   recommendations?: {
     results: Movie[];
+  };
+  credits?: {
+    cast: {
+      id: number;
+      name: string;
+      character: string;
+      profile_path: string | null;
+      order: number;
+    }[];
+    crew: {
+      id: number;
+      name: string;
+      job: string;
+      department: string;
+    }[];
   };
 }
