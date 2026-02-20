@@ -85,7 +85,7 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
         <div 
           key={isLoading ? 'loading' : 'content'}
           ref={rowRef}
-          className="flex flex-row overflow-x-auto overflow-y-hidden gap-6 pb-4 no-scrollbar snap-x scroll-smooth"
+          className="flex flex-row overflow-x-auto overflow-y-hidden md:gap-6 gap-3 pb-4 no-scrollbar snap-x scroll-smooth"
         >
           {isLoading ? (
           Array.from({ length: limit || 6 }).map((_, i) => (
