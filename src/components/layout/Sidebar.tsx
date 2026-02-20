@@ -1,11 +1,10 @@
 import { Home, Film, Tv, Clock, Heart, Settings, ChevronLeft } from 'lucide-react';
 import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import Logo from './Logo';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const location = useLocation();
 
   const menuItems = [
     { icon: Home, label: 'Home', path: '/browse' },
