@@ -7,8 +7,8 @@ const BottomNav = () => {
   const navItems = [
     { icon: Home, label: 'Home', path: '/browse' },
     { icon: Search, label: 'Search', path: '/search' },
-    { icon: Tv, label: 'Series', path: '/tv-shows' },
-    { icon: Film, label: 'Movies', path: '/movies' },
+    { icon: Tv, label: 'Series', path: '/media/tv' },
+    { icon: Film, label: 'Movies', path: '/media/movie' },
     { icon: Heart, label: 'Library', path: '/library' },
   ];
 

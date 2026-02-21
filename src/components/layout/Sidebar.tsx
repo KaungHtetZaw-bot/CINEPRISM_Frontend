@@ -8,8 +8,8 @@ const Sidebar = () => {
 
   const menuItems = [
     { icon: Home, label: 'Home', path: '/browse' },
-    { icon: Film, label: 'Movies', path: '/movies' },
-    { icon: Tv, label: 'TV Shows', path: '/tv-shows' },
+    { icon: Film, label: 'Movies', path: '/media/movie' },
+    { icon: Tv, label: 'TV Shows', path: '/media/tv' },
     { icon: Clock, label: 'Recent', path: '/recent' },
     { icon: Heart, label: 'My List', path: '/mylist' },
   ];

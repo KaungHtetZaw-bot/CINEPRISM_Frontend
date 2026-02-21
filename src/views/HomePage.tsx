@@ -3,7 +3,7 @@ import MovieRow from '../components/movie/MovieRow';
 import Spotlight from '../components/movie/Spotlight';
 import { useMediaStore } from '../store/useMediaStore';
 
-const Home = () => {
+const HomePage = () => {
   const { trending, popularMovies, popularTV, isLoading, fetchTrending, fetchPopularMovies, fetchPopularTV } = useMediaStore();
 
 useEffect(() => {
@@ -38,4 +38,4 @@ useEffect(() => {
   );
 };
 
-export default Home;
+export default HomePage;

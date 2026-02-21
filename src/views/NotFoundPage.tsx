@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ChevronLeft, Terminal } from 'lucide-react';
 
-const NotFound = () => {
+const NotFoundPage = () => {
   return (
     <div className="min-h-screen bg-app flex flex-col items-center justify-center p-6 text-center">
       {/* 1. Background Decor (Large Ghost Text) */}
@@ -59,4 +59,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundPage;
