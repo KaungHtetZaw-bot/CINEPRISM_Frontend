@@ -52,7 +52,7 @@ const Details = () => {
         </div>
 
         <div className="absolute bottom-0 left-6 md:left-16 max-w-5xl space-y-6">
-          <div className="space-y-4">
+          <div className="space-y-4 max-w-93">
             <div className="flex items-center gap-4 text-xs font-black tracking-[0.3em] uppercase text-cinema-gold">
                <span>{type === 'movie' ? 'Motion Picture' : 'Television Series'}</span>
                <span className="w-8 h-px bg-cinema-gold/30" />
@@ -125,7 +125,7 @@ const Details = () => {
             </div>
             <div className="flex gap-8 overflow-x-auto no-scrollbar pb-4">
               {movie.credits?.cast?.slice(0, 8).map((person: any) => (
-                <div key={person.id} className="shrink-0 group">
+                <div key={person.id} className="group">
                   <div className="relative h-48 w-36 mb-4 overflow-hidden rounded-sm">
                     <img 
                       src={`https://image.tmdb.org/t/p/w300${person.profile_path}`} 

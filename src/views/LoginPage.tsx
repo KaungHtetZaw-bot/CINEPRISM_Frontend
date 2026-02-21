@@ -20,8 +20,7 @@ const LoginPage = () => {
       return;
     }
     try {
-      const result = await login(formData);
-      console.log('Login successful:', result);
+      await login(formData);
       navigate('/browse');
     } catch (err: any) {
       setShowAlert(true);

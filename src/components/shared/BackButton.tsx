@@ -1,12 +1,18 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 
 const BackButton = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleBack = ()=> {
+    const from = location?.state?.from;
+    navigate(from || '/browse', { replace: true });
+  };
 
   return (
     <button 
-      onClick={() => navigate(-1)}
+      onClick={()=>handleBack()}
       className="group absolute top-8 left-6 md:left-12 z-50 flex items-center gap-2 transition-all"
     >
       <div className="flex items-center justify-center w-10 h-10 bg-black/10 backdrop-blur-md border border-white/10 rounded-full group-hover:border-cinema-gold group-hover:bg-white/5 transition-all">
