@@ -49,7 +49,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
         
         {medias.length === 0 && isInitialLoading &&
           Array.from({ length: 20 }).map((_, i) => (
-            <div key={`initial-${i}`} className={i % 3 === 0 ? "mt-8" : ""}>
+            <div key={`initial-${i}`} className="opacity-50">
                <MovieSkeleton />
             </div>
           ))

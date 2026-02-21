@@ -4,6 +4,8 @@ import { Play, Heart, Star, Bookmark, MessageSquare, Share2 } from 'lucide-react
 import { useMediaStore } from '../store/useMediaStore';
 import MovieDetailSkeleton from '../components/skeleton/MovieDetailSkeleton';
 import MovieRow from '../components/movie/MovieRow';
+import BackButton from '../components/shared/BackButton';
+import { getImageUrl } from '../utils/imagePath';
 
 const Details = () => {
   const { id, type } = useParams();
@@ -25,10 +27,11 @@ const Details = () => {
 
   return (
     <div className="min-h-screen bg-app text-zinc-100 pb-24">
+      <BackButton/>
       <section className="relative h-[80vh] w-full">
         <div className="absolute inset-0">
           <img 
-            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+            src={getImageUrl(movie.poster_path,'w500')}
             className="w-full h-full object-cover"
             alt="backdrop"
           />
@@ -56,14 +59,14 @@ const Details = () => {
                <span>{year}</span>
             </div>
             
-            <h1 className="text-6xl md:text-7xl lg-text-9xl font-black italic tracking-tighter uppercase leading-[0.85] text-white">
+            <h1 className="text-5xl sm:text-5xl md:text-7xl lg-text-9xl font-black italic tracking-tighter uppercase leading-[0.85] text-white">
               {movie.title || movie.name}
             </h1>
 
-            <div className="flex items-center gap-6 pt-2">
+            <div className="md:flex block items-center gap-6 pt-2">
               <div className="flex items-center gap-2">
                 <Star size={18} className="text-cinema-gold" fill="currentColor" />
-                <span className="text-2xl font-black">{movie.vote_average?.toFixed(1)}</span>
+                <span className="md:text-2xl text-lg font-black">{movie.vote_average?.toFixed(1)}</span>
                 <span className="text-zinc-500 text-sm font-bold mt-1">/ 10</span>
               </div>
               <div className="h-4 w-px bg-white/10" />
@@ -77,14 +80,30 @@ const Details = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <button className="group flex items-center gap-4 bg-white text-black px-12 py-5 rounded-sm font-black uppercase transition-all hover:bg-cinema-gold active:scale-95">
-              <Play size={20} fill="black" />
-              Start Feature
+          <div className="flex flex-wrap items-center gap-6 mt-8">
+            <button className="group flex items-center gap-3 bg-white text-black md:px-10 px-6 md:py-4 py-3 rounded-sm font-black text-[11px] uppercase tracking-[0.2em] transition-all hover:bg-cinema-gold active:scale-95 shadow-2xl">
+              <Play size={18} fill="black" strokeWidth={0} />
+              Play
             </button>
-            <div className="flex items-center gap-2 text-zinc-400 font-bold uppercase text-[10px] tracking-widest">
-              <MessageSquare size={16} />
-              <span>{movie.vote_count} Critiques</span>
+
+            <button className="group flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 text-white md:px-10 px-6 md:py-4 py-3 rounded-sm font-black text-[11px] uppercase tracking-[0.2em] transition-all hover:bg-white/10 hover:border-white/20 active:scale-95">
+              <Play size={18} className="text-cinema-gold" strokeWidth={2.5} />
+              Trailer
+            </button>
+
+            <div className="flex items-center gap-3 pl-2 border-l border-white/10 h-10">
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2 text-zinc-400 font-black uppercase text-[9px] tracking-[0.2em]">
+                  <MessageSquare size={14} className="text-cinema-gold/60" />
+                  <span>{movie.vote_count.toLocaleString()} Critiques</span>
+                </div>
+                <div className="h-0.5 w-full bg-cinema-gold/20 mt-1 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-cinema-gold" 
+                    style={{ width: `${(movie.vote_average * 10)}%` }} 
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
