@@ -3,8 +3,10 @@ import { useMediaStore } from '../store/useMediaStore';
 import MovieCard from '../components/movie/MovieCard';
 import { X } from 'lucide-react';
 import type { Movie } from '../types/movie';
+import {useMediaNavigation} from '../utils/clickMovie'
 
 const RecentPage = () => {
+  const {goToDetails} = useMediaNavigation()
   const { history, isLoading, removeFromRecent } = useMediaStore();
 
   useEffect(() => {
@@ -18,10 +20,12 @@ const RecentPage = () => {
           {isLoading ? (
             <div className="text-white">Loading history...</div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
               {history.map((movie :Movie) => (
                 <div key={movie.id} className="relative group">
-                  <MovieCard movie={movie} />
+                  <div onClick={()=>goToDetails(movie)}>
+                    <MovieCard movie={movie} />
+                  </div>
                   <button 
                     onClick={() => removeFromRecent(movie.id, movie.type || movie.media_type || 'movie')}
                     className="absolute top-2 right-2 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-white"

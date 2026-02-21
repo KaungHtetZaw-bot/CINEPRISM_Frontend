@@ -34,7 +34,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
   }, [hasMore, isFetchingMore, isInitialLoading, type, fetchPopularInfinite]);
 
   return (
-    <div className="md:py-12 py-0 px-0 md:px-8">
+    <div className="md:py-6 py-0 px-0 md:px-4 lg:px-8">
       <div className="mb-10 flex items-baseline gap-4">
         <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white">
           {type === 'movie' ? 'Cinema' : 'Series'}
@@ -48,7 +48,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4"> 
         
         {medias.length === 0 && isInitialLoading &&
-          Array.from({ length: 24 }).map((_, i) => (
+          Array.from({ length: 20 }).map((_, i) => (
             <div key={`initial-${i}`} className={i % 3 === 0 ? "mt-8" : ""}>
                <MovieSkeleton />
             </div>
@@ -60,13 +60,13 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
             key={`${media.id}-${index}`} 
             onClick={() => goToDetails(media)}
             // Every 4th item gets a slight offset to create a "Masonry" feel without the complexity
-            className={`cursor-pointer group relative transition-all duration-500 
-              ${index % 4 === 1 ? "md:mt-10" : ""} 
-              ${index % 4 === 3 ? "md:-mt-6" : ""}`}
+            // className={`cursor-pointer group relative transition-all duration-500 
+            //   ${index % 4 === 1 ? "md:mt-10" : ""} 
+            //   ${index % 4 === 3 ? "md:-mt-6" : ""}`}
           >
-            <span className="absolute -top-4 -left-2 text-[40px] font-black text-white/5 italic group-hover:text-cinema-gold/20 transition-colors pointer-events-none">
+            {/* <span className="absolute -top-4 -left-2 text-[40px] font-black text-white/5 italic group-hover:text-cinema-gold/20 transition-colors pointer-events-none">
                {(index + 1).toString().padStart(2, '0')}
-            </span>
+            </span> */}
 
             <MovieCard movie={media} />
             
@@ -79,7 +79,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
           </div>
         ))}
         {isFetchingMore && 
-          Array.from({ length: 8 }).map((_, i) => (
+          Array.from({ length: 20 }).map((_, i) => (
             <div key={`more-${i}`} className="opacity-50">
                <MovieSkeleton />
             </div>

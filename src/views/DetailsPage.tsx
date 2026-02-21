@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Play, Heart, Star, Bookmark, MessageSquare, User, Calendar, Clock, Share2 } from 'lucide-react';
+import { Play, Heart, Star, Bookmark, MessageSquare, Share2 } from 'lucide-react';
 import { useMediaStore } from '../store/useMediaStore';
 import MovieDetailSkeleton from '../components/skeleton/MovieDetailSkeleton';
 import MovieRow from '../components/movie/MovieRow';
@@ -25,7 +25,6 @@ const Details = () => {
 
   return (
     <div className="min-h-screen bg-app text-zinc-100 pb-24">
-      {/* 1. HERO CANVAS */}
       <section className="relative h-[80vh] w-full">
         <div className="absolute inset-0">
           <img 
@@ -33,12 +32,10 @@ const Details = () => {
             className="w-full h-full object-cover"
             alt="backdrop"
           />
-          {/* Subtle vignette + bottom mask */}
           <div className="absolute inset-0 bg-linear-to-t from-app via-app/20 to-transparent" />
           <div className="absolute inset-0 bg-linear-to-r from-app/80 via-transparent to-black/20" />
         </div>
 
-        {/* Floating Actions (Top Right) */}
         <div className="absolute top-8 right-6 md:right-16 flex gap-3">
           <button onClick={() => setIsFav(!isFav)} className={`p-3 rounded-full border backdrop-blur-md transition-all ${isFav ? 'bg-rose-500 border-rose-500 text-white' : 'bg-black/20 border-white/10 text-white hover:bg-white/10'}`}>
             <Heart size={20} fill={isFav ? "currentColor" : "none"} />
@@ -51,7 +48,6 @@ const Details = () => {
           </button>
         </div>
 
-        {/* Bottom Left Info */}
         <div className="absolute bottom-0 left-6 md:left-16 max-w-5xl space-y-6">
           <div className="space-y-4">
             <div className="flex items-center gap-4 text-xs font-black tracking-[0.3em] uppercase text-cinema-gold">
@@ -60,7 +56,7 @@ const Details = () => {
                <span>{year}</span>
             </div>
             
-            <h1 className="text-6xl md:text-8xl font-black italic tracking-tighter uppercase leading-[0.85] text-white">
+            <h1 className="text-6xl md:text-7xl lg-text-9xl font-black italic tracking-tighter uppercase leading-[0.85] text-white">
               {movie.title || movie.name}
             </h1>
 
@@ -94,10 +90,7 @@ const Details = () => {
         </div>
       </section>
 
-      {/* 2. MAIN CONTENT GRID */}
       <div className="px-6 md:px-16 mt-16 grid grid-cols-1 lg:grid-cols-12 gap-16">
-        
-        {/* Left: Narrative & Cast */}
         <div className="lg:col-span-8 space-y-16">
           <section className="space-y-6">
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500 italic">Narrative Overview</h3>
@@ -130,7 +123,6 @@ const Details = () => {
           </section>
         </div>
 
-        {/* Right: Technical Metadata */}
         <aside className="lg:col-span-4 space-y-12 bg-white/5 p-10 rounded-sm border border-white/5 h-fit">
            <div className="space-y-8">
               <div className="space-y-2">
@@ -155,7 +147,6 @@ const Details = () => {
         </aside>
       </div>
 
-      {/* 3. RELATED CONTENT (Full Width) */}
       <section className="px-6 md:px-16 mt-24 space-y-8">
         <div className="flex items-center gap-4">
            <h2 className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500 italic">Relative Media</h2>
