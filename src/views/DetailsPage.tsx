@@ -31,12 +31,12 @@ const Details = () => {
       <section className="relative h-[80vh] w-full">
         <div className="absolute inset-0">
           <img 
-            src={getImageUrl(movie.poster_path,'w500')}
-            className="w-full h-full object-cover"
+            src={getImageUrl(window.innerWidth < 768 ? movie.poster_path : movie.backdrop_path, 'original')}
+            className="w-full h-full md:object-cover object-fill"
             alt="backdrop"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-app via-app/20 to-transparent" />
-          <div className="absolute inset-0 bg-linear-to-r from-app/80 via-transparent to-black/20" />
+          <div className="absolute inset-0 bg-linear-to-t from-app via-app/10 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-app/30 via-transparent to-black/10" />
         </div>
 
         <div className="absolute top-8 right-6 md:right-16 flex gap-3">

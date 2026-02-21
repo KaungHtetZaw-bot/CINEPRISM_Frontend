@@ -2,7 +2,7 @@ import React from 'react';
 import MovieCard from './MovieCard';
 import MovieSkeleton from '../skeleton/MovieSkeleton';
 import type { Movie } from '../../types/movie';
-import {useMediaNavigation} from "../../utils/clickMovie"
+import {useMediaNavigation} from "../../utils/useMediaNavigation"
 
 interface MovieGridProps {
   movies: Movie[];

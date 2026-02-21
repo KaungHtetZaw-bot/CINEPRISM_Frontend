@@ -5,6 +5,7 @@ import MovieSkeleton from '../skeleton/MovieSkeleton';
 import type { Movie } from '../../types/movie';
 import { useNavigate } from 'react-router-dom';
 import { useMediaStore } from '../../store/useMediaStore';
+import { useMediaNavigation } from '../../utils/useMediaNavigation';
 
 interface MovieRowProps {
   movies: Movie[];
@@ -14,17 +15,9 @@ interface MovieRowProps {
 
 const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
   const rowRef = useRef<HTMLDivElement>(null);
-  const { addToRecent } = useMediaStore();
-  const navigate = useNavigate();
+  const {goToDetails} = useMediaNavigation()
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
-
-  const handleMovieClick = (movie: Movie) => {
-    addToRecent(movie);
-    const mediaType = movie.type || movie.media_type || (movie.title ? 'movie' : 'tv');
-    
-    navigate(`/details/${mediaType}/${movie.id}`);
-  };
   const updateScrollIndicators = () => {
     if (rowRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = rowRef.current;
@@ -57,7 +50,7 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
     }
   };
 
-  const cardWidthClasses = "lg:w-[180px] md:w-[170px] sm:w-[140px] w-[120px] shrink-0 snap-start relative px-2.5";
+  const cardWidthClasses = "lg:w-[180px] md:w-[170px] sm:w-[140px] w-[130px] shrink-0 snap-start relative";
 
   return (
     <section className="py-8 flex justify-center items-center">
@@ -96,7 +89,7 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
         ) : (
           <>
             {movies.map((movie, index) => (
-              <div key={`${movie.id}-${index}`} className={cardWidthClasses} onClick={() => handleMovieClick(movie)} >
+              <div key={`${movie.id}-${index}`} className={cardWidthClasses} onClick={() => goToDetails(movie)} >
                 <MovieCard movie={movie} />
               </div>
             ))}

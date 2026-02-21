@@ -100,7 +100,7 @@ export const useMediaStore = create<MediaState>()(
       fetchPopularTV: async () => get().fetchWithCache('popularTV', '/media/popular/tv'),
       fetchDetails: async (id, type) => {
         set({ isLoading: true, selectedMedia: null });
-        const { data } = await api.get(`/media/${type}/${id}`);
+        const { data } = await api.get(`/media/detail/${type}/${id}`);
         set({ selectedMedia: data, isLoading: false });
       },
       fetchRecent: async () => get().fetchWithCache('history', 'recentlist'),

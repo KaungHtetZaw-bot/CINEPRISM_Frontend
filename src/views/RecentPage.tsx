@@ -3,15 +3,11 @@ import { useMediaStore } from '../store/useMediaStore';
 import MovieCard from '../components/movie/MovieCard';
 import { X } from 'lucide-react';
 import type { Movie } from '../types/movie';
-import {useMediaNavigation} from '../utils/clickMovie'
+import {useMediaNavigation} from '../utils/useMediaNavigation'
 
 const RecentPage = () => {
   const {goToDetails} = useMediaNavigation()
   const { history, isLoading, removeFromRecent } = useMediaStore();
-
-  useEffect(() => {
-    console.log('Fetching recent list...');
-  }, []);
 
   return (
     <>

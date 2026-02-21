@@ -4,7 +4,7 @@ import { getImageUrl } from '../../utils/imagePath';
 const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
     <div className="group relative  cursor-pointer rounded-xl overflow-hidden bg-surface border border-glass-border">
-      <div className="aspect-2/3 w-full overflow-hidden">
+      <div className="w-full overflow-hidden">
         <img
           src={getImageUrl(movie.poster_path, 'w500')} 
           alt={movie.title}
