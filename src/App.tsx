@@ -11,6 +11,7 @@ import MainLayout from './components/layout/MainLayout';
 import SearchPage from './views/SearchPage';
 import MoviePage from './views/MoviePage';
 import TvSeriesPage from './views/TvSeriesPage';
+import NotFound from './views/NotFound';
 
 const App = () => {
   return (
@@ -24,12 +25,13 @@ const App = () => {
         <Route element={<MainLayout />}>
           <Route path="/browse" element={<Home />} />
           <Route path="/recent" element={<RecentPage />} />
-          <Route path="/details/:type/:id" element={<Details />} />
           <Route path='/search' element={<SearchPage/>}/>
           <Route path='/movies' element={<MoviePage/>} />
           <Route path='/tv-shows' element={<TvSeriesPage/>} />
           {/* <Route path="/settings" element={<SettingsPage />} /> */}
         </Route>
+          <Route path="*" element={<NotFound />} />
+          <Route path="/details/:type/:id" element={<Details />} />
         </Route>
       </Routes>
     </Router>
