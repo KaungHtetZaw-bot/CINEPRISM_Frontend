@@ -15,7 +15,7 @@ interface AuthState {
   token: string | null;
   isLoading: boolean;
   error: string | null;
-  login: (credentials: any) => Promise<void>;
+  login: (credentials: any) => Promise<boolean>;
   logout: () => void;
   register: (data: any) => Promise<void>;
   verifyOTP: (data: { email: string; code: string }) => Promise<void>;
@@ -37,12 +37,13 @@ export const useAuthStore = create<AuthState>()(
         try {
           const { data } = await api.post('/login', credentials);
           set({ user: data.user, token: data.access_token, isLoading: false });
+          return true;
         } catch (error: any) {
           set({ 
             isLoading: false, 
             error: error.response?.data?.message || 'Login failed' 
           });
-          throw error;
+          return false;
         }
       },
 

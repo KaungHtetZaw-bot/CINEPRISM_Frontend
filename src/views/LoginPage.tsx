@@ -11,7 +11,6 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
-  const [showAlert, setShowAlert] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,12 +18,11 @@ const LoginPage = () => {
       alert('Please fill in all fields');
       return;
     }
-    try {
-      await login(formData);
-      navigate('/browse');
-    } catch (err: any) {
-      setShowAlert(true);
-    }
+     const success = await login(formData);
+
+     if(success) {
+       navigate('/browse');
+     }
   };
   return (
     <AuthLayout title="Sign In">
@@ -52,11 +50,11 @@ const LoginPage = () => {
         <span className="mr-2">New to YourCinema?</span>
         <Link to="/register" className="text-white hover:underline font-medium">Sign up now.</Link>
       </div>
-      {showAlert && error && (
+      { error && (
         <Alert 
           message={error} 
           type="error" 
-          onClose={() => setShowAlert(false)} 
+          onClose={() => useAuthStore.setState({ error: null })} 
         />
       )}
     </AuthLayout>
