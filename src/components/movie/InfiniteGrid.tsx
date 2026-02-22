@@ -34,7 +34,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
   }, [hasMore, isFetchingMore, isInitialLoading, type, fetchPopularInfinite]);
 
   return (
-    <div className="md:py-6 py-0 px-2 md:px-4 lg:px-8">
+    <div className="md:py-6 py-0 px-4 lg:px-8">
       <div className="mb-10 flex items-baseline gap-4">
         <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white">
           {type === 'movie' ? 'Cinema' : 'Series'}

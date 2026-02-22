@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getImageUrl } from '../../utils/imagePath';
+import { getImageUrl } from '../../utils/getImageUrl';
 import { useNavigate } from 'react-router-dom';
 const Hero = ({ movie }: { movie: any }) => {
   const isLoading = !movie;

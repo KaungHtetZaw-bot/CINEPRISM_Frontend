@@ -2,8 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../../types/movie';
 import SpotlightSkeleton from '../skeleton/SpotlightSkeleton';
 import { useMediaStore } from "../../store/useMediaStore";
-
-const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/original";
+import { getImageUrl } from '../../utils/getImageUrl';
 
 const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) => {
   const { addToRecent } = useMediaStore();
@@ -19,9 +18,9 @@ const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) 
   }
 
   return (
-    <div className="relative h-[85vh] w-full overflow-hidden">
+    <div className="relative md:h-[85vh] h-[50vh] w-full overflow-hidden">
       <img 
-        src={`${TMDB_IMAGE_BASE}${movie.backdrop_path}`} 
+        src={getImageUrl(movie.backdrop_path,"original")} 
         alt={movie.title}
         className="absolute inset-0 w-full h-full object-cover"
       />

@@ -5,7 +5,7 @@ import { useMediaStore } from '../store/useMediaStore';
 import MovieDetailSkeleton from '../components/skeleton/MovieDetailSkeleton';
 import MovieRow from '../components/movie/MovieRow';
 import BackButton from '../components/shared/BackButton';
-import { getImageUrl } from '../utils/imagePath';
+import { getImageUrl } from '../utils/getImageUrl';
 
 const Details = () => {
   const { id, type } = useParams();

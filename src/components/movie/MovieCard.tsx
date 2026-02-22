@@ -1,5 +1,5 @@
 import type { Movie } from '../../types/movie';
-import { getImageUrl } from '../../utils/imagePath';
+import { getImageUrl } from '../../utils/getImageUrl';
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
   return (

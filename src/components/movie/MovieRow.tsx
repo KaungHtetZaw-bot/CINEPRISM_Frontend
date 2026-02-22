@@ -3,8 +3,6 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MovieCard from './MovieCard';
 import MovieSkeleton from '../skeleton/MovieSkeleton';
 import type { Movie } from '../../types/movie';
-import { useNavigate } from 'react-router-dom';
-import { useMediaStore } from '../../store/useMediaStore';
 import { useMediaNavigation } from '../../utils/useMediaNavigation';
 
 interface MovieRowProps {
@@ -78,7 +76,7 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
         <div 
           key={isLoading ? 'loading' : 'content'}
           ref={rowRef}
-          className="flex flex-row overflow-x-auto overflow-y-hidden md:gap-6 gap-3 pb-4 no-scrollbar snap-x scroll-smooth"
+          className="flex flex-row overflow-x-auto overflow-y-hidden gap-6 pb-4 no-scrollbar snap-x scroll-smooth"
         >
           {isLoading ? (
           Array.from({ length: limit || 6 }).map((_, i) => (
