@@ -1,40 +1,52 @@
+import { useState } from 'react';
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { useAuthStore } from '../../store/useAuthStore';
-import { Link } from 'react-router-dom';
 import Logo from './Logo';
+import ThemeToggle from './ThemeToggle';
+import { Crown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const MobileHeader = () => {
   const { user } = useAuthStore();
+  const { scrollY } = useScroll();
+  const [isFixed, setIsFixed] = useState(false);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsFixed(latest > 80);
+  });
 
   return (
-    <div className="sm:hidden flex items-center justify-between sticky top-0 z-50 px-6 py-4 bg-app/60 backdrop-blur-2xl border-b border-white/5">
-      <div className="scale-90 origin-left">
-        <Logo />
-      </div>
-      
-      <div className="flex items-center gap-5">
-        <Link 
-          to="/vip" 
-          className="relative group flex items-center gap-1.5"
-        >
-          <span className="w-1 h-1 rounded-full bg-cinema-gold animate-pulse" />
-          <span className="text-[10px] font-black text-cinema-gold uppercase tracking-[0.2em] italic">
-            Member
-          </span>
-          <div className="absolute -bottom-1 left-0 w-0 h-px bg-cinema-gold transition-all duration-500 group-hover:w-full" />
-        </Link>
-        
-        <Link to="/profile" className="relative">
-          <div className="w-9 h-9 rounded-sm border border-white/10 bg-white/5 flex items-center justify-center overflow-hidden transition-all active:scale-95 group">
-             <div className="absolute top-0 right-0 w-1 h-1 border-t border-r border-cinema-gold/40" />
-             <div className="absolute bottom-0 left-0 w-1 h-1 border-b border-l border-cinema-gold/40" />
+    <header className="relative w-full h-20 z-50">
+      <motion.nav 
+        initial={false}
+        animate={{
+          position: isFixed ? "fixed" : "relative",
+          top: isFixed ? "1rem" : "0rem",
+          width: isFixed ? "92%" : "100%",
+          left: isFixed ? "4%" : "0%",
+          borderRadius: isFixed ? "12px" : "0px",
+          backgroundColor: isFixed ? "rgba(10, 10, 10, 0.8)" : "rgba(18, 18, 18, 0.9)",
+          paddingLeft: isFixed ? "1.5rem" : "2rem",
+          paddingRight: isFixed ? "1.5rem" : "2rem",
+          backdropFilter: isFixed ? "blur(20px)" : "blur(12px)",
+          border: isFixed ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(255,255,255,0)",
+          boxShadow: isFixed ? "0 20px 40px rgba(0,0,0,0.4)" : "0 0px 0px rgba(0,0,0,0)",
+        }}
+        transition={{ type: "spring", stiffness: 200, damping: 25 }}
+        className="flex justify-between items-center py-4 overflow-hidden"
+      >
+        <div className="scale-90 origin-left">
+          <Logo />
+        </div>
 
-             <span className="text-xs font-black text-zinc-300 group-hover:text-cinema-gold transition-colors">
-               {user?.name?.charAt(0).toUpperCase() || 'U'}
-             </span>
-          </div>
-        </Link>
-      </div>
-    </div>
+        <div className="flex items-center gap-4">
+          <Link to={'/vip'} className="flex flex-col items-center">
+            <Crown/>
+            <span className="text-md font-mono text-zinc-500 tabular-nums uppercase">30 days</span>
+          </Link>
+          <ThemeToggle/>
+        </div>
+      </motion.nav>
+    </header>
   );
 };
 
