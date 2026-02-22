@@ -25,14 +25,22 @@ const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) 
         className="absolute inset-0 w-full h-full object-cover"
       />
 
-      <div className="absolute inset-0 bg-linear-to-t from-app via-app/40 to-transparent" />
-      <div className="absolute inset-0 bg-linear-to-r from-app/80 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t 
+        from-[rgb(var(--color-bg-app))] 
+        via-[rgb(var(--color-bg-app))/0.6] 
+        to-transparent" 
+      />
+      <div className="absolute inset-0 bg-linear-to-r 
+        from-[rgb(var(--color-bg-app))] 
+        via-transparent 
+        to-transparent" 
+      />
 
       <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 space-y-4 max-w-3xl">
-        <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter">
+        <h1 className="text-4xl md:text-6xl font-black text-main uppercase tracking-tighter">
           {movie.title || movie.name}
         </h1>
-        <p className="text-gray-300 text-sm md:text-lg line-clamp-3 font-medium max-w-xl">
+        <p className="text-main/70 text-sm md:text-lg line-clamp-3 font-medium max-w-xl">
           {movie.overview}
         </p>
         

@@ -3,7 +3,7 @@ import { getImageUrl } from '../../utils/getImageUrl';
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
-    <div className="group relative  cursor-pointer rounded-xl overflow-hidden bg-surface border border-glass-border">
+    <div className="group relative cursor-pointer overflow-hidden rounded-xl border-1 border-(--text-main) hover:border-cinema-gold bg-(--bg-surface) transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/50">
       <div className="w-full overflow-hidden">
         <img
           src={getImageUrl(movie.poster_path, 'w500')} 

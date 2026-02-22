@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+
+
 @theme {
   /* Brand Colors */
   --color-cinema-gold: #e2b616;
@@ -32,6 +34,8 @@
   --border-input: rgba(255, 255, 255, 0.06);
   --skeleton-bg: #1a1a1c;
   --bg-app-rgb: 8, 8, 9;
+  --color-bg-app: 9 9 11; /* #09090b (Zinc 950) */
+  --gradient-stop: 9 9 11;
   
   /* Force the browser UI (scrollbars, etc) to dark mode */
   color-scheme: dark;
@@ -49,6 +53,8 @@
   --border-input: rgba(0, 0, 0, 0.05);
   --skeleton-bg: #e4e4e7;
   --bg-app-rgb: 250, 250, 250;
+  --color-bg-app: 250 250 250; /* #fafafa */
+  --gradient-stop: 255 255 255;
   
   color-scheme: light;
 }
@@ -80,4 +86,9 @@
     @apply w-full py-4 mt-4 bg-cinema-gold text-black font-bold rounded-md 
            hover:bg-amber-500 transition-colors active:scale-95;
   }
+}
+
+body {
+  margin: 0;
+  padding: 0;
 }
