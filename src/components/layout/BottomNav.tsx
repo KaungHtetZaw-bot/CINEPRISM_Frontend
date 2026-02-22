@@ -1,4 +1,4 @@
-import { Home, Tv, Search, Heart, Film } from 'lucide-react';
+import { Home, Tv, Search, User, Film } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const BottomNav = () => {
@@ -9,7 +9,7 @@ const BottomNav = () => {
     { icon: Search, label: 'Search', path: '/search' },
     { icon: Tv, label: 'Series', path: '/media/tv' },
     { icon: Film, label: 'Movies', path: '/media/movie' },
-    { icon: Heart, label: 'Library', path: '/library' },
+    { icon: User, label: 'Profile', path: '/profile' },
   ];
 
   return (

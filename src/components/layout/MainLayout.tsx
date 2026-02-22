@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import MobileHeader from './MobileHeader';
 import ScrollToTop from '../shared/ScrollToTop';
+import Navbar from './Navbar';
 
 const MainLayout = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ const MainLayout = () => {
 
       <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
         <MobileHeader />
+        {/* <Navbar/> */}
 
         <main
           ref={mainRef}

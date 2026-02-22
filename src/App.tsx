@@ -4,13 +4,14 @@ import LandingPage from './views/LandingPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import LoginPage from './views/LoginPage';
 import RegisterPage from './views/RegisterPage';
+import MainLayout from './components/layout/MainLayout';
 import RecentPage from './views/RecentPage';
 import Details from './views/DetailsPage';
-import MainLayout from './components/layout/MainLayout';
 import SearchPage from './views/SearchPage';
 import HomePage from './views/HomePage';
 import NotFoundPage from './views/NotFoundPage';
 import MediaPage from './views/MediaPage';
+import ProfilePage from './views/ProfilePage';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/recent" element={<RecentPage />} />
           <Route path='/search' element={<SearchPage/>}/>
           <Route path='/media/:type' element={<MediaPage />} />
+          <Route path='/profile' element={<ProfilePage />} />
           {/* <Route path="/settings" element={<SettingsPage />} /> */}
         </Route>
           <Route path="*" element={<NotFoundPage />} />
