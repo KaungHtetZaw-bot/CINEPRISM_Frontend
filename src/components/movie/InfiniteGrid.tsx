@@ -35,8 +35,8 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
 
   return (
     <div className="md:py-6 py-0 px-4 lg:px-8">
-      <div className="mb-10 flex items-baseline gap-4">
-        <h2 className="text-4xl font-black italic uppercase tracking-tighter text-white">
+      <div className="md:mb-10 mb-3 flex items-baseline gap-4">
+        <h2 className="md:text-4xl text-2xl font-black italic uppercase tracking-tighter text-main">
           {type === 'movie' ? 'Cinema' : 'Series'}
         </h2>
         <div className="h-0.5 flex-1 bg-white/5" />
@@ -45,7 +45,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
         </span>
       </div>
 
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4"> 
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4"> 
         
         {medias.length === 0 && isInitialLoading &&
           Array.from({ length: 20 }).map((_, i) => (
@@ -70,7 +70,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
 
             <MovieCard movie={media} />
             
-            <div className="mt-4 px-1 space-y-1">
+            <div className="md:mt-4 mt-2 px-1 space-y-1">
                <p className="text-[10px] font-black uppercase text-zinc-500 tracking-tighter truncate">
                  {media.title || media.name}
                </p>

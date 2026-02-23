@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-
-
 @theme {
   /* Brand Colors */
   --color-cinema-gold: #e2b616;
@@ -11,84 +9,103 @@
   /* Layout Mapping */
   --color-app: var(--bg-app);
   --color-surface: var(--bg-surface);
+  --color-sidebar: var(--bg-sidebar);
   --color-main: var(--text-main);
   --color-muted: var(--text-muted);
   --color-dim: var(--text-secondary);
   --color-input-bg: var(--bg-input);
   --color-accent: var(--accent);
-  --color-skeleton: var(--skeleton-bg);
+  --color-skeleton: var(--bg-skeleton);
   --color-input-border: var(--border-input);
   
   --font-sans: 'Inter', sans-serif;
 }
 
-/* 1. THE DEFAULT: Obsidian Midnight (Dark Mode) */
+/* 1. THE DEFAULT: Obsidian Midnight (Softened) */
 :root {
-  --bg-app: #080809;
-  --bg-surface: #121214;
+  /* Shifted from #080809 to #121214 for better shadow depth */
+  --bg-app: #121214; 
+  --bg-surface: #1a1a1c;
+  --bg-sidebar: #161618;
+  --bg-skeleton: #e4e4e7;
+  --bg-input: #1e1e20;
   --text-main: #ffffff;
   --text-muted: #b0b0b5;
   --text-secondary: #71717a;
   --accent: #e2b616;
-  --bg-input: #1a1a1c; 
-  --border-input: rgba(255, 255, 255, 0.06);
-  --skeleton-bg: #1a1a1c;
-  --bg-app-rgb: 8, 8, 9;
-  --color-bg-app: 9 9 11; /* #09090b (Zinc 950) */
-  --gradient-stop: 9 9 11;
+  --border-input: rgba(255, 255, 255, 0.08);
   
-  /* Force the browser UI (scrollbars, etc) to dark mode */
+  /* RGB & Gradient Helpers */
+  --bg-app-rgb: 18, 18, 20;
+  --color-bg-app: 18 18 20; 
+  --gradient-stop: 18 18 20;
+  
   color-scheme: dark;
 }
 
-/* 2. THE OPTIONAL: Gallery White (Light Mode) */
+/* 2. THE OPTIONAL: Gallery White */
 .light, [data-theme='light'] {
-  --bg-app: #fafafa;
+  --bg-app: #f8f8f9;
   --bg-surface: #ffffff;
+  --bg-sidebar: #f1f1f3; 
+  --bg-skeleton: #4e4e51;
+  --bg-input: #ffffff; 
   --text-main: #0a0a0a;
-  --text-muted: #71717a;
-  --text-secondary: #a1a1aa;
+  --text-muted: #52525b;
+  --text-secondary: #71717a;
   --accent: #e2b616;
-  --bg-input: #f4f4f5; 
-  --border-input: rgba(0, 0, 0, 0.05);
-  --skeleton-bg: #e4e4e7;
-  --bg-app-rgb: 250, 250, 250;
-  --color-bg-app: 250 250 250; /* #fafafa */
+  --border-input: rgba(0, 0, 0, 0.1);
+  
+  --bg-app-rgb: 248, 248, 249;
+  --color-bg-app: 248 248 249;
   --gradient-stop: 255 255 255;
   
   color-scheme: light;
 }
 
-/* Utilities */
+
+
 @layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .shimmer-bg {
+    @apply relative overflow-hidden;
+    &::after {
+      @apply absolute inset-0 content-[''] -translate-x-full;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+      animation: shimmer 2s infinite;
+    }
   }
 }
 
 @layer components {
+  
+
   .nav-btn {
     @apply absolute top-1/2 -translate-y-1/2 z-50 
            bg-transparent backdrop-blur-sm rounded-full p-2 
            text-white/80 hover:text-cinema-gold 
            transition-all duration-300;
   }
+
+  /* Updated to use theme variables */
   .auth-input {
-    @apply w-full p-4 bg-[#333] rounded-md focus:bg-[#454545] focus:outline-none 
-           focus:ring-2 ring-cinema-gold transition-all duration-300;
+    @apply w-full md:p-4 p-2 md:text-lg text-sm bg-input-bg border border-input-border text-main 
+           rounded-sm focus:outline-none focus:ring-1 focus:ring-cinema-gold 
+           transition-all duration-300 placeholder:text-dim;
   }
 
   .auth-btn {
-    @apply w-full py-4 mt-4 bg-cinema-gold text-black font-bold rounded-md 
-           hover:bg-amber-500 transition-colors active:scale-95;
+    @apply w-full md:py-4 py-2 md:text-lg text-sm mt-4 bg-cinema-gold text-black font-black italic 
+           uppercase tracking-widest rounded-sm hover:bg-gold-light 
+           transition-all active:scale-95 shadow-xl shadow-cinema-gold/10;
   }
 }
 
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: var(--font-sans);
 }

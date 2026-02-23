@@ -9,7 +9,7 @@ interface RetryRequestConfig extends InternalAxiosRequestConfig {
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_BASE_URL ||
-    'http://192.168.110.127:8000/api',
+    `http://${window.location.hostname}:8000/api`,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',

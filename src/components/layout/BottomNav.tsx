@@ -16,10 +16,9 @@ const BottomNav = () => {
     <>
       <div className="sm:hidden fixed bottom-0 left-0 right-0 h-10 
                       bg-linear-to-t from-app via-app/90 to-transparent 
-                      backdrop-blur-[2px] pointer-events-none z-80" 
+                      backdrop-blur-[2px] pointer-events-none z-70" 
       />
-
-      <nav className="sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-100 w-[92%] max-w-sm pb-[env(safe-area-inset-bottom)]">
+      <nav className="sm:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-70 w-[92%] max-w-sm pb-[env(safe-area-inset-bottom)]">
         <div className="relative group">
           <div className="absolute -inset-4 bg-black/40 rounded-full blur-2xl opacity-80" />
           <div className="relative flex items-center justify-around 
@@ -34,8 +33,8 @@ const BottomNav = () => {
                 <Link
                   key={item.label}
                   to={item.path}
-                  className={`relative flex flex-col items-center justify-center transition-all duration-500 py-2.5 px-4 rounded-full ${
-                    isActive ? 'text-cinema-gold' : 'text-zinc-500 hover:text-white'
+                  className={`relative flex flex-col items-center justify-center transition-all duration-500 py-2 px-4 rounded-full ${
+                    isActive ? 'text-cinema-gold' : 'text-main/50 hover:text-white'
                   }`}
                 >
                   {isActive && (
@@ -43,7 +42,7 @@ const BottomNav = () => {
                   )}
 
                   <item.icon 
-                    size={20} 
+                    size={20}
                     className={`relative z-10 transition-all duration-500 ${
                       isActive ? 'scale-110 -translate-y-1.5' : 'scale-100'
                     }`}

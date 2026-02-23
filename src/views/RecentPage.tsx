@@ -1,39 +1,37 @@
 import { useEffect } from 'react';
 import { useMediaStore } from '../store/useMediaStore';
-import MovieCard from '../components/movie/MovieCard';
-import { X } from 'lucide-react';
-import type { Movie } from '../types/movie';
-import {useMediaNavigation} from '../utils/useMediaNavigation'
+import MovieSkeleton from '../components/skeleton/MovieSkeleton';
+import MovieGrid from '../components/movie/MovieGrid';
 
 const RecentPage = () => {
-  const {goToDetails} = useMediaNavigation()
-  const { history, isLoading, removeFromRecent } = useMediaStore();
+  const { history, isLoading, fetchRecent } = useMediaStore();
+
+  useEffect(() => {
+    fetchRecent();
+  }, []);
 
   return (
-    <>
-      <div className="p-4 md:p-12">
-         <h1 className="text-3xl font-black uppercase mb-8">Recently Viewed</h1>
-          {isLoading ? (
-            <div className="text-white">Loading history...</div>
-          ) : (
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-              {history.map((movie :Movie) => (
-                <div key={movie.id} className="relative group">
-                  <div onClick={()=>goToDetails(movie)}>
-                    <MovieCard movie={movie} />
-                  </div>
-                  <button 
-                    onClick={() => removeFromRecent(movie.id, movie.type || movie.media_type || 'movie')}
-                    className="absolute top-2 right-2 p-1 bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-white"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-              ))}
+    <div className="p-4 md:p-6 min-h-screen bg-app">
+      <h1 className="md:text-3xl text-lg text-main font-black uppercase md:mb-8 mb-4 tracking-tighter italic">
+        Recently Viewed
+      </h1>
+        {isLoading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={`skeleton-${i}`}>
+              <MovieSkeleton />
             </div>
-          )}
-      </div>
-    </>
+            
+          ))}
+        </div>
+        ) : history.length > 0 ? (
+          <MovieGrid movies={history} isLoading={false}/>
+        ) : (
+          <div className="col-span-full py-20 text-center">
+            <p className="text-dim text-xs font-black uppercase tracking-[0.3em]">No history found</p>
+          </div>
+        )}
+    </div>
   );
 };
 

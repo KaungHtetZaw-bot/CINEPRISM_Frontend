@@ -6,7 +6,7 @@ const NotFoundPage = () => {
     <div className="min-h-screen bg-app flex flex-col items-center justify-center p-6 text-center">
       {/* 1. Background Decor (Large Ghost Text) */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <span className="text-[30vw] font-black text-white/2 italic leading-none select-none">
+        <span className="text-[30vw] font-black text-main/2 italic leading-none select-none">
           LOST
         </span>
       </div>
@@ -21,12 +21,12 @@ const NotFoundPage = () => {
             </span>
           </div>
           
-          <h1 className="text-8xl font-black italic tracking-tighter text-white">
+          <h1 className="text-8xl font-black italic tracking-tighter text-main">
             VOID
           </h1>
-          <p className="mt-4 text-zinc-500 text-xs font-medium leading-relaxed uppercase tracking-widset">
+          <p className="mt-4 text-main/50 text-xs font-medium leading-relaxed uppercase tracking-widset">
             The resource you are attempting to access has been <br /> 
-            <span className="text-zinc-300">declassified or moved</span> to another sector.
+            <span className="text-main/20">declassified or moved</span> to another sector.
           </p>
         </div>
 
@@ -34,7 +34,7 @@ const NotFoundPage = () => {
         <div className="flex flex-col items-center gap-6">
           <Link 
             to="/browse" 
-            className="group flex items-center gap-3 px-8 py-4 bg-white text-black rounded-sm font-black text-[10px] uppercase tracking-[0.3em] transition-all hover:bg-cinema-gold active:scale-95 shadow-2xl"
+            className="group flex items-center gap-3 px-8 py-4 bg-app text-main rounded-sm font-black text-[10px] uppercase tracking-[0.3em] transition-all hover:bg-cinema-gold  hover:text-white active:scale-95 shadow-2xl"
           >
             <ChevronLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
             Return to Base
@@ -42,11 +42,11 @@ const NotFoundPage = () => {
 
           {/* Decorative Technical ID */}
           <div className="flex items-center gap-4 opacity-30">
-            <div className="h-px w-8 bg-zinc-500" />
-            <span className="text-[9px] font-mono text-zinc-500 uppercase">
+            <div className="h-px w-8 bg-main" />
+            <span className="text-[9px] font-mono text-main uppercase">
               Ref: {Math.random().toString(36).substring(7).toUpperCase()}
             </span>
-            <div className="h-px w-8 bg-zinc-500" />
+            <div className="h-px w-8 bg-main" />
           </div>
         </div>
       </div>

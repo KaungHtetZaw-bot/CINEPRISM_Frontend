@@ -1,105 +1,165 @@
+import { useState } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import { 
-  Shield, Mail, Lock, LogOut, 
-  Crown, Clock, Heart, PlayCircle, 
-  ChevronRight, ArrowRight 
+  LogOut, User, Mail, ShieldCheck, 
+  Clock, Bookmark, Heart, ChevronRight, 
+  Lock, Edit3, KeyRound, X 
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const ProfilePage = () => {
   const { user, logout } = useAuthStore();
+  
+  // 1. State for handling which field is being edited
+  const [activeModal, setActiveModal] = useState<null | 'name' | 'email' | 'password'>(null);
+  const [formData, setFormData] = useState({ name: user?.name || '', email: user?.email || '', password: '' });
+
+  // 2. Mock Update Function (Connect this to your Backend API)
+  const handleUpdate = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(`Updating ${activeModal}:`, formData);
+    // Add your axios/fetch logic here: await updateProfile(formData)
+    setActiveModal(null); // Close modal on success
+  };
 
   return (
-    <div className="min-h-screen bg-app text-white px-6 md:px-16 py-12 pb-32">
-      <div className="max-w-5xl mx-auto space-y-12">
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* User Info */}
-          <div className="lg:col-span-2 flex items-center gap-6 p-8 bg-white/2 border border-white/5 rounded-sm">
-            <div className="w-20 h-20 bg-cinema-gold flex items-center justify-center text-black text-3xl font-black italic rounded-sm">
-              {user?.name?.charAt(0) || 'U'}
+    <div className="min-h-screen bg-app text-main p-6 md:p-12 pb-24 relative">
+      <div className="max-w-4xl mx-auto space-y-10">
+        
+        {/* HEADER: Identity */}
+        <div className="flex items-center gap-6 pb-8 border-b border-white/5">
+          <div className="w-20 h-20 bg-surface border border-white/10 flex items-center justify-center rounded-sm relative group">
+             <User size={40} className="text-cinema-gold" />
+          </div>
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-black uppercase tracking-tighter italic">
+                {user?.name || "Member"}
+              </h1>
+              <button 
+                onClick={() => setActiveModal('name')} 
+                className="p-1.5 hover:bg-white/5 rounded-full text-dim hover:text-cinema-gold transition-all"
+              >
+                <Edit3 size={16} />
+              </button>
             </div>
-            <div>
-              <h1 className="text-3xl font-black italic uppercase tracking-tighter">{user?.name}</h1>
-              <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest mt-1">ID: #8829-XCD</p>
+            <div className="flex items-center gap-2 mt-1">
+              <ShieldCheck size={14} className="text-cinema-gold" />
+              <span className="text-[10px] font-bold text-dim uppercase tracking-widest">Premium Account</span>
             </div>
           </div>
-
-          {/* VIP Status Card */}
-          <div className="relative overflow-hidden p-8 bg-linear-to-br from-cinema-gold/20 to-transparent border border-cinema-gold/30 rounded-sm">
-            <Crown className="absolute -right-4 -top-4 w-24 h-24 text-cinema-gold/10 -rotate-12" />
-            <div className="relative z-10 space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-cinema-gold">Plan Status</span>
-              </div>
-              <div>
-                <h2 className="text-2xl font-black italic uppercase tracking-tighter">VIP Premium</h2>
-                <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mt-1">Expires: 12.04.2026</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 2. CONTENT NAVIGATION (Quick Access) */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { label: 'My Favorites', icon: Heart, count: '12', path: '/library' },
-            { label: 'Recent Watch', icon: PlayCircle, count: '48', path: '/recent' },
-            { label: 'Watchlist', icon: Clock, count: '09', path: '/watchlist' },
-          ].map((item) => (
-            <button key={item.label} className="group flex items-center justify-between p-6 bg-white/3 border border-white/5 rounded-sm hover:border-cinema-gold/40 transition-all">
-              <div className="flex items-center gap-4">
-                <item.icon size={20} className="text-cinema-gold" />
-                <div className="text-left">
-                  <p className="text-[11px] font-black uppercase tracking-widest">{item.label}</p>
-                  <p className="text-[9px] text-zinc-500 font-bold">{item.count} Items</p>
-                </div>
-              </div>
-              <ArrowRight size={16} className="text-zinc-700 group-hover:text-cinema-gold group-hover:translate-x-1 transition-all" />
-            </button>
-          ))}
-        </section>
-
-        {/* 3. ACCOUNT SETTINGS (Email / Password) */}
-        <section className="space-y-6">
-          <h3 className="text-xs font-black uppercase tracking-[0.4em] text-zinc-500">Security & Credentials</h3>
-          <div className="bg-white/2 border border-white/5 rounded-sm divide-y divide-white/5">
-            {/* Email Change */}
-            <div className="flex items-center justify-between p-6 group cursor-pointer hover:bg-white/1">
-              <div className="flex items-center gap-6">
-                <Mail size={20} className="text-zinc-500" />
-                <div>
-                  <p className="text-[10px] font-black uppercase text-zinc-500 tracking-widest">Email Address</p>
-                  <p className="text-sm font-bold mt-1">{user?.email || 'user@example.com'}</p>
-                </div>
-              </div>
-              <button className="text-[10px] font-black uppercase tracking-widest text-cinema-gold hover:underline">Change</button>
-            </div>
-
-            {/* Password Change */}
-            <div className="flex items-center justify-between p-6 group cursor-pointer hover:bg-white/1">
-              <div className="flex items-center gap-6">
-                <Lock size={20} className="text-zinc-500" />
-                <div>
-                  <p className="text-[10px] font-black uppercase text-zinc-500 tracking-widest">Security</p>
-                  <p className="text-sm font-bold mt-1">••••••••••••</p>
-                </div>
-              </div>
-              <button className="text-[10px] font-black uppercase tracking-widest text-cinema-gold hover:underline">Update Password</button>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. DANGER ZONE */}
-        <div className="pt-8">
-          <button 
-            onClick={logout}
-            className="w-full md:w-auto flex items-center justify-center gap-3 px-12 py-4 bg-rose-500/10 border border-rose-500/20 text-rose-500 rounded-sm font-black text-[10px] uppercase tracking-[0.3em] hover:bg-rose-500 hover:text-white transition-all"
-          >
-            <LogOut size={16} />
-            Terminate Session
-          </button>
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          {/* LIBRARY NAVIGATION */}
+          <section className="space-y-4">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-4">Your Library</h3>
+            <div className="space-y-2">
+              {[
+                { label: 'Recently Watched', icon: Clock, path: '/recent', color: 'text-blue-400' },
+                { label: 'Bookmarks', icon: Bookmark, path: '/watchlist', color: 'text-cinema-gold' },
+                { label: 'Favorites', icon: Heart, path: '/mylist', color: 'text-rose-500' },
+              ].map((item) => (
+                <Link key={item.label} to={item.path} className="group flex items-center justify-between p-4 bg-surface border border-white/5 rounded-sm hover:border-white/20 transition-all">
+                  <div className="flex items-center gap-4">
+                    <item.icon size={18} className={item.color} />
+                    <span className="text-[11px] font-black uppercase tracking-widest">{item.label}</span>
+                  </div>
+                  <ChevronRight size={16} className="text-zinc-700 group-hover:text-white transition-colors" />
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          {/* SECURITY SETTINGS */}
+          <section className="space-y-4">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-500 mb-4">Security Settings</h3>
+            <div className="border border-white/5 rounded-sm divide-y divide-white/5">
+              
+              <div className="bg-surface p-4 mb-3 flex items-center justify-between group cursor-pointer" onClick={() => setActiveModal('email')}>
+                <div className="flex items-center gap-4">
+                  <Mail size={18} className="text-dim" />
+                  <div>
+                    <p className="text-[9px] font-bold text-dim uppercase tracking-widest">Email</p>
+                    <p className="text-xs font-medium">{user?.email}</p>
+                  </div>
+                </div>
+                <span className="text-[9px] font-black uppercase tracking-widest text-cinema-gold">Change</span>
+              </div>
+
+              <div className="bg-surface p-4 flex items-center justify-between group cursor-pointer" onClick={() => setActiveModal('password')}>
+                <div className="flex items-center gap-4">
+                  <KeyRound size={18} className="text-dim" />
+                  <div>
+                    <p className="text-[9px] font-bold text-dim uppercase tracking-widest">Password</p>
+                    <p className="text-xs font-medium tracking-[0.3em]">••••••••</p>
+                  </div>
+                </div>
+                <span className="text-[9px] font-black uppercase tracking-widest text-cinema-gold">Update</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* LOGOUT */}
+        <div className="pt-10 flex border-t border-white/5">
+          <button onClick={logout} className="flex items-center gap-3 px-8 py-3 border border-rose-500/20 text-rose-500 rounded-sm font-black text-[10px] uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all">
+            <LogOut size={14} /> Terminate Session
+          </button>
+        </div>
       </div>
+
+      {/* 3. THE EDIT MODAL (Functional Overlay) */}
+      {activeModal && (
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
+          <div className="bg-surface border border-white/10 w-full max-w-md p-8 rounded-sm shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-black uppercase tracking-tighter italic">Update {activeModal}</h2>
+              <button onClick={() => setActiveModal(null)} className="text-dim hover:text-white"><X size={20}/></button>
+            </div>
+
+            <form onSubmit={handleUpdate} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-widest text-dim">New {activeModal}</label>
+                <input 
+                  type={activeModal === 'password' ? 'password' : 'text'}
+                  autoFocus
+                  className="auth-input"
+                  placeholder={`Enter new ${activeModal}`}
+                  value={activeModal === 'password' ? formData.password : activeModal === 'name' ? formData.name : formData.email}
+                  onChange={(e) => setFormData({...formData, [activeModal!]: e.target.value})}
+                  required
+                />
+                {
+                  activeModal === 'password' && (
+                    <>
+                    <input 
+                  type={activeModal === 'password' ? 'password' : 'text'}
+                  autoFocus
+                  className="auth-input"
+                  placeholder={`Enter new ${activeModal}`}
+                  value={activeModal === 'password' ? formData.password : activeModal === 'name' ? formData.name : formData.email}
+                  onChange={(e) => setFormData({...formData, [activeModal!]: e.target.value})}
+                  required
+                />
+                <input 
+                  type={activeModal === 'password' ? 'password' : 'text'}
+                  autoFocus
+                  className="auth-input"
+                  placeholder={`Enter new ${activeModal}`}
+                  value={activeModal === 'password' ? formData.password : activeModal === 'name' ? formData.name : formData.email}
+                  onChange={(e) => setFormData({...formData, [activeModal!]: e.target.value})}
+                  required
+                />
+                    </>
+                  )
+                }
+              </div>
+              <button type="submit" className="auth-btn">Confirm Changes</button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

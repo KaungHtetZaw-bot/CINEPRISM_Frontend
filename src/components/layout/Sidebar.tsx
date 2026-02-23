@@ -2,6 +2,7 @@ import { Home, Film, Tv, Clock, Heart, Settings, ChevronLeft } from 'lucide-reac
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from './Logo';
+import ThemeToggle from './ThemeToggle';
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -15,55 +16,77 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className={`${isCollapsed ? 'w-20' : 'w-64'} transition-all duration-300 bg-surface border-r border-white/5 flex flex-col h-screen sticky top-0 z-50`}>
-      {/* Header */}
+    <aside className={`
+      ${isCollapsed ? 'w-20' : 'w-64'} 
+      transition-all duration-300 bg-sidebar border-r border-white/5 
+      flex flex-col h-screen sticky top-0 z-50 overflow-hidden
+    `}>
+      {/* 1. HEADER: Branding & Toggle */}
       <div className="p-6 flex items-center justify-between min-h-20">
-        {!isCollapsed && <Logo />}
+        {!isCollapsed && <div className="scale-90 origin-left"><Logo /></div>}
         <button 
           onClick={() => setIsCollapsed(!isCollapsed)} 
-          className="p-2 hover:bg-white/10 rounded-lg text-dim hover:text-white transition-colors"
+          className="p-2 hover:bg-(--var--text-main) rounded-sm text-dim hover:text-main transition-all active:scale-90"
         >
-          <ChevronLeft className={`${isCollapsed ? 'rotate-180' : ''} transition-transform`} />
+          <ChevronLeft size={20} className={`${isCollapsed ? 'rotate-180' : ''} transition-transform`} />
         </button>
       </div>
 
-      {/* Navigation */}
+      {/* 2. NAVIGATION: Menu Items */}
       <nav className="flex-1 px-4 space-y-2 mt-4">
         {menuItems.map((item) => (
           <NavLink
             key={item.label}
             to={item.path}
             className={({ isActive }) => `
-              flex items-center gap-4 p-3 rounded-xl transition-all duration-200 group
+              relative flex items-center gap-4 p-3 rounded-sm transition-all duration-300 group
               ${isActive 
-                ? 'bg-cinema-gold text-black font-bold shadow-lg shadow-cinema-gold/20' 
-                : 'text-dim hover:bg-white/5 hover:text-white'}
+                ? 'bg-cinema-gold/10 text-cinema-gold font-black italic' 
+                : 'text-dim hover:bg-(--var--text-main/5) hover:text-main'}
             `}
           >
-            <item.icon size={24} className={`${isCollapsed ? 'mx-auto' : ''}`} />
-            {!isCollapsed && <span className="whitespace-nowrap">{item.label}</span>}
-            
-            {/* Tooltip for Collapsed Mode */}
-            {isCollapsed && (
-              <div className="absolute left-20 bg-white text-black px-2 py-1 rounded md text-xs font-bold opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity">
-                {item.label}
-              </div>
+            {/* Active Indicator Line */}
+            {({ isActive }) => (
+              <>
+                {isActive && (
+                  <div className="absolute left-0 w-1 h-6 bg-cinema-gold rounded-r-full" />
+                )}
+                <item.icon size={22} strokeWidth={isActive ? 2.5 : 1.5} className={`${isCollapsed ? 'mx-auto' : ''}`} />
+                {!isCollapsed && (
+                  <span className="text-[11px] uppercase tracking-[0.2em] whitespace-nowrap">
+                    {item.label}
+                  </span>
+                )}
+                
+                {/* Tooltip for Collapsed Mode - System Style */}
+                {isCollapsed && (
+                  <div className="absolute left-16 bg-zinc-800 text-white px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-white/10 shadow-2xl z-100">
+                    {item.label}
+                  </div>
+                )}
+              </>
             )}
           </NavLink>
         ))}
       </nav>
 
-      {/* Footer / Settings */}
-      <div className="p-4 border-t border-white/5">
+      {/* 3. FOOTER: Theme & Settings */}
+      <div className="p-4 space-y-2 border-t border-white/5 bg-black/10">
+        <div className='w-full'>
+          <ThemeToggle />
+        </div>
+
         <NavLink 
           to="/settings"
           className={({ isActive }) => `
-            flex items-center gap-4 p-3 rounded-xl transition-colors
-            ${isActive ? 'text-white bg-white/10' : 'text-dim hover:text-white'}
+            flex items-center gap-4 p-3 rounded-sm transition-all
+            ${isActive ? 'bg-white/10 text-main' : 'text-dim hover:text-main hover:bg-sidebar'}
           `}
         >
-          <Settings size={24} className={`${isCollapsed ? 'mx-auto' : ''}`} />
-          {!isCollapsed && <span>Settings</span>}
+          <Settings size={20} strokeWidth={1.5} className={`${isCollapsed ? 'mx-auto' : ''}`} />
+          {!isCollapsed && (
+            <span className="text-[11px] uppercase tracking-[0.2em]">Settings</span>
+          )}
         </NavLink>
       </div>
     </aside>
