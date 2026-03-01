@@ -11,7 +11,7 @@ const MovieDetailSkeleton = () => {
 
         {/* Action Button Skeletons (Top Right) */}
         <div className="absolute top-8 right-6 md:right-16 flex gap-3">
-          {[1, 2, 3].map((i) => (
+          {[1, 2].map((i) => (
             <div key={i} className="h-11 w-11 rounded-full border border-main/5 bg-surface/50 backdrop-blur-md" />
           ))}
         </div>

@@ -22,6 +22,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
           fetchPopularInfinite(type);
         }
       },
+      // {threshold: 0.9}
       { rootMargin: '600px' }
     );
 

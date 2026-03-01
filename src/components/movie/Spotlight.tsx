@@ -48,7 +48,7 @@ const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) 
           <button className="px-8 py-3 bg-white text-black font-bold rounded-md hover:bg-gray-200 transition">
             Watch Now
           </button>
-          <button onClick={()=> moreInfo(movie)} className="px-8 py-3 bg-white/10 text-white font-bold rounded-md backdrop-blur-md border border-white/10 hover:bg-white/20 transition">
+          <button onClick={()=> moreInfo(movie)} className="px-8 py-3 bg-skeleton text-secondary font-bold rounded-md backdrop-blur-md border border-skeleton/10 hover:bg-skeleton/20 transition">
             More Info
           </button>
         </div>

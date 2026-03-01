@@ -125,7 +125,9 @@ const Details = () => {
                     />
                   </div>
                   <p className="text-xs font-black uppercase tracking-tighter text-main">{person.name}</p>
-                  <p className="text-[10px] font-bold text-dim uppercase tracking-tighter">{person.character}</p>
+                  <p className="text-[9px] w-40 md:text-[10px] font-bold text-dim uppercase tracking-[0. 1em] leading-tight line-clamp-2 italic">
+                    {person.character}
+                  </p>
                 </div>
               ))}
             </div>

@@ -106,15 +106,16 @@ export const useMediaStore = create<MediaState>()(
       fetchRecent: async () => get().fetchWithCache('history', 'recentlist'),
 
       addToRecent: async (movie) => {
-    const currentHistory = get().history;
-    const filtered = currentHistory.filter(m => m.id !== movie.id);
-    set({ history: [movie, ...filtered] });
+        const currentHistory = get().history;
+        const filtered = currentHistory.filter(m => m.id !== movie.id);
+        const updatedHistory = [movie, ...filtered].slice(0, 20);
+        set({ history: updatedHistory });
 
-    await api.post('/recentlist', {
-      tmdb_id: movie.id,
-      type: movie.type || movie.media_type || 'movie',
-    });
-  },
+        await api.post('/recentlist', {
+          tmdb_id: movie.id,
+          type: movie.type || movie.media_type || 'movie',
+        });
+      },
 
   removeFromRecent: async (id, type) => {
     const currentHistory = get().history;

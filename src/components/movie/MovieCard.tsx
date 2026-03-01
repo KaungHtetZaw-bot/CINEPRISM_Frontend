@@ -1,14 +1,22 @@
+import { useState } from 'react';
 import type { Movie } from '../../types/movie';
 import { getImageUrl } from '../../utils/getImageUrl';
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
   return (
-    <div className="group relative cursor-pointer overflow-hidden rounded-xl border-1 border-(--text-main) hover:border-cinema-gold bg-(--bg-surface) transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/50">
-      <div className="w-full overflow-hidden">
+    <div className="group relative cursor-pointer overflow-hidden rounded-xl border border-main/10 hover:border-cinema-gold bg-surface transition-all duration-500">
+      <div className="w-full overflow-hidden aspect-2/3 relative">
+        {!isImgLoaded && (
+          <div className="absolute inset-0 bg-skeleton animate-pulse" />
+        )}
         <img
           src={getImageUrl(movie.poster_path, 'w500')} 
           alt={movie.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          loading='lazy'
+          onLoad={()=>setIsImgLoaded(true)}
+          onError={() => setIsImgLoaded(true)}
+          className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${isImgLoaded ? 'opacity-100' : 'opacity-0'}`}
         />
       </div>
 
