@@ -50,7 +50,7 @@ const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete }) => {
           key={index}
           ref={(el) => {
             inputRefs.current[index] = el;
-            }}
+          }}
           type="text"
           inputMode="numeric"
           autoComplete="one-time-code"
@@ -59,9 +59,9 @@ const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete }) => {
           onChange={(e) => handleChange(e.target.value, index)}
           onKeyDown={(e) => handleKeyDown(e, index)}
           className="w-12 h-14 md:w-14 md:h-16 text-2xl font-black text-center 
-                     bg-surface border-2 border-white/10 rounded-xl
-                     focus:border-cinema-gold focus:ring-1 focus:ring-cinema-gold/50
-                     outline-none transition-all duration-200 text-white"
+                    bg-surface-1 border-2 border-border rounded-xl
+                    focus:border-accent focus:ring-1 focus:ring-accent/50
+                    outline-none transition-all duration-200 text-main"
         />
       ))}
     </div>

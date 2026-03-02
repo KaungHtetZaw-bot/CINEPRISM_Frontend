@@ -36,17 +36,17 @@ const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) 
         to-transparent" 
       />
 
-      <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 space-y-4 max-w-3xl z-10">
-        <h1 className="text-4xl md:text-6xl font-black text-main uppercase tracking-tighter">
+      <div className="absolute bottom-0 left-0 w-full p-4 md:p-12 space-y-1 max-w-3xl z-10">
+        <h1 className="text-2xl md:text-6xl font-black text-main uppercase tracking-tighter">
           {movie.title || movie.name}
         </h1>
         
-        <p className="text-dim text-sm md:text-lg line-clamp-3 font-medium max-w-xl">
+        <p className="text-dim text-xs md:text-lg line-clamp-3 font-medium max-w-xl">
           {movie.overview}
         </p>
         
-        <div className="flex gap-4 pt-4">
-          <button className="px-8 py-3 bg-accent text-black font-black italic uppercase rounded-sm hover:bg-accent-soft transition-all active:scale-95">
+        <div className="flex gap-4 pt-4 text-sm md:text-base">
+          <button className="md:px-8 px-4 md:py-3 bg-accent text-black font-black italic uppercase rounded-sm hover:bg-accent-soft transition-all active:scale-95">
             Watch Now
           </button>
           

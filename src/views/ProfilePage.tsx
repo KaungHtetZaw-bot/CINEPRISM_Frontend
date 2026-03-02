@@ -104,7 +104,7 @@ const ProfilePage = () => {
         {/* LOGOUT */}
         <div className="pt-10 flex border-t border-border">
           <button onClick={logout} className="flex items-center gap-3 px-8 py-3 border border-rose-500/30 text-rose-500 rounded-sm font-black text-[10px] uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all">
-            <LogOut size={14} /> Terminate Session
+            <LogOut size={14} /> Log Out
           </button>
         </div>
       </div>

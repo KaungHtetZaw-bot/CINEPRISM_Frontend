@@ -51,7 +51,7 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
   const cardWidthClasses = "lg:w-[180px] md:w-[170px] sm:w-[140px] w-[130px] shrink-0 snap-start relative";
 
   return (
-    <section className="py-8 flex justify-center items-center">
+    <section className="md:py-8 py-4 flex justify-center items-center">
       <div className="relative w-full group/row"> 
         {!isLoading && (
           <>

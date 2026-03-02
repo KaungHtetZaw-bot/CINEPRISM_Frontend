@@ -21,7 +21,7 @@ const SearchPage = () => {
     <div className="min-h-screen bg-app p-6 md:p-12 transition-colors duration-500">
       <div className="max-w-4xl mx-auto mb-6">
         <div className="relative group">
-          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-muted group-focus-within:text-accent transition-colors">
+          <div className="absolute inset-y-0 left-5 z-10 flex items-center pointer-events-none text-muted group-focus-within:text-accent transition-colors">
             <SearchIcon size={24} />
           </div>
           <input

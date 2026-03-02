@@ -2,106 +2,8 @@ import Navbar from '../components/layout/Navbar';
 import Hero from '../components/movie/Hero';
 import { useMovies } from '../hooks/useMovies';
 import tvDisplay from '../assets/images/tv_display.png';
-import React, { useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import MovieCard from '../components/movie/MovieCard';
-import MovieSkeleton from '../components/skeleton/MovieSkeleton';
-import type { Movie } from '../types/movie';
-
-interface MovieRowProps {
-  movies: Movie[];
-  isLoading: boolean;
-  limit?: number;
-}
-
-const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
-  const rowRef = useRef<HTMLDivElement>(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
-
-  const updateScrollIndicators = () => {
-    if (rowRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = rowRef.current;
-      setShowLeftArrow(scrollLeft > 10);
-      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 50;
-      setShowRightArrow(!isAtEnd);
-    }
-  };
-
-  useEffect(() => {
-    const el = rowRef.current;
-    if (el) {
-      el.addEventListener('scroll', updateScrollIndicators);
-      updateScrollIndicators();
-    }
-    return () => el?.removeEventListener('scroll', updateScrollIndicators);
-  }, [isLoading, movies]);
-
-  const handleScroll = (direction: 'left' | 'right') => {
-    if (rowRef.current) {
-      const { scrollLeft, clientWidth } = rowRef.current;
-      const offset = direction === 'left' ? -clientWidth * 0.8 : clientWidth * 0.8;
-      rowRef.current.scrollTo({ left: scrollLeft + offset, behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <section className="py-8 flex justify-center items-center">
-      <div className="relative w-full group/row md:px-30 px-5"> 
-        {!isLoading && (
-          <>
-            <button 
-              onClick={() => handleScroll('left')}
-              className={`nav-btn md:left-2 -left-2 z-30 transition-all duration-300 ${
-                showLeftArrow ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-              }`}
-            >
-              <ChevronLeft size={48} strokeWidth={1} />
-            </button>
-            <button 
-              onClick={() => handleScroll('right')}
-              className={`nav-btn md:right-2 -right-2 z-30 transition-all duration-300 ${
-                showRightArrow ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-              }`}
-            >
-              <ChevronRight size={48} strokeWidth={1} />
-            </button>
-          </>
-        )}
-        <div 
-          ref={rowRef}
-          className="flex flex-row overflow-x-auto overflow-y-hidden gap-6 pb-4 no-scrollbar snap-x scroll-smooth"
-        >
-          {isLoading ? (
-            Array.from({ length: limit || 6 }).map((_, i) => (
-              <div key={`skeleton-${i}`} className="lg:w-45 md:w-45 sm:w-35 w-30 shrink-0">
-                <MovieSkeleton />
-              </div>
-            ))
-          ) : (
-            movies.map((movie, index) => (
-              <div 
-                key={`${movie.id}-${index}`} 
-                className="shrink-0 snap-start relative px-2.5"
-              >
-                
-                <div className="lg:w-45 md:w-44 sm:w-33 w-30">
-                  <MovieCard movie={movie} />
-                </div>
-                <span className="absolute -bottom-4 -left-1 z-0 
-                     text-[8rem] font-black leading-none
-                     text-black [-webkit-text-stroke:4px_var(--text-main)]
-                     opacity-40 select-none pointer-events-none">
-                  {index + 1}
-                </span>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-    </section>
-  );
-};
+import { ChevronRight } from 'lucide-react';
+import MovieRow from '../components/movie/MovieRow';
 
 const FeatureSection = () => {
     return (
@@ -189,7 +91,7 @@ const LandingPage = () => {
       <section className="relative h-[110vh] w-full">
         <Hero movie={heroMovie} />
       </section>
-      <main className="relative px-4 md:px-12 z-20 -mt-[15vh] bg-app rounded-t-[60px] md:rounded-t-[120px] shadow-[0_-50px_100px_rgba(0,0,0,0.9)] transition-colors duration-500">
+      <main className="relative px-4 md:px-12 z-20 -mt-[15vh] bg-app transition-colors duration-500">
         <div className="pt-24 md:pb-24 pb-10 max-w-350 mx-auto relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full z-30 pointer-events-none">
             <svg viewBox="0 0 1000 100" preserveAspectRatio="none" className="w-full h-32">
