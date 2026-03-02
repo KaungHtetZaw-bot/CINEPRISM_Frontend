@@ -10,30 +10,24 @@ const SpotlightSkeleton = () => (
     {/* Content Area Skeletons */}
     <div className="absolute bottom-0 left-0 w-full p-6 md:p-16 space-y-8 max-w-4xl z-20">
       
-      {/* Accent Line + Mini Label */}
-      {/* <div className="flex items-center gap-3">
-        <div className="w-8 h-px bg-main/10" />
-        <div className="h-3 bg-skeleton rounded-xs w-24" />
-      </div> */}
-
       {/* Title Skeletons - Large and bold-looking */}
       <div className="space-y-3">
         <div className="h-10 md:h-16 bg-skeleton rounded-sm w-3/4" />
         <div className="h-10 md:h-16 bg-skeleton rounded-sm w-1/2 md:hidden" />
       </div>
       
-      {/* Overview/Description Skeletons */}
+      {/* Overview/Description Skeletons - Updated to surface-1 */}
       <div className="space-y-3 pt-2">
-        <div className="h-4 bg-surface rounded-xs w-full" />
-        <div className="h-4 bg-surface rounded-xs w-[90%]" />
+        <div className="h-4 bg-surface-1 rounded-xs w-full" />
+        <div className="h-4 bg-surface-1 rounded-xs w-[90%]" />
       </div>
 
-      {/* Button Skeletons */}
+      {/* Button Skeletons - Updated background and borders */}
       <div className="flex gap-4 pt-6">
         {/* Primary Button Placeholder */}
-        <div className="h-14 w-40 bg-main/10 rounded-sm" />
+        <div className="h-14 w-40 bg-skeleton rounded-sm" />
         {/* Secondary Button Placeholder */}
-        <div className="h-14 w-40 bg-surface border border-main/5 rounded-sm" />
+        <div className="h-14 w-40 bg-surface-1 border border-border rounded-sm" />
       </div>
     </div>
   </div>

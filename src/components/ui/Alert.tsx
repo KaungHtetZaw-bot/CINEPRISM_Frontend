@@ -29,7 +29,7 @@ const Alert = ({ message, type = 'error', onClose }: AlertProps) => {
       label: "Success"
     },
     info: {
-      styles: "border-cinema-gold/30 bg-black/80 text-cinema-gold",
+      styles: "border-cinema-gold/30 bg-black/80 text-accent",
       bar: "bg-cinema-gold",
       icon: <Info size={14} />,
       label: "Update"

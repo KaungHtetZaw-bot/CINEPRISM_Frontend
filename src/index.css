@@ -1,66 +1,92 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Colors */
-  --color-cinema-gold: #e2b616;
-  --color-gold-light: #f4d03f;
-  --color-gold-dark: #b8860b;
-  
-  /* Layout Mapping */
   --color-app: var(--bg-app);
-  --color-surface: var(--bg-surface);
-  --color-sidebar: var(--bg-sidebar);
-  --color-main: var(--text-main);
-  --color-muted: var(--text-muted);
+  --color-surface-1: var(--bg-surface-1);
+  --color-surface-2: var(--bg-surface-2);
+
+  --color-main: var(--text-primary);
   --color-dim: var(--text-secondary);
-  --color-input-bg: var(--bg-input);
+  --color-muted: var(--text-muted);
+
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-border: var(--border-subtle);
   --color-skeleton: var(--bg-skeleton);
-  --color-input-border: var(--border-input);
-  
+
+  --accent-strong: var(--accent);
+  --accent-gradient-start: var(--accent);
+  --accent-gradient-end: var(--accent-soft);
+
   --font-sans: 'Inter', sans-serif;
 }
 
-/* 1. THE DEFAULT: Obsidian Midnight (Softened) */
 :root {
-  /* Shifted from #080809 to #121214 for better shadow depth */
-  --bg-app: #121214; 
-  --bg-surface: #1a1a1c;
-  --bg-sidebar: #161618;
-  --bg-skeleton: #e4e4e7;
-  --bg-input: #1e1e20;
-  --text-main: #ffffff;
-  --text-muted: #b0b0b5;
-  --text-secondary: #71717a;
-  --accent: #e2b616;
-  --border-input: rgba(255, 255, 255, 0.08);
-  
-  /* RGB & Gradient Helpers */
-  --bg-app-rgb: 18, 18, 20;
-  --color-bg-app: 18 18 20; 
-  --gradient-stop: 18 18 20;
-  
+  /* Base */
+  --bg-app: #0f0f12;
+  --bg-surface-1: #18181c;
+  --bg-surface-2: #202024;
+
+  /* Text */
+  --text-primary: #f4f4f5;
+  --text-secondary: #c7c7cc;
+  --text-muted: #8e8e93;
+
+  /* Accent */
+  --accent: #d4af37;         /* refined gold */
+  --accent-soft: #f1d97a;
+
+  /* Borders */
+  --border-subtle: rgba(255,255,255,0.06);
+
+  /* Extras */
+  --bg-skeleton: #2a2a2f;
+  --shadow-color: rgba(0,0,0,0.6);
+  --logo-play-icon: #0a0a0a;
+
   color-scheme: dark;
 }
 
-/* 2. THE OPTIONAL: Gallery White */
-.light, [data-theme='light'] {
-  --bg-app: #f8f8f9;
-  --bg-surface: #ffffff;
-  --bg-sidebar: #f1f1f3; 
-  --bg-skeleton: #4e4e51;
-  --bg-input: #ffffff; 
-  --text-main: #0a0a0a;
-  --text-muted: #52525b;
-  --text-secondary: #71717a;
-  --accent: #e2b616;
-  --border-input: rgba(0, 0, 0, 0.1);
-  
-  --bg-app-rgb: 248, 248, 249;
-  --color-bg-app: 248 248 249;
-  --gradient-stop: 255 255 255;
-  
+[data-theme='light'] {
+  --bg-app: #f5f5f7;
+  --bg-surface-1: #ffffff;
+  --bg-surface-2: #ededf0;
+
+  --text-primary: #111113;
+  --text-secondary: #3a3a40;
+  --text-muted: #6b6b74;
+
+  --accent: #c9a227;
+  --accent-soft: #e7c95b;
+
+  --border-subtle: rgba(0,0,0,0.08);
+
+  --bg-skeleton: #d4d4d8;
+  --shadow-color: rgba(0,0,0,0.08);
+  --logo-play-icon: #000000;
+
   color-scheme: light;
+}
+
+[data-theme='cinema'] {
+  --bg-app: #050507;
+  --bg-surface-1: #101014;
+  --bg-surface-2: #16161b;
+
+  --text-primary: #ffffff;
+  --text-secondary: #d6d6d6;
+  --text-muted: #9a9aa3;
+
+  --accent: #e2b616;
+  --accent-soft: #ffdf6b;
+
+  --border-subtle: rgba(255,255,255,0.08);
+
+  --bg-skeleton: #24242a;
+  --shadow-color: rgba(0,0,0,0.8);
+
+  color-scheme: dark;
 }
 
 
@@ -79,26 +105,30 @@
 }
 
 @layer components {
-  
 
   .nav-btn {
-    @apply absolute top-1/2 -translate-y-1/2 z-50 
-           bg-transparent backdrop-blur-sm rounded-full p-2 
-           text-white/80 hover:text-cinema-gold 
+    @apply absolute top-1/2 -translate-y-1/2 z-50
+           bg-surface-2/70 backdrop-blur-md rounded-full p-2
+           text-dim hover:text-accent
            transition-all duration-300;
   }
 
-  /* Updated to use theme variables */
   .auth-input {
-    @apply w-full md:p-4 p-2 md:text-lg text-sm bg-input-bg border border-input-border text-main 
-           rounded-sm focus:outline-none focus:ring-1 focus:ring-cinema-gold 
-           transition-all duration-300 placeholder:text-dim;
+    @apply w-full md:p-4 p-2 md:text-lg text-sm
+           bg-surface-1 border border-border
+           text-main rounded-sm
+           focus:outline-none focus:ring-1 focus:ring-accent
+           transition-all duration-300
+           placeholder:text-muted;
   }
 
   .auth-btn {
-    @apply w-full md:py-4 py-2 md:text-lg text-sm mt-4 bg-cinema-gold text-black font-black italic 
-           uppercase tracking-widest rounded-sm hover:bg-gold-light 
-           transition-all active:scale-95 shadow-xl shadow-cinema-gold/10;
+    @apply w-full md:py-4 py-2 md:text-lg text-sm mt-4
+           bg-accent text-black font-black italic
+           uppercase tracking-widest rounded-sm
+           hover:bg-accent-soft
+           transition-all duration-300
+           active:scale-95;
   }
 }
 

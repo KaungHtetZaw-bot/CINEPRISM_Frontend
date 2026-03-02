@@ -48,8 +48,8 @@ const LoginPage = () => {
       
       <div className="mt-6 text-muted">
         <span className="mr-2">New to YourCinema?</span>
-        <Link to="/register" className="text-white hover:underline font-medium">Sign up now.</Link>
-      </div>
+        <Link to="/register" className="text-main hover:underline font-medium">Sign up now.</Link>
+      </div>     
       { error && (
         <Alert 
           message={error} 

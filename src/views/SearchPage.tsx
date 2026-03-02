@@ -18,10 +18,10 @@ const SearchPage = () => {
   
   const { data: searchResults, isLoading,isFetching } = useSearch(debouncedQuery);
   return (
-    <div className="min-h-screen bg-app p-6 md:p-12">
+    <div className="min-h-screen bg-app p-6 md:p-12 transition-colors duration-500">
       <div className="max-w-4xl mx-auto mb-6">
         <div className="relative group">
-          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-cinema-gold transition-colors">
+          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-muted group-focus-within:text-accent transition-colors">
             <SearchIcon size={24} />
           </div>
           <input
@@ -29,13 +29,13 @@ const SearchPage = () => {
             placeholder="Search movies, shows, actors..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-2xl p-3 text-xl focus:outline-none focus:ring-2 focus:ring-cinema-gold/50 focus:border-cinema-gold transition-all backdrop-blur-xl"
+            className="w-full bg-surface-1 border border-border rounded-2xl p-4 pl-14 text-xl text-main focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all backdrop-blur-xl"
             autoFocus
           />
           {query && (
             <button 
               onClick={() => setQuery('')}
-              className="absolute inset-y-0 right-5 flex items-center text-zinc-400 hover:text-white"
+              className="absolute inset-y-0 right-5 flex items-center text-muted hover:text-main"
             >
               <X size={20} />
             </button>
@@ -45,16 +45,16 @@ const SearchPage = () => {
 
       <div className="max-w-7xl mx-auto">
         {isLoading || (isFetching && debouncedQuery !== query) ? (
-          < Spinner />
+          <Spinner />
         ) : searchResults && searchResults.length > 0 ? (
           <MovieGrid movies={searchResults} isLoading={isLoading}/>
         ) : query ? (
           <div className="text-center py-20">
-            <p className="text-zinc-500 text-xl font-medium">No results found for "{query}"</p>
+            <p className="text-muted text-xl font-medium">No results found for "{query}"</p>
           </div>
         ) : (
           <div className="text-center py-20">
-            <p className="text-zinc-600 text-lg uppercase tracking-widest font-black italic">Start typing to discover</p>
+            <p className="text-dim text-lg uppercase tracking-widest font-black italic">Start typing to discover</p>
           </div>
         )}
       </div>

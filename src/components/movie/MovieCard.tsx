@@ -5,31 +5,32 @@ import { getImageUrl } from '../../utils/getImageUrl';
 const MovieCard = ({ movie }: { movie: Movie }) => {
   const [isImgLoaded, setIsImgLoaded] = useState(false);
   return (
-    <div className="group relative cursor-pointer overflow-hidden rounded-xl border border-main/10 hover:border-cinema-gold bg-surface transition-all duration-500">
-      <div className="w-full overflow-hidden aspect-2/3 relative">
-        {!isImgLoaded && (
-          <div className="absolute inset-0 bg-skeleton animate-pulse" />
-        )}
-        <img
-          src={getImageUrl(movie.poster_path, 'w500')} 
-          alt={movie.title}
-          loading='lazy'
-          onLoad={()=>setIsImgLoaded(true)}
-          onError={() => setIsImgLoaded(true)}
-          className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${isImgLoaded ? 'opacity-100' : 'opacity-0'}`}
-        />
-      </div>
+        <div className="group relative cursor-pointer overflow-hidden rounded-xl border border-border hover:border-accent bg-surface-1 transition-all duration-500">
+          <div className="w-full overflow-hidden aspect-2/3 relative">
+            {!isImgLoaded && (
+              <div className="absolute inset-0 bg-skeleton animate-pulse" />
+            )}
+            <img
+              src={getImageUrl(movie.poster_path, 'w500')} 
+              alt={movie.title}
+              loading='lazy'
+              onLoad={()=>setIsImgLoaded(true)}
+              onError={() => setIsImgLoaded(true)}
+              className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${isImgLoaded ? 'opacity-100' : 'opacity-0'}`}
+            />
+          </div>
 
-      {/* <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-        <h3 className="text-white font-bold text-sm leading-tight mb-1">{movie.title}</h3>
-        <div className="flex items-center justify-between">
-          <span className="text-cinema-gold font-bold text-xs">★ {movie?.vote_average ? movie.vote_average.toFixed(1) : '0.0'}</span>
-          <button className="text-[10px] bg-white text-black px-2 py-1 rounded-md font-bold uppercase tracking-tighter">
-            Details
-          </button>
+          {/* Hover Overlay - Commented out block updated with variables */}
+          {/* <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+            <h3 className="text-main font-bold text-sm leading-tight mb-1">{movie.title}</h3>
+            <div className="flex items-center justify-between">
+              <span className="text-accent font-bold text-xs">★ {movie?.vote_average ? movie.vote_average.toFixed(1) : '0.0'}</span>
+              <button className="text-[10px] bg-main text-app px-2 py-1 rounded-md font-bold uppercase tracking-tighter">
+                Details
+              </button>
+            </div>
+          </div> */}
         </div>
-      </div> */}
-    </div>
   );
 };
 

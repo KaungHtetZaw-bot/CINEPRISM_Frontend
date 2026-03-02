@@ -95,11 +95,11 @@ const MovieRow: React.FC<MovieRowProps> = ({ movies, isLoading, limit }) => {
             {
               movies.length > 0 && (
                 <div className={`${cardWidthClasses} group`}>
-                  <div className="aspect-2/3 w-full flex flex-col items-center justify-center border border-dashed border-white/20 rounded-xl hover:bg-white/5 hover:border-cinema-gold transition-all group-active:scale-95">
-                    <div className="p-3 rounded-full bg-white/5 text-dim group-hover:text-cinema-gold mb-2">
+                  <div className="aspect-2/3 w-full flex flex-col items-center justify-center border border-dashed border-border rounded-xl hover:bg-surface-2 hover:border-accent transition-all group-active:scale-95">
+                    <div className="p-3 rounded-full bg-surface-2 text-dim group-hover:text-accent group-hover:bg-accent/10 mb-2 transition-colors">
                       <ChevronRight size={24} />
                     </div>
-                    <span className="text-dim group-hover:text-white font-bold text-sm tracking-tight">View All</span>
+                    <span className="text-dim group-hover:text-main font-bold text-sm tracking-tight transition-colors">View All</span>
                   </div>
                 </div>
               )

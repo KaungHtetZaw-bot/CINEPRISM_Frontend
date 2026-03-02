@@ -14,7 +14,7 @@ const MainLayout = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen bg-app text-white overflow-hidden">
+    <div className="flex min-h-screen bg-app text-main overflow-hidden">
       <aside className="hidden sm:block">
         <Sidebar />
       </aside>

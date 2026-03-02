@@ -27,8 +27,8 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
           fetchNextPage();
         }
       },
-      // {threshold: 0.9}
-      { rootMargin: '600px' }
+      {threshold: 0.9}
+      // { rootMargin: '600px' }
     );
 
     const currentTarget = observerTarget.current;
@@ -45,8 +45,8 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
         <h2 className="md:text-4xl text-2xl font-black italic uppercase tracking-tighter text-main">
           {type === 'movie' ? 'Cinema' : 'Series'}
         </h2>
-        <div className="h-0.5 flex-1 bg-white/5" />
-        <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+        <div className="h-0.5 flex-1 bg-border" />
+        <span className="text-[10px] font-bold text-muted uppercase tracking-widest">
           {medias.length} units cataloged
         </span>
       </div>
@@ -56,7 +56,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
         {medias.length === 0 && isLoading &&
           Array.from({ length: 20 }).map((_, i) => (
             <div key={`initial-${i}`} className="opacity-50">
-               <MovieSkeleton />
+              <MovieSkeleton />
             </div>
           ))
         }
@@ -65,29 +65,22 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
           <div 
             key={`${media.id}-${index}`} 
             onClick={() => goToDetails(media)}
-            // Every 4th item gets a slight offset to create a "Masonry" feel without the complexity
-            // className={`cursor-pointer group relative transition-all duration-500 
-            //   ${index % 4 === 1 ? "md:mt-10" : ""} 
-            //   ${index % 4 === 3 ? "md:-mt-6" : ""}`}
+            className="cursor-pointer group relative transition-all duration-500"
           >
-            {/* <span className="absolute -top-4 -left-2 text-[40px] font-black text-white/5 italic group-hover:text-cinema-gold/20 transition-colors pointer-events-none">
-               {(index + 1).toString().padStart(2, '0')}
-            </span> */}
-
             <MovieCard movie={media} />
             
             <div className="md:mt-4 mt-2 px-1 space-y-1">
-               <p className="text-[10px] font-black uppercase text-zinc-500 tracking-tighter truncate">
-                 {media.title || media.name}
-               </p>
-               <div className="h-px w-0 group-hover:w-full bg-cinema-gold transition-all duration-500" />
+              <p className="text-[10px] font-black uppercase text-muted tracking-tighter truncate">
+                {media.title || media.name}
+              </p>
+              <div className="h-px w-0 group-hover:w-full bg-accent transition-all duration-500" />
             </div>
           </div>
         ))}
         {isFetchingNextPage && 
           Array.from({ length: 20 }).map((_, i) => (
             <div key={`more-${i}`} className="opacity-50">
-               <MovieSkeleton />
+              <MovieSkeleton />
             </div>
           ))
         }
@@ -97,8 +90,8 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
       
       {!hasNextPage && medias.length > 0 && (
         <div className="flex flex-col items-center py-20 space-y-4">
-          <div className="h-px w-20 bg-white/10" />
-          <p className="text-zinc-600 text-[9px] font-black uppercase tracking-[0.5em] text-center">
+          <div className="h-px w-20 bg-border" />
+          <p className="text-muted text-[9px] font-black uppercase tracking-[0.5em] text-center">
             End of Transmission
           </p>
         </div>

@@ -78,7 +78,7 @@ const RegisterPage = () => {
 
       <div className="mt-6 text-muted">
         <span className="mr-2">Already have an account?</span>
-        <Link to="/login" className="text-white hover:underline font-medium">Sign in.</Link>
+        <Link to="/login" className="text-main hover:underline font-medium">Sign in.</Link>
       </div>
 
       <OTPModal 

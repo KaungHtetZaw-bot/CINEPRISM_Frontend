@@ -44,7 +44,7 @@ const ThemeToggle = ({ showLabel = true }: ThemeToggleProps) => {
       className={`
         relative flex items-center transition-all duration-300
         hover:bg-main/5 active:scale-[0.97] group
-       hover:border-cinema-gold/30 rounded-sm
+       hover:border-border rounded-sm
         ${showLabel ? 'p-3 gap-3 w-full' : 'w-10 h-10 justify-center'}
       `}
       aria-label="Toggle Theme"
@@ -56,7 +56,7 @@ const ThemeToggle = ({ showLabel = true }: ThemeToggleProps) => {
           <Sun 
             size={18} 
             strokeWidth={1.5} 
-            className="text-cinema-gold drop-shadow-[0_0_8px_rgba(226,182,22,0.4)]" 
+            className="text-accent drop-shadow-[0_0_8px_rgba(226,182,22,0.4)]" 
           />
         ) : (
           <Moon 

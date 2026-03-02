@@ -26,29 +26,34 @@ const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) 
       />
 
       <div className="absolute inset-0 bg-linear-to-t 
-        from-[rgb(var(--color-bg-app))] 
-        via-[rgb(var(--color-bg-app))/0.6] 
+        from-app 
+        via-app/60 
         to-transparent" 
       />
       <div className="absolute inset-0 bg-linear-to-r 
-        from-[rgb(var(--color-bg-app))] 
+        from-app 
         via-transparent 
         to-transparent" 
       />
 
-      <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 space-y-4 max-w-3xl">
+      <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 space-y-4 max-w-3xl z-10">
         <h1 className="text-4xl md:text-6xl font-black text-main uppercase tracking-tighter">
           {movie.title || movie.name}
         </h1>
-        <p className="text-main/70 text-sm md:text-lg line-clamp-3 font-medium max-w-xl">
+        
+        <p className="text-dim text-sm md:text-lg line-clamp-3 font-medium max-w-xl">
           {movie.overview}
         </p>
         
         <div className="flex gap-4 pt-4">
-          <button className="px-8 py-3 bg-white text-black font-bold rounded-md hover:bg-gray-200 transition">
+          <button className="px-8 py-3 bg-accent text-black font-black italic uppercase rounded-sm hover:bg-accent-soft transition-all active:scale-95">
             Watch Now
           </button>
-          <button onClick={()=> moreInfo(movie)} className="px-8 py-3 bg-skeleton text-secondary font-bold rounded-md backdrop-blur-md border border-skeleton/10 hover:bg-skeleton/20 transition">
+          
+          <button 
+            onClick={()=> moreInfo(movie)} 
+            className="px-8 py-3 bg-surface-2/70 text-main font-bold rounded-sm backdrop-blur-md border border-border hover:bg-surface-2/90 transition"
+          >
             More Info
           </button>
         </div>
