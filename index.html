@@ -5,6 +5,19 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>movie-app-frontend</title>
+    <script>
+      (function () {
+        const stored = localStorage.getItem('theme-storage');
+        if (!stored) return;
+
+        const parsed = JSON.parse(stored);
+        const theme = parsed?.state?.theme;
+
+        if (theme && theme !== 'dark') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

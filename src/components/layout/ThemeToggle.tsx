@@ -1,75 +1,75 @@
-import { useState, useEffect } from 'react';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Sparkles } from 'lucide-react';
+import { useThemeStore } from '../../store/themeStore ';
 
 interface ThemeToggleProps {
   showLabel?: boolean;
 }
 
 const ThemeToggle = ({ showLabel = true }: ThemeToggleProps) => {
-  const [isDark, setIsDark] = useState(true);
+  const { theme, cycleTheme } = useThemeStore();
 
-  useEffect(() => {
-    const root = document.documentElement;
-    const savedTheme = localStorage.getItem('theme');
-    
-    if (savedTheme === 'light') {
-      root.classList.remove('dark');
-      root.classList.add('light');
-      setIsDark(false);
-    } else {
-      root.classList.add('dark');
-      root.classList.remove('light');
-      setIsDark(true);
+  const getIcon = () => {
+    switch (theme) {
+      case 'light':
+        return (
+          <Sun
+            size={18}
+            strokeWidth={1.5}
+            className="text-accent"
+          />
+        );
+      case 'cinema':
+        return (
+          <Sparkles
+            size={18}
+            strokeWidth={1.5}
+            className="text-accent drop-shadow-[0_0_8px_var(--accent-soft)]"
+          />
+        );
+      default:
+        return (
+          <Moon
+            size={18}
+            strokeWidth={1.5}
+            className="text-dim group-hover:text-main transition-colors"
+          />
+        );
     }
-  }, []);
+  };
 
-  const toggleTheme = () => {
-    const root = document.documentElement;
-    if (isDark) {
-      root.classList.remove('dark');
-      root.classList.add('light');
-      localStorage.setItem('theme', 'light');
-      setIsDark(false);
-    } else {
-      root.classList.remove('light');
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-      setIsDark(true);
+  const getLabel = () => {
+    switch (theme) {
+      case 'light':
+        return 'Light Mode';
+      case 'cinema':
+        return 'Cinema Mode';
+      default:
+        return 'Dark Mode';
     }
   };
 
   return (
-    <button 
-      onClick={toggleTheme}
+    <button
+      onClick={cycleTheme}
       className={`
         relative flex items-center transition-all duration-300
-        hover:bg-main/5 active:scale-[0.97] group
-       hover:border-border rounded-sm
+        hover:bg-surface-2 active:scale-[0.97] group
+        rounded-sm
         ${showLabel ? 'p-3 gap-3 w-full' : 'w-10 h-10 justify-center'}
       `}
       aria-label="Toggle Theme"
     >
-      <div className="absolute top-0 right-0 w-1.5 h-1.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-
-      <div className="shrink-0">
-        {isDark ? (
-          <Sun 
-            size={18} 
-            strokeWidth={1.5} 
-            className="text-accent drop-shadow-[0_0_8px_rgba(226,182,22,0.4)]" 
-          />
-        ) : (
-          <Moon 
-            size={18} 
-            strokeWidth={1.5} 
-            className="text-dim group-hover:text-main transition-colors" 
-          />
-        )}
+      <div className="shrink-0 transition-transform duration-300 group-active:rotate-12">
+        {getIcon()}
       </div>
 
       {showLabel && (
-        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-dim group-hover:text-main transition-colors whitespace-nowrap">
-          {isDark ? 'dark Mode' : 'light Mode'}
+        <span className="
+          text-[10px] font-black uppercase tracking-[0.2em]
+          text-dim group-hover:text-main
+          transition-colors whitespace-nowrap
+        ">
+          {getLabel()}
         </span>
       )}
     </button>
