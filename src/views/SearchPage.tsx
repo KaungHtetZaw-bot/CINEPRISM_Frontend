@@ -1,21 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Search as SearchIcon, X } from 'lucide-react';
-import { useMediaStore } from '../store/useMediaStore';
 import { Spinner } from '../components/shared/Spinner';
 import MovieGrid from '../components/movie/MovieGrid';
+import { useSearch } from '../queries/mediaQueries';
 
 const SearchPage = () => {
   const [query, setQuery] = useState('');
-  const { searchMedia, searchResults, isLoading, clearSearch } = useMediaStore();
-
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
+  
   useEffect(() => {
-    const timeOutId = setTimeout(() => {
-      if (query) searchMedia(query);
-      else clearSearch();
-    }, 500);
-    return () => clearTimeout(timeOutId);
+    const handler = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+    
+    return () => clearTimeout(handler);
   }, [query]);
-
+  
+  const { data: searchResults, isLoading,isFetching } = useSearch(debouncedQuery);
   return (
     <div className="min-h-screen bg-app p-6 md:p-12">
       <div className="max-w-4xl mx-auto mb-6">
@@ -43,9 +44,9 @@ const SearchPage = () => {
       </div>
 
       <div className="max-w-7xl mx-auto">
-        {isLoading ? (
+        {isLoading || (isFetching && debouncedQuery !== query) ? (
           < Spinner />
-        ) : searchResults.length > 0 ? (
+        ) : searchResults && searchResults.length > 0 ? (
           <MovieGrid movies={searchResults} isLoading={isLoading}/>
         ) : query ? (
           <div className="text-center py-20">

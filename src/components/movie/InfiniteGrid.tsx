@@ -1,25 +1,30 @@
 import { useEffect, useRef } from 'react';
-import { useMediaStore } from '../../store/useMediaStore';
+import { usePopularInfinite } from '../../queries/mediaQueries';
 import MovieCard from './MovieCard';
 import MovieSkeleton from '../skeleton/MovieSkeleton';
 import { useMediaNavigation } from '../../utils/useMediaNavigation'
 
 const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
-  const { popularMovies, popularTV, fetchPopularInfinite, hasMore, isInitialLoading, isFetchingMore } = useMediaStore();
+  const { 
+    data, 
+    fetchNextPage, 
+    hasNextPage, 
+    isFetchingNextPage, 
+    isLoading 
+  } = usePopularInfinite(type);
   const observerTarget = useRef(null);
   const { goToDetails } = useMediaNavigation();
-  
-  const medias = type === 'movie' ? popularMovies : popularTV;
+  const medias = data?.pages.flatMap((page) => page.results) ?? [];
 
   useEffect(() => {
-    fetchPopularInfinite(type, true);
-  }, [type, fetchPopularInfinite]);
+    fetchNextPage();
+  }, [type, fetchNextPage]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isFetchingMore && !isInitialLoading) {
-          fetchPopularInfinite(type);
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage && !isLoading) {
+          fetchNextPage();
         }
       },
       // {threshold: 0.9}
@@ -32,7 +37,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
     return () => {
       if (currentTarget) observer.unobserve(currentTarget);
     };
-  }, [hasMore, isFetchingMore, isInitialLoading, type, fetchPopularInfinite]);
+  }, [hasNextPage, isFetchingNextPage, isLoading, type, fetchNextPage]);
 
   return (
     <div className="md:py-6 py-0 px-4 lg:px-8">
@@ -48,7 +53,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
 
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4"> 
         
-        {medias.length === 0 && isInitialLoading &&
+        {medias.length === 0 && isLoading &&
           Array.from({ length: 20 }).map((_, i) => (
             <div key={`initial-${i}`} className="opacity-50">
                <MovieSkeleton />
@@ -79,7 +84,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
             </div>
           </div>
         ))}
-        {isFetchingMore && 
+        {isFetchingNextPage && 
           Array.from({ length: 20 }).map((_, i) => (
             <div key={`more-${i}`} className="opacity-50">
                <MovieSkeleton />
@@ -90,7 +95,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
 
       <div ref={observerTarget} className="h-40 w-full" />
       
-      {!hasMore && medias.length > 0 && (
+      {!hasNextPage && medias.length > 0 && (
         <div className="flex flex-col items-center py-20 space-y-4">
           <div className="h-px w-20 bg-white/10" />
           <p className="text-zinc-600 text-[9px] font-black uppercase tracking-[0.5em] text-center">

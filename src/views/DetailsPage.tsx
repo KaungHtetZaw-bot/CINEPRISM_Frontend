@@ -1,24 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Play, Heart, Star, Bookmark, MessageSquare, Share2 } from 'lucide-react';
-import { useMediaStore } from '../store/useMediaStore';
+import { Play, Heart, Star, Bookmark } from 'lucide-react';
 import MovieDetailSkeleton from '../components/skeleton/MovieDetailSkeleton';
 import MovieRow from '../components/movie/MovieRow';
 import BackButton from '../components/shared/BackButton';
 import { getImageUrl } from '../utils/getImageUrl';
+import { useMediaDetails } from '../queries/mediaQueries';
 
 const Details = () => {
-  const { id, type } = useParams();
-  const { selectedMedia, fetchDetails, isLoading } = useMediaStore();
+  const { id, type } = useParams<{ id: string; type: 'movie' | 'tv' }>();
   const [isFav, setIsFav] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-
-  useEffect(() => {
-    if (id && type) {
-      fetchDetails(id, type);
-      window.scrollTo(0, 0);
-    }
-  }, [id, type, fetchDetails]);
+  const { data: selectedMedia, isLoading } = useMediaDetails(type!, id!);
 
   if (isLoading || !selectedMedia) return <MovieDetailSkeleton />;
 

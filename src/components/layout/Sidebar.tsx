@@ -1,4 +1,4 @@
-import { Home, Film, Tv, Clock, Heart, Settings, ChevronLeft } from 'lucide-react';
+import { Home, Film, Tv, Clock, Heart, Settings, ChevronLeft, Search } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from './Logo';
@@ -9,6 +9,7 @@ const Sidebar = () => {
 
   const menuItems = [
     { icon: Home, label: 'Home', path: '/browse' },
+    { icon: Search, label: 'Search', path: '/search' },
     { icon: Film, label: 'Movies', path: '/media/movie' },
     { icon: Tv, label: 'TV Shows', path: '/media/tv' },
     { icon: Clock, label: 'Recent', path: '/recent' },
