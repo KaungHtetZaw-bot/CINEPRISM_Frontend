@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:ital,wght@1,900&family=JetBrains+Mono:wght@700&display=swap');
 
 @theme {
   --color-app: var(--bg-app);
@@ -19,7 +20,14 @@
   --accent-gradient-start: var(--accent);
   --accent-gradient-end: var(--accent-soft);
 
+  --font-heading: 'Outfit', sans-serif;
   --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Weights & Spacing Extensions */
+  --font-weight-black: 900;
+  --tracking-tighter: -0.05em;
+  --tracking-tightest: -0.075em;
 }
 
 :root {
@@ -138,6 +146,7 @@ body {
   background-color: var(--bg-app);
   color: var(--text-main);
   font-family: var(--font-sans);
+  overflow: hidden;
 }
 
 button {

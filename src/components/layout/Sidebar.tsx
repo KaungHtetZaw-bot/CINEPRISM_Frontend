@@ -50,7 +50,6 @@ const Sidebar = () => {
               ${isActive 
                 ? 'bg-accent/10 text-accent font-black' 
                 : 'text-dim hover:bg-surface-2 hover:text-main'}
-              ${item.special && !isActive ? 'text-accent/70 hover:text-accent' : ''}
             `}
           >
             {({ isActive }) => (
@@ -65,7 +64,6 @@ const Sidebar = () => {
                   className={`
                     transition-transform duration-300 group-hover:scale-110
                     ${isCollapsed ? 'mx-auto' : ''}
-                    ${item.special ? 'drop-shadow-[0_0_8px_rgba(212,175,55,0.4)]' : ''}
                   `} 
                 />
 
@@ -89,7 +87,7 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="p-2 space-y-3 border-t border-border/50 bg-surface-2/30 backdrop-blur-md">
+      <div className="px-4 border-t border-border/50 bg-surface-2/30 backdrop-blur-md">
         <ThemeToggle />
 
         <NavLink 

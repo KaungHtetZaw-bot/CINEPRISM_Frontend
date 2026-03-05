@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom';
 const ProfilePage = () => {
   const { user, logout } = useAuthStore();
   
-  // 1. State for handling which field is being edited
   const [activeModal, setActiveModal] = useState<null | 'name' | 'email' | 'password'>(null);
   const [formData, setFormData] = useState({ name: user?.name || '', email: user?.email || '', password: '' });
 
@@ -25,8 +24,6 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen bg-app text-main p-6 md:p-12 pb-24 relative transition-colors duration-500">
       <div className="max-w-4xl mx-auto space-y-10">
-        
-        {/* HEADER: Identity */}
         <div className="flex items-center gap-6 pb-8 border-b border-border">
           <div className="w-20 h-20 bg-surface-1 border border-border flex items-center justify-center rounded-sm relative group">
               <User size={40} className="text-accent" />
@@ -51,14 +48,13 @@ const ProfilePage = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* LIBRARY NAVIGATION */}
           <section className="space-y-4">
             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-muted mb-4">Your Library</h3>
             <div className="space-y-2">
               {[
-                { label: 'Recently Watched', icon: Clock, path: '/recent', color: 'text-blue-400' },
-                { label: 'Bookmarks', icon: Bookmark, path: '/watchlist', color: 'text-accent' },
-                { label: 'Favorites', icon: Heart, path: '/mylist', color: 'text-rose-500' },
+                { label: 'Recently Watched', icon: Clock, path: '/mylist/recent', color: 'text-blue-400' },
+                { label: 'Bookmarks', icon: Bookmark, path: '/mylist/watchlist', color: 'text-accent' },
+                { label: 'Favorites', icon: Heart, path: '/mylist/favorite', color: 'text-rose-500' },
               ].map((item) => (
                 <Link key={item.label} to={item.path} className="group flex items-center justify-between p-4 bg-surface-1 border border-border rounded-sm hover:border-accent transition-all">
                   <div className="flex items-center gap-4">
@@ -71,7 +67,6 @@ const ProfilePage = () => {
             </div>
           </section>
 
-          {/* SECURITY SETTINGS */}
           <section className="space-y-4">
             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-muted mb-4">Security Settings</h3>
             <div className="border border-border rounded-sm divide-y divide-border">
@@ -101,7 +96,6 @@ const ProfilePage = () => {
           </section>
         </div>
 
-        {/* LOGOUT */}
         <div className="pt-10 flex border-t border-border">
           <button onClick={logout} className="flex items-center gap-3 px-8 py-3 border border-rose-500/30 text-rose-500 rounded-sm font-black text-[10px] uppercase tracking-widest hover:bg-rose-500 hover:text-white transition-all">
             <LogOut size={14} /> Log Out
@@ -109,7 +103,6 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      {/* 3. THE EDIT MODAL (Functional Overlay) */}
       {activeModal && (
         <div className="fixed inset-0 z-100 flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
           <div className="bg-surface-2 border border-border w-full max-w-md p-8 rounded-sm shadow-2xl animate-in zoom-in-95 duration-200">

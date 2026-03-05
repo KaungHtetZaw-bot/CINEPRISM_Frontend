@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { useMediaStore } from '../store/useMediaStore';
 import type{ Movie } from '../types/movie';
 import { useLocation } from 'react-router-dom';
+import { useAddToLists } from '../queries/mediaQueries';
 
 export const useMediaNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { addToRecent } = useMediaStore();
+
+  const { mutate: addToRecent } = useAddToLists('recent');
 
   const goToDetails = (movie: Movie) => {
     addToRecent(movie);

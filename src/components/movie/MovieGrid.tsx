@@ -4,7 +4,8 @@ import MovieSkeleton from '../skeleton/MovieSkeleton';
 import type { Movie } from '../../types/movie';
 import {useMediaNavigation} from "../../utils/useMediaNavigation"
 import { Trash } from 'lucide-react';
-import { useMediaStore } from '../../store/useMediaStore';
+import { useParams } from 'react-router-dom';
+import { useRemoveFromLists } from '../../queries/mediaQueries';
 
 interface MovieGridProps {
   movies: Movie[];
@@ -12,16 +13,18 @@ interface MovieGridProps {
   limit?: number;
 }
 
+type FlagType = 'recent' | 'watchlist' | 'favorite';
+
 const MovieGrid: React.FC<MovieGridProps> = ({ movies, isLoading, limit }) => {
   const { goToDetails } = useMediaNavigation();
-  const {removeFromRecent} = useMediaStore();
-  
+  const { type: flag_type } = useParams<{ type: FlagType }>();
+  const { mutate: removeMovie } = useRemoveFromLists(flag_type || 'recent');
   return (
     <section className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-6">
       {movies.map((movie, index) => (
         <div key={`${movie.id}-${index}`} className="relative group mb-4">
           <button 
-            onClick={()=>removeFromRecent(movie.id,movie.type || movie.media_type)} 
+            onClick={()=>removeMovie(movie)} 
             className="absolute top-2 right-2 z-50 p-1.5 
             border border-border text-main rounded-sm
             opacity-0 group-hover:opacity-100 
