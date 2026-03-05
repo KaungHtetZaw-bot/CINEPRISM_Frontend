@@ -48,7 +48,7 @@ const MobileHeader = () => {
         </div>
 
         <div className="flex items-center gap-6">
-          <Link to={'/vip'} className="flex items-center gap-2 group">
+          <Link to={'/vip-purchase'} className="flex items-center gap-2 group">
             <div className="relative">
               <Crown size={18} className="text-accent group-hover:scale-110 transition-transform" />
               <div className="absolute inset-0 bg-accent blur-md opacity-20 group-hover:opacity-40 transition-opacity" />

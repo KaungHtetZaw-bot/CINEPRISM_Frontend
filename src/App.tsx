@@ -5,13 +5,14 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import LoginPage from './views/LoginPage';
 import RegisterPage from './views/RegisterPage';
 import MainLayout from './components/layout/MainLayout';
-import RecentPage from './views/RecentPage';
+import UserListPage from './views/UserListPage';
 import Details from './views/DetailsPage';
 import SearchPage from './views/SearchPage';
 import HomePage from './views/HomePage';
 import NotFoundPage from './views/NotFoundPage';
 import MediaPage from './views/MediaPage';
 import ProfilePage from './views/ProfilePage';
+import VIPPurchasePage from './views/VIPPurchasePage';
 
 const App = () => {
   return (
@@ -24,10 +25,11 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route path="/browse" element={<HomePage />} />
-          <Route path="/recent" element={<RecentPage />} />
+          <Route path="/mylist/:type" element={<UserListPage />} />
           <Route path='/search' element={<SearchPage/>}/>
           <Route path='/media/:type' element={<MediaPage />} />
           <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/vip-purchase' element={<VIPPurchasePage />} />
           {/* <Route path="/settings" element={<SettingsPage />} /> */}
         </Route>
           <Route path="*" element={<NotFoundPage />} />
