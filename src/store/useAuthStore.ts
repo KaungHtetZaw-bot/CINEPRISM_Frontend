@@ -6,6 +6,9 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  is_vip: boolean;
+  vip_expires_at: number | null;
+  email_verified_at: number | null;
   avatar?: string;
   role?: string;
 }
@@ -18,7 +21,7 @@ interface AuthState {
   login: (credentials: any) => Promise<boolean>;
   logout: () => void;
   register: (data: any) => Promise<void>;
-  verifyOTP: (data: { email: string; code: string }) => Promise<void>;
+  verifyOTP: (data: any, code: string) => Promise<void>;
   setToken: (token: string | null) => void;
 }
 
@@ -47,25 +50,11 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      register: async (formData) => {
+      verifyOTP: async ( formData, code) => {
         set({ isLoading: true, error: null });
         try {
-          const { data } = await api.post('/register', formData);
-          set({ user: data.user, token: data.token, isLoading: false });
-        } catch (error: any) {
-          set({ 
-            isLoading: false, 
-            error: error.response?.data?.message || 'Registration failed' 
-          });
-          throw error;
-        }
-      },
-
-      verifyOTP: async ({ email, code }) => {
-        set({ isLoading: true, error: null });
-        try {
-          const { data } = await api.post('/verify-otp', { email, code });
-          set({ user: data.user, token: data.token, isLoading: false });
+          const { data } = await api.post('/verify-code', { ...formData, code });
+          set({ user: data.user, token: data.access_token, isLoading: false });
         } catch (error: any) {
           set({ 
             isLoading: false,
@@ -74,6 +63,22 @@ export const useAuthStore = create<AuthState>()(
           throw error;
         }
         },
+
+      register: async (formData) => {
+        set({ isLoading: true, error: null });
+        try {
+        const {data} = await api.post('/register', formData);
+          set({ isLoading: false });
+          console.log('Registration successful:', data.message);
+          return data.message;
+        } catch (error: any) {
+          set({ 
+            isLoading: false, 
+            error: error.response?.data?.message || 'Registration failed' 
+          });
+          throw error;
+        }
+      },
 
       logout: () => {
         set({ user: null, token: null, error: null });
