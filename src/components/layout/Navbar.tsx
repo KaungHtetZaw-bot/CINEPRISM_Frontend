@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Logo from './Logo';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const { scrollY } = useScroll();
@@ -30,9 +31,9 @@ const Navbar = () => {
       <Logo />  
 
       <div className="flex items-center gap-8">
-        <button className="bg-main text-app px-5 py-2 rounded-full font-bold text-xs tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10">
+        <Link to="/login" className="bg-main text-app px-5 py-2 rounded-full font-bold text-xs tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10">
           JOIN NOW
-        </button>
+        </Link>
       </div>
     </motion.nav>
   );

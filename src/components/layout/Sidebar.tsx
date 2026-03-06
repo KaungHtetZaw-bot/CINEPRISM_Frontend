@@ -1,15 +1,50 @@
 import { Home, Film, Tv, Clock, Heart, Settings, ChevronLeft, Search, Crown, Bookmark, LayoutGrid } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from './Logo';
 import ThemeToggle from './ThemeToggle';
+import { useAuthStore } from '../../store/useAuthStore';
 
 const Sidebar = () => {
+  const { user } = useAuthStore();
+  const isVip = user?.is_vip;
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [timeLeft, setTimeLeft] = useState("");
+
+  const calculateTimeLeft = () => {
+    if (!user?.vip_expires_at) return null;
+    
+    const expiry = new Date(user.vip_expires_at).getTime();
+    const now = new Date().getTime();
+    const diff = expiry - now;
+
+    if (diff <= 0) return "Expired";
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+    if (days > 0) return `${days}d ${hours}h`;
+    return `${hours}h`;
+  };
+
+  useEffect(() => {
+    if (user?.is_vip) {
+      setTimeLeft(calculateTimeLeft() || "");
+      const timer = setInterval(() => {
+        setTimeLeft(calculateTimeLeft() || "");
+      }, 60000); // Update every minute
+      return () => clearInterval(timer);
+    }
+  }, [user]);
 
   const menuItems = [
+    { 
+      icon: Crown, 
+      label: isVip ? 'VIP Status' : 'Upgrade to VIP', 
+      path: isVip ? '/profile/subscription' : '/vip-purchase',
+      isPremium: true
+    },
     { icon: Home, label: 'Home', path: '/browse' },
-    { icon: Crown, label: 'VIP Plan', path: '/vip-purchase'},
     { icon: Search, label: 'Search', path: '/search' },
     { icon: Film, label: 'Movies', path: '/media/movie' },
     { icon: Tv, label: 'TV Shows', path: '/media/tv' },
@@ -39,6 +74,38 @@ const Sidebar = () => {
         </button>
       </div>
 
+      {!isCollapsed && user?.is_vip && (
+        <div className="mx-4 mt-auto mb-4 p-4 rounded-2xl bg-gradient-to-br from-accent/20 via-accent/5 to-transparent border border-accent/20 relative overflow-hidden group">
+          {/* Animated Background Shine */}
+          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/5 to-transparent" />
+          
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-1.5 rounded-lg bg-accent/20 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+              <Crown size={14} className="text-accent" />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-accent">
+              VIP Active
+            </span>
+          </div>
+
+          <div className="space-y-1">
+            <p className="text-[11px] text-main font-bold italic tracking-tight">
+              {timeLeft}
+            </p>
+            {/* Minimal Progress Bar (Optional) */}
+            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+              <div className="h-full bg-accent w-2/3 animate-pulse" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isCollapsed && user?.is_vip && (
+        <div className="mx-auto mb-4 p-2 rounded-full bg-accent/10 border border-accent/30 animate-pulse">
+          <Crown size={16} className="text-accent" />
+        </div>
+      )}
+
       {/* Navigation */}
       <nav className="flex-1 px-4 space-y-1.5 mt-4 overflow-y-auto no-scrollbar">
         {menuItems.map((item) => (
@@ -60,10 +127,12 @@ const Sidebar = () => {
                 
                 <item.icon 
                   size={20} 
-                  strokeWidth={isActive ? 2.5 : 1.5} 
+                  strokeWidth={isActive || (item.isPremium && isVip) ? 2.5 : 1.5} 
                   className={`
                     transition-transform duration-300 group-hover:scale-110
                     ${isCollapsed ? 'mx-auto' : ''}
+                    ${item.isPremium && !isVip ? 'text-accent animate-pulse' : ''}
+                    ${item.isPremium && isVip ? 'text-accent drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]' : ''}
                   `} 
                 />
 
@@ -87,7 +156,7 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="px-4 border-t border-border/50 bg-surface-2/30 backdrop-blur-md">
+      <div className="px-4 border-t border-border/50 bg-surface-2/30 backdrop-blur-md">  
         <ThemeToggle />
 
         <NavLink 
