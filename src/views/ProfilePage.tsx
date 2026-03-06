@@ -3,7 +3,7 @@ import { useAuthStore } from '../store/useAuthStore';
 import { 
   LogOut, User, Mail, ShieldCheck, 
   Clock, Bookmark, Heart, ChevronRight, 
-  Lock, Edit3, KeyRound, X 
+  Edit3, KeyRound, X 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

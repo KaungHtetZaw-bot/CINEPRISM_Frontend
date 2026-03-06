@@ -34,12 +34,11 @@ const UserListPage = () => {
             )}
         </h1>
 
-        {/* Accent Underline */}
         <div className="absolute -bottom-4 left-1 h-1.5 w-24 bg-accent rounded-full shadow-[0_0_15px_rgba(212,175,55,0.4)]" />
         </div>
       {isLoading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-          {Array.from({ length: 12 }).map((_, i) => (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-6">
+          {Array.from({ length: 20 }).map((_, i) => (
             <div key={`skeleton-${i}`}>
               <MovieSkeleton />
             </div>
@@ -47,7 +46,7 @@ const UserListPage = () => {
           ))}
         </div>
       ) : history.length > 0 ? (
-        <MovieGrid movies={history} isLoading={false}/>
+        <MovieGrid movies={history} isLoading={isLoading}/>
       ) : (
         <div className="col-span-full py-20 text-center">
           <p className="text-muted text-xs font-black uppercase tracking-[0.3em]">No history found</p>

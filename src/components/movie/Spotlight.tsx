@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../../types/movie';
 import SpotlightSkeleton from '../skeleton/SpotlightSkeleton';
-import { useMediaStore } from "../../store/useMediaStore";
 import { getImageUrl } from '../../utils/getImageUrl';
+import { useAddToLists } from '../../queries/mediaQueries';
 
 const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) => {
-  const { addToRecent } = useMediaStore();
   const navigate = useNavigate();
+  const { mutate:addToRecent } = useAddToLists('recent');
+
   const moreInfo = (movie:Movie) => {
     addToRecent(movie);
     const mediaType = movie.type || movie.media_type || (movie.title ? 'movie' : 'tv');
