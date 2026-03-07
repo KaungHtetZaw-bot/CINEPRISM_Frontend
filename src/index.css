@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:ital,wght@1,900&family=JetBrains+Mono:wght@700&display=swap');
+@import "tailwindcss";
 
 @theme {
   --color-app: var(--bg-app);

@@ -52,10 +52,9 @@ const ThemeToggle = ({ showLabel = true }: ThemeToggleProps) => {
     <button
       onClick={cycleTheme}
       className={`
-        relative flex items-center transition-all duration-300
+        relative flex items-center transition-all duration-300 rounded-xl
         hover:bg-surface-2 active:scale-[0.97] group
-        rounded-sm
-        ${showLabel ? 'p-3 gap-3 w-full' : 'w-10 h-10 justify-center'}
+        ${showLabel ? 'p-3.5 gap-3 w-full' : 'w-10 h-10 justify-center'}
       `}
       aria-label="Toggle Theme"
     >

@@ -1,4 +1,4 @@
-import { Home, Film, Tv, Clock, Heart, Settings, ChevronLeft, Search, Crown, Bookmark, LayoutGrid } from 'lucide-react';
+import { Home, Film, Tv, Clock, Heart, Settings, ChevronLeft, Search, Crown, Bookmark, LayoutGrid, LogOut } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from './Logo';
@@ -6,7 +6,7 @@ import ThemeToggle from './ThemeToggle';
 import { useAuthStore } from '../../store/useAuthStore';
 
 const Sidebar = () => {
-  const { user } = useAuthStore();
+  const { user,logout } = useAuthStore();
   const isVip = user?.is_vip;
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [timeLeft, setTimeLeft] = useState("");
@@ -14,19 +14,24 @@ const Sidebar = () => {
   const calculateTimeLeft = () => {
     if (!user?.vip_expires_at) return null;
     
+    // Parse the ISO string (JS handles the 'Z' as UTC automatically)
     const expiry = new Date(user.vip_expires_at).getTime();
-    const now = new Date().getTime();
+    
+    // Get current time in UTC
+    const now = new Date().getTime(); 
+    
     const diff = expiry - now;
 
     if (diff <= 0) return "Expired";
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
     if (days > 0) return `${days}d ${hours}h`;
-    return `${hours}h`;
-  };
-
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m remaining`;
+};
   useEffect(() => {
     if (user?.is_vip) {
       setTimeLeft(calculateTimeLeft() || "");
@@ -57,7 +62,7 @@ const Sidebar = () => {
   return (
     <aside className={`
       ${isCollapsed ? 'w-20' : 'w-64'} 
-      transition-all duration-500 bg-surface-1 border-r border-border/50 
+      transition-all duration-200 bg-surface-1 border-r border-border/50 
       flex flex-col h-screen sticky top-0 z-50 overflow-hidden
     `}>
       <div className="p-6 flex items-center justify-between min-h-24">
@@ -74,9 +79,8 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {!isCollapsed && user?.is_vip && (
-        <div className="mx-4 mt-auto mb-4 p-4 rounded-2xl bg-gradient-to-br from-accent/20 via-accent/5 to-transparent border border-accent/20 relative overflow-hidden group">
-          {/* Animated Background Shine */}
+      {user?.is_vip === 1 && !isCollapsed &&  (
+        <div className="mx-4 mt-auto mb-4 p-4 rounded-2xl bg-linear-to-br from-accent/20 via-accent/5 to-transparent border border-accent/20 relative overflow-hidden group">
           <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/5 to-transparent" />
           
           <div className="flex items-center gap-3 mb-2">
@@ -92,7 +96,6 @@ const Sidebar = () => {
             <p className="text-[11px] text-main font-bold italic tracking-tight">
               {timeLeft}
             </p>
-            {/* Minimal Progress Bar (Optional) */}
             <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
               <div className="h-full bg-accent w-2/3 animate-pulse" />
             </div>
@@ -100,7 +103,7 @@ const Sidebar = () => {
         </div>
       )}
 
-      {isCollapsed && user?.is_vip && (
+      {user?.is_vip === 1 && isCollapsed && (
         <div className="mx-auto mb-4 p-2 rounded-full bg-accent/10 border border-accent/30 animate-pulse">
           <Crown size={16} className="text-accent" />
         </div>
@@ -156,7 +159,7 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="px-4 border-t border-border/50 bg-surface-2/30 backdrop-blur-md">  
+      <div className="p-4 border-t border-border/50 bg-surface-2/30 backdrop-blur-md">  
         <ThemeToggle />
 
         <NavLink 
@@ -171,6 +174,18 @@ const Sidebar = () => {
             <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Settings</span>
           )}
         </NavLink>
+
+        <div className={`
+            flex items-center gap-4 p-3.5 rounded-xl transition-all group
+             text-dim hover:text-main hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 active:scale-95 cursor-pointer
+          `}
+          onClick={logout}
+        >
+          <LogOut size={20} strokeWidth={1.5} className={`${isCollapsed ? 'mx-auto' : ''}`} />
+          {!isCollapsed && (
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Logout</span>
+          )}
+        </div>
       </div>
     </aside>
   );
