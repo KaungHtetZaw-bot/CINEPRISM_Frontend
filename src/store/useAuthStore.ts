@@ -7,7 +7,7 @@ export interface User {
   name: string;
   email: string;
   is_vip: number;
-  vip_expires_at: number | null;
+  vip_expires_at: string | number | null;
   email_verified_at: number | null;
   avatar?: string;
   role?: string;
@@ -23,6 +23,7 @@ interface AuthState {
   register: (data: any) => Promise<void>;
   verifyOTP: (data: any, code: string) => Promise<void>;
   setToken: (token: string | null) => void;
+  setUser: (user: User) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -34,6 +35,8 @@ export const useAuthStore = create<AuthState>()(
       error: null,
 
       setToken: (token) => set({ token }),
+
+      setUser: (user) => set({ user }),
 
       login: async (credentials) => {
         set({ isLoading: true, error: null });

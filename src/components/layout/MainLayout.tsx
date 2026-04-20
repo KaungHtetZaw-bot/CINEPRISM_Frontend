@@ -5,10 +5,12 @@ import BottomNav from './BottomNav';
 import MobileHeader from './MobileHeader';
 import ScrollToTop from '../shared/ScrollToTop';
 import Navbar from './Navbar';
+import { usePurchaseBroadcast } from '../../hooks/usePurchaseBroadcast';
 
 const MainLayout = () => {
   const location = useLocation();
   const mainRef = useRef<HTMLDivElement | null>(null);
+  usePurchaseBroadcast();
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
   }, [location.pathname]);
