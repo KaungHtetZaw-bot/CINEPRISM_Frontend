@@ -73,12 +73,10 @@ const Sidebar = () => {
                 
                 <item.icon 
                   size={20} 
-                  strokeWidth={isActive || (item.isPremium && isVip) ? 2.5 : 1.5} 
+                  strokeWidth={isActive || ( isVip ) ? 2.5 : 1.5} 
                   className={`
                     transition-transform duration-300 group-hover:scale-110
                     ${isCollapsed ? 'mx-auto' : ''}
-                    ${item.isPremium && !isVip ? 'text-accent animate-pulse' : ''}
-                    ${item.isPremium && isVip ? 'text-accent drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]' : ''}
                   `} 
                 />
 
