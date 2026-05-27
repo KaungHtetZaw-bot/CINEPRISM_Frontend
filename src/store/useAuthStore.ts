@@ -47,7 +47,7 @@ export const useAuthStore = create<AuthState>()(
         } catch (error: any) {
           set({ 
             isLoading: false, 
-            error: error.response?.data?.message || 'Login failed' 
+            error: error.response?.data?.error || 'Login failed' 
           });
           return false;
         }
@@ -75,9 +75,10 @@ export const useAuthStore = create<AuthState>()(
           console.log('Registration successful:', data.message);
           return data.message;
         } catch (error: any) {
+          console.log("asofihw",error.response)
           set({ 
             isLoading: false, 
-            error: error.response?.data?.message || 'Registration failed' 
+            error: error.response?.data?.errors || 'Registration failed' 
           });
           throw error;
         }

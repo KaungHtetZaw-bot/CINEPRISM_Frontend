@@ -1,54 +1,17 @@
 import { Home, Film, Tv, Clock, Heart, Settings, ChevronLeft, Search, Crown, Bookmark, LayoutGrid, LogOut } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from './Logo';
 import ThemeToggle from './ThemeToggle';
 import { useAuthStore } from '../../store/useAuthStore';
+import VipCard from '../ui/VipCard';
 
 const Sidebar = () => {
   const { user,logout } = useAuthStore();
   const isVip = user?.is_vip;
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [timeLeft, setTimeLeft] = useState("");
-
-  const calculateTimeLeft = () => {
-    if (!user?.vip_expires_at) return null;
-    
-    // Parse the ISO string (JS handles the 'Z' as UTC automatically)
-    const expiry = new Date(user.vip_expires_at).getTime();
-    
-    // Get current time in UTC
-    const now = new Date().getTime(); 
-    
-    const diff = expiry - now;
-
-    if (diff <= 0) return "Expired";
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-    if (days > 0) return `${days}d ${hours}h`;
-    if (hours > 0) return `${hours}h ${minutes}m`;
-    return `${minutes}m remaining`;
-};
-  useEffect(() => {
-    if (user?.is_vip) {
-      setTimeLeft(calculateTimeLeft() || "");
-      const timer = setInterval(() => {
-        setTimeLeft(calculateTimeLeft() || "");
-      }, 60000); // Update every minute
-      return () => clearInterval(timer);
-    }
-  }, [user]);
 
   const menuItems = [
-    { 
-      icon: Crown, 
-      label: isVip ? 'VIP Status' : 'Upgrade to VIP', 
-      path: isVip ? '/profile/subscription' : '/vip-purchase',
-      isPremium: true
-    },
     { icon: Home, label: 'Home', path: '/browse' },
     { icon: Search, label: 'Search', path: '/search' },
     { icon: Film, label: 'Movies', path: '/media/movie' },
@@ -62,7 +25,7 @@ const Sidebar = () => {
   return (
     <aside className={`
       ${isCollapsed ? 'w-20' : 'w-64'} 
-      transition-all duration-200 bg-surface-1 border-r border-border/50 
+      transition-all duration-200 border-r border-border/50 
       flex flex-col h-screen sticky top-0 z-50 overflow-hidden
     `}>
       <div className="p-6 flex items-center justify-between min-h-24">
@@ -79,31 +42,11 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {user?.is_vip === 1 && !isCollapsed &&  (
-        <div className="mx-4 mt-auto mb-4 p-4 rounded-2xl bg-linear-to-br from-accent/20 via-accent/5 to-transparent border border-accent/20 relative overflow-hidden group">
-          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-linear-to-r from-transparent via-white/5 to-transparent" />
-          
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-1.5 rounded-lg bg-accent/20 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-              <Crown size={14} className="text-accent" />
-            </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-accent">
-              VIP Active
-            </span>
-          </div>
-
-          <div className="space-y-1">
-            <p className="text-[11px] text-main font-bold italic tracking-tight">
-              {timeLeft}
-            </p>
-            <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-              <div className="h-full bg-accent w-2/3 animate-pulse" />
-            </div>
-          </div>
-        </div>
+      {!isCollapsed &&  (
+        <VipCard />
       )}
 
-      {user?.is_vip === 1 && isCollapsed && (
+      {isCollapsed && (
         <div className="mx-auto mb-4 p-2 rounded-full bg-accent/10 border border-accent/30 animate-pulse">
           <Crown size={16} className="text-accent" />
         </div>
