@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
-import AuthLayout from '../components/auth/AuthLayout';
+import AuthLayout from '../../components/auth/AuthLayout';
 import { useState } from 'react';
-import { useAuthStore } from "../store/useAuthStore";
-import Alert from '../components/ui/Alert';
+import { useAuthStore } from '../store/useAuthStore';
+import Alert from '../../components/ui/Alert';
 import { Loader2, Mail, Lock } from 'lucide-react'; // Added icons for a better look
 
 const LoginPage = () => {

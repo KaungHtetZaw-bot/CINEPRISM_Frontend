@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Search as SearchIcon, X } from 'lucide-react';
-import { Spinner } from '../components/shared/Spinner';
-import MovieGrid from '../components/movie/MovieGrid';
-import { useSearch } from '../queries/mediaQueries';
+import { Spinner } from '../../components/shared/Spinner';
+import MovieGrid from '../../features/media/components/MovieGrid';
+import { useSearch } from '../../queries/mediaQueries';
 
 const SearchPage = () => {
   const [query, setQuery] = useState('');

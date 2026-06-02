@@ -1,6 +1,6 @@
-import MovieSkeleton from '../components/skeleton/MovieSkeleton';
-import MovieGrid from '../components/movie/MovieGrid';
-import { useGetLists } from '../queries/mediaQueries';
+import MovieSkeleton from '../../features/media/components/skeleton/MovieSkeleton';
+import MovieGrid from '../../features/media/components/MovieGrid';
+import { useGetLists } from '../../queries/mediaQueries';
 import { useParams } from 'react-router-dom';
 
 type FlagType = 'recent' | 'watchlist' | 'favorite';

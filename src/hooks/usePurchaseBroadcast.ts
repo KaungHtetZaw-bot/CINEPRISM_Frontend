@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { createEcho } from '../lib/echo';
-import type { User } from '../store/useAuthStore';
-import { useAuthStore } from '../store/useAuthStore';
+import type { User } from '../app/store/useAuthStore';
+import { useAuthStore } from '../app/store/useAuthStore';
 
 /**
  * Subscribes the logged-in customer to purchase approve/reject broadcasts (Laravel Reverb).

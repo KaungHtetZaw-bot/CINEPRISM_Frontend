@@ -1,51 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useInfiniteQuery } from '@tanstack/react-query';
-import api from "../api/axios";
-import type { Movie } from "../types/movie";
+import api from "../app/api/axios";
+import type { Movie } from "../features/media/types/media.type";
 
 type FlagType = 'recent' | 'watchlist' | 'favorite';
-
-export const useTrending = () => {
-  return useQuery({
-    queryKey: ['trending'],
-    queryFn: async () => {
-      const { data } = await api.get('/media/trending');
-      return data.results;
-    },
-    staleTime: 1000 * 60 * 30,
-  });
-};
-
-export const usePopular = (type: 'movie' | 'tv', page: number) => {
-  return useQuery({
-    queryKey: ['popular', type, page],
-    queryFn: async () => {
-      const { data } = await api.get(`/media/popular/${type}`, {
-        params: { page }
-      });
-      return data.results;
-    },
-    staleTime: 1000 * 60 * 30,
-  });
-};
-
-export const usePopularInfinite = (type: 'movie' | 'tv') => {
-  return useInfiniteQuery({
-    queryKey: ['popular', type],
-    initialPageParam: 1,
-    queryFn: async ({ pageParam }) => {
-      const { data } = await api.get(`/media/popular/${type}`, {
-        params: { page: pageParam }
-      });
-      return data;
-    },
-    getNextPageParam: (lastPage, pages) => {
-      return pages.length < lastPage.total_pages
-        ? pages.length + 1
-        : undefined;
-    },
-  });
-};
 
 export const useSearch = (query: string) => {
   return useQuery({
@@ -59,6 +16,17 @@ export const useSearch = (query: string) => {
     },
     enabled: !!query,
     staleTime: 1000 * 60 * 30,
+  });
+};
+
+export const useGenres = (media_type: 'movie' | 'tv') => {
+  return useQuery({
+    queryKey: ['genres', media_type],
+    queryFn: async () => {
+      const { data } = await api.get(`/media/genres/${media_type}`);
+      return data.results;
+    },
+    staleTime: 1000 * 60 * 60,
   });
 };
 

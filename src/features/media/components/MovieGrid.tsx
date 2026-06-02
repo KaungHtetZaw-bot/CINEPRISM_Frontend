@@ -1,11 +1,11 @@
 import React from 'react';
 import MovieCard from './MovieCard';
-import MovieSkeleton from '../skeleton/MovieSkeleton';
-import type { Movie } from '../../types/movie';
-import {useMediaNavigation} from "../../utils/useMediaNavigation"
+import MovieSkeleton from './skeleton/MovieSkeleton';
+import type { Movie } from '../types/media.type';
+import {useMediaNavigation} from "../utils/useMediaNavigation"
 import { Trash } from 'lucide-react';
 import { useParams } from 'react-router-dom';
-import { useRemoveFromLists } from '../../queries/mediaQueries';
+import { useRemoveFromLists } from '../../../queries/mediaQueries';
 
 interface MovieGridProps {
   movies: Movie[];

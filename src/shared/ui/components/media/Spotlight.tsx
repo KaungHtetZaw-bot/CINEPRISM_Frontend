@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import type { Movie } from '../../types/movie';
-import SpotlightSkeleton from '../skeleton/SpotlightSkeleton';
-import { getImageUrl } from '../../utils/getImageUrl';
-import { useAddToLists } from '../../queries/mediaQueries';
+import type { Movie } from '../../../../features/media/types/media.type';
+import SpotlightSkeleton from '../../../../features/media/components/skeleton/SpotlightSkeleton';
+import { getImageUrl } from '../../../../features/media/utils/getImageUrl';
+import { useAddToLists } from '../../../../queries/mediaQueries';
 
 const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) => {
   const navigate = useNavigate();

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Play, Heart, Star, Bookmark } from 'lucide-react';
-import MovieDetailSkeleton from '../components/skeleton/MovieDetailSkeleton';
-import MovieRow from '../components/movie/MovieRow';
-import BackButton from '../components/shared/BackButton';
-import { getImageUrl } from '../utils/getImageUrl';
-import { useMediaDetails, useAddToLists } from '../queries/mediaQueries';
+import MovieDetailSkeleton from '../../features/media/components/skeleton/MovieDetailSkeleton';
+import MovieRow from '../../features/media/components/MovieRow';
+import BackButton from '../../components/shared/BackButton';
+import { getImageUrl } from '../../features/media/utils/getImageUrl';
+import { useMediaDetails, useAddToLists } from '../../queries/mediaQueries';
 
 const Details = () => {
   const { id, type } = useParams<{ id: string; type: 'movie' | 'tv' }>();

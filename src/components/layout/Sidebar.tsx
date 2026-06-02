@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from './Logo';
 import ThemeToggle from './ThemeToggle';
-import { useAuthStore } from '../../store/useAuthStore';
+import { useAuthStore } from '../../app/store/useAuthStore';
 import VipCard from '../ui/VipCard';
 
 const Sidebar = () => {

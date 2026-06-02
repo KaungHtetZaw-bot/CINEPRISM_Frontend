@@ -1,5 +1,5 @@
 import { useMutation,useQuery, useQueryClient } from "@tanstack/react-query";
-import api from "../../api/axios";
+import api from "../../app/api/axios";
 
 export const useCreatePurchase = () => {
   const queryClient = useQueryClient();

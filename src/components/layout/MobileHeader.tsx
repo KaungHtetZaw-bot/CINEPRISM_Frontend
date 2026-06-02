@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import { useAuthStore } from '../../store/useAuthStore';
+import { useAuthStore } from '../../app/store/useAuthStore';
 import Logo from './Logo';
 import ThemeToggle from './ThemeToggle';
 import { Crown } from 'lucide-react';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { Movie } from '../../types/movie';
-import { getImageUrl } from '../../utils/getImageUrl';
+import type { Movie } from '../types/media.type';
+import { getImageUrl } from '../utils/getImageUrl';
 
 const MovieCard = ({ movie }: { movie: Movie }) => {
   const [isImgLoaded, setIsImgLoaded] = useState(false);

@@ -1,18 +1,18 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import LandingPage from './views/LandingPage';
-import ProtectedRoute from './routes/ProtectedRoute';
-import LoginPage from './views/LoginPage';
-import RegisterPage from './views/RegisterPage';
+import LandingPage from './app/pages/LandingPage';
+import ProtectedRoute from './app/routes/ProtectedRoute';
+import LoginPage from './app/pages/LoginPage';
+import RegisterPage from './app/pages/RegisterPage';
 import MainLayout from './components/layout/MainLayout';
-import UserListPage from './views/UserListPage';
-import Details from './views/DetailsPage';
-import SearchPage from './views/SearchPage';
-import HomePage from './views/HomePage';
-import NotFoundPage from './views/NotFoundPage';
-import MediaPage from './views/MediaPage';
-import ProfilePage from './views/ProfilePage';
-import VIPPurchasePage from './views/VIPPurchasePage';
+import UserListPage from './app/pages/UserListPage';
+import Details from './app/pages/MediaDetailsPage';
+import SearchPage from './app/pages/SearchPage';
+import HomePage from './app/pages/HomePage';
+import NotFoundPage from './app/pages/NotFoundPage';
+import MediaPage from './app/pages/MediaPage';
+import ProfilePage from './app/pages/ProfilePage';
+import VIPPurchasePage from './app/pages/VIPPurchasePage';
 
 const App = () => {
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuthStore } from "../../store/useAuthStore";
+import { useAuthStore } from "../../app/store/useAuthStore";
 import { Link } from "react-router-dom";
 
 const VipCard = () => { 

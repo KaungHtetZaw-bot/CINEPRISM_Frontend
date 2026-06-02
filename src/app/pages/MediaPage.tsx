@@ -1,5 +1,5 @@
 import { useParams, Navigate } from 'react-router-dom';
-import InfiniteGrid from '../components/movie/InfiniteGrid';
+import InfiniteGrid from '../../features/media/components/InfiniteGrid';
 
 const MediaPage = () => {
   const { type } = useParams();

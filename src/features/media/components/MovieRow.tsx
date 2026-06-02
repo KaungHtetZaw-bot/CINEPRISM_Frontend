@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import MovieCard from './MovieCard';
-import MovieSkeleton from '../skeleton/MovieSkeleton';
-import type { Movie } from '../../types/movie';
-import { useMediaNavigation } from '../../utils/useMediaNavigation';
+import MovieSkeleton from './skeleton/MovieSkeleton';
+import type { Movie } from '../types/media.type';
+import { useMediaNavigation } from '../utils/useMediaNavigation';
 
 interface MovieRowProps {
   movies: Movie[];

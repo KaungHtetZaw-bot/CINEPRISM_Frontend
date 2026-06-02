@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Crown, Upload, ChevronDown, Check, Loader2, X, CreditCard, Copy, Sparkles } from "lucide-react";
-import { useCreatePurchase } from "../hooks/subscription/usePurchase";
-import { useGetPlans } from "../hooks/subscription/useGetPlans";
-import { useGetPayments } from "../hooks/subscription/useGetPayments";
+import { useCreatePurchase } from "../../hooks/subscription/usePurchase";
+import { useGetPlans } from "../../hooks/subscription/useGetPlans";
+import { useGetPayments } from "../../hooks/subscription/useGetPayments";
 
 const VIPPurchasePage = () => {
   const navigate = useNavigate();

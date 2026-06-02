@@ -11,7 +11,6 @@ export interface Video {
 
 export interface Movie {
   id: number;
-  // Use optional chaining for titles since TMDB toggles between 'title' and 'name'
   title?: string; 
   name?: string; 
   poster_path: string | null;

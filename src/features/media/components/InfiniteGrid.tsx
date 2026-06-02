@@ -1,20 +1,15 @@
 import { useEffect, useRef } from 'react';
-import { usePopularInfinite } from '../../queries/mediaQueries';
 import MovieCard from './MovieCard';
-import MovieSkeleton from '../skeleton/MovieSkeleton';
-import { useMediaNavigation } from '../../utils/useMediaNavigation'
+import MovieSkeleton from './skeleton/MovieSkeleton';
+import { useMediaNavigation } from '../utils/useMediaNavigation'
+import { useInfinitePopularMoviesOrTv } from '../hooks/useInfinitePopularMoviesOrTv';
 
 const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
-  const { 
-    data, 
-    fetchNextPage, 
-    hasNextPage, 
-    isFetchingNextPage, 
-    isLoading 
-  } = usePopularInfinite(type);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfinitePopularMoviesOrTv(type);
+  
   const observerTarget = useRef(null);
   const { goToDetails } = useMediaNavigation();
-  const medias = data?.pages.flatMap((page) => page.results) ?? [];
+  const medias = data?.pages.flatMap((page) => page.results) || [];
 
   useEffect(() => {
     fetchNextPage();
@@ -61,7 +56,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
           ))
         }
 
-        {medias.map((media, index) => (
+        {medias.length > 0 && medias.map((media, index) => (
           <div 
             key={`${media.id}-${index}`} 
             onClick={() => goToDetails(media)}

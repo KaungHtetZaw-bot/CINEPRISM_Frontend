@@ -1,5 +1,5 @@
 import { Sun, Moon, Sparkles } from 'lucide-react';
-import { useThemeStore } from '../../store/themeStore ';
+import { useThemeStore } from '../../app/store/themeStore ';
 
 interface ThemeToggleProps {
   showLabel?: boolean;

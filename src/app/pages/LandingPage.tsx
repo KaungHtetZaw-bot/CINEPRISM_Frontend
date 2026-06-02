@@ -1,9 +1,9 @@
-import Navbar from '../components/layout/Navbar';
-import Hero from '../components/movie/Hero';
-import { useMovies } from '../hooks/useMovies';
-import tvDisplay from '../assets/images/tv_display.png';
+import Navbar from '../../components/layout/Navbar';
+import Hero from '../../shared/ui/components/media/Hero';
+import { useTrendingMedia } from '../../features/media/hooks/useTrendingMedia';
+import tvDisplay from '../../assets/images/tv_display.png';
 import { ChevronRight } from 'lucide-react';
-import MovieRow from '../components/movie/MovieRow';
+import MovieRow from '../../features/media/components/MovieRow';
 
 const FeatureSection = () => {
     return (
@@ -83,7 +83,7 @@ const Footer = () => {
 
 
 const LandingPage = () => {
-  const { movies, isLoading } = useMovies();
+  const { data: movies = [], isLoading } = useTrendingMedia();
   const heroMovie = movies[0]; 
   return (
     <div className="min-h-screen bg-app text-main selection:bg-accent selection:text-black transition-colors duration-500">

@@ -1,9 +1,9 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import AuthLayout from "../components/auth/AuthLayout";
-import OTPModal from "../components/auth/OTPModal";
+import AuthLayout from "../../components/auth/AuthLayout";
+import OTPModal from "../../components/auth/OTPModal";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import Alert from "../components/ui/Alert";
+import Alert from "../../components/ui/Alert";
 import { User, Mail, Lock, Loader2, ArrowRight } from "lucide-react";
 
 const RegisterPage = () => {
