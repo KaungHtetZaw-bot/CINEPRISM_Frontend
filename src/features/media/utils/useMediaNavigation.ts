@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import type{ Movie } from '../types/media.type';
+import type { Movie } from '../types/media.type';
 import { useLocation } from 'react-router-dom';
-import { useAddToLists } from '../../../queries/mediaQueries';
+import { useAddToLists } from '../../user/api/useListQueries';
 
 export const useMediaNavigation = () => {
   const navigate = useNavigate();
@@ -11,9 +11,9 @@ export const useMediaNavigation = () => {
 
   const goToDetails = (media: Movie) => {
     addToRecent(media);
-    const mediaType =  media.media_type || (media.title ? 'movie' : 'tv');
-    navigate(`/details/${mediaType}/${media.id}`,{
-      state:{from: location.state?.from || location.pathname}
+    const mediaType = media.media_type || (media.title ? 'movie' : 'tv');
+    navigate(`/details/${mediaType}/${media.id}`, {
+      state: { from: location.state?.from || location.pathname }
     });
   };
 

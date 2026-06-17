@@ -2,10 +2,10 @@ import React from 'react';
 import MovieCard from './MovieCard';
 import MovieSkeleton from './skeleton/MovieSkeleton';
 import type { Movie } from '../types/media.type';
-import {useMediaNavigation} from "../utils/useMediaNavigation"
+import { useMediaNavigation } from "../utils/useMediaNavigation"
 import { Trash } from 'lucide-react';
 import { useParams } from 'react-router-dom';
-import { useRemoveFromLists } from '../../../queries/mediaQueries';
+import { useRemoveFromLists } from '../../user/api/useListQueries';
 
 interface MovieGridProps {
   movies: Movie[];
@@ -23,18 +23,18 @@ const MovieGrid: React.FC<MovieGridProps> = ({ movies, isLoading, limit }) => {
     <section className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-6">
       {movies.map((movie, index) => (
         <div key={`${movie.id}-${index}`} className="relative group mb-4">
-          <button 
-            onClick={()=>removeMovie(movie)} 
+          <button
+            onClick={() => removeMovie(movie)}
             className="absolute top-2 right-2 z-50 p-1.5 
             border border-border text-main rounded-sm
             opacity-0 group-hover:opacity-100 
             hover:border-rose-500 hover:text-rose-500 hover:scale-110
             transition-all duration-300"
           >
-            <Trash size={14}/>
+            <Trash size={14} />
           </button>
-          
-          <div onClick={()=>goToDetails(movie)}>
+
+          <div onClick={() => goToDetails(movie)}>
             <MovieCard movie={movie} />
           </div>
           <div className="md:mt-4 mt-2 px-1 space-y-1">

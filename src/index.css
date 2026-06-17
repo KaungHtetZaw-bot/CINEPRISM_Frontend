@@ -42,15 +42,16 @@
   --text-muted: #8e8e93;
 
   /* Accent */
-  --accent: #d4af37;         /* refined gold */
+  --accent: #d4af37;
+  /* refined gold */
   --accent-soft: #f1d97a;
 
   /* Borders */
-  --border-subtle: rgba(255,255,255,0.06);
+  --border-subtle: rgba(255, 255, 255, 0.06);
 
   /* Extras */
   --bg-skeleton: #2a2a2f;
-  --shadow-color: rgba(0,0,0,0.6);
+  --shadow-color: rgba(0, 0, 0, 0.6);
   --logo-play-icon: #0a0a0a;
 
   color-scheme: dark;
@@ -68,10 +69,10 @@
   --accent: #c9a227;
   --accent-soft: #e7c95b;
 
-  --border-subtle: rgba(0,0,0,0.08);
+  --border-subtle: rgba(0, 0, 0, 0.08);
 
   --bg-skeleton: #d4d4d8;
-  --shadow-color: rgba(0,0,0,0.08);
+  --shadow-color: rgba(0, 0, 0, 0.08);
   --logo-play-icon: #000000;
 
   color-scheme: light;
@@ -89,10 +90,10 @@
   --accent: #e2b616;
   --accent-soft: #ffdf6b;
 
-  --border-subtle: rgba(255,255,255,0.08);
+  --border-subtle: rgba(255, 255, 255, 0.08);
 
   --bg-skeleton: #24242a;
-  --shadow-color: rgba(0,0,0,0.8);
+  --shadow-color: rgba(0, 0, 0, 0.8);
 
   color-scheme: dark;
 }
@@ -100,13 +101,21 @@
 
 
 @layer utilities {
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
   .shimmer-bg {
     @apply relative overflow-hidden;
+
     &::after {
       @apply absolute inset-0 content-[''] -translate-x-full;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
       animation: shimmer 2s infinite;
     }
   }
@@ -115,28 +124,15 @@
 @layer components {
 
   .nav-btn {
-    @apply absolute top-1/2 -translate-y-1/2 z-50
-           bg-surface-2/70 backdrop-blur-md rounded-full p-2
-           text-dim hover:text-accent
-           transition-all duration-300;
+    @apply absolute top-1/2 -translate-y-1/2 z-50 bg-surface-2/70 backdrop-blur-md rounded-full p-2 text-dim hover:text-accent transition-all duration-300;
   }
 
   .auth-input {
-    @apply w-full md:p-4 p-2 md:text-lg text-sm
-           bg-surface-1 border border-border
-           text-main rounded-sm
-           focus:outline-none focus:ring-1 focus:ring-accent
-           transition-all duration-300
-           placeholder:text-muted;
+    @apply w-full md:p-4 p-2 md:text-lg text-sm bg-surface-1 border border-border text-main rounded-sm focus:outline-none focus:ring-1 focus:ring-accent transition-all duration-300 placeholder:text-muted;
   }
 
   .auth-btn {
-    @apply w-full md:py-4 py-2 md:text-lg text-sm mt-4
-           bg-accent text-black font-black italic
-           uppercase tracking-widest rounded-sm
-           hover:bg-accent-soft
-           transition-all duration-300
-           active:scale-95;
+    @apply w-full md:py-4 py-2 md:text-lg text-sm mt-4 bg-accent text-black font-black italic uppercase tracking-widest rounded-sm hover:bg-accent-soft transition-all duration-300 active:scale-95;
   }
 }
 

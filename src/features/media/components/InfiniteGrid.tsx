@@ -2,11 +2,12 @@ import { useEffect, useRef } from 'react';
 import MovieCard from './MovieCard';
 import MovieSkeleton from './skeleton/MovieSkeleton';
 import { useMediaNavigation } from '../utils/useMediaNavigation'
-import { useInfinitePopularMoviesOrTv } from '../hooks/useInfinitePopularMoviesOrTv';
+import { useInfinitePopularMoviesOrTv } from '../api/mediaQueries';
+
 
 const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfinitePopularMoviesOrTv(type);
-  
+
   const observerTarget = useRef(null);
   const { goToDetails } = useMediaNavigation();
   const medias = data?.pages.flatMap((page) => page.results) || [];
@@ -22,7 +23,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
           fetchNextPage();
         }
       },
-      {threshold: 0.9}
+      { threshold: 0.9 }
       // { rootMargin: '600px' }
     );
 
@@ -46,8 +47,8 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
         </span>
       </div>
 
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4"> 
-        
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-4">
+
         {medias.length === 0 && isLoading &&
           Array.from({ length: 20 }).map((_, i) => (
             <div key={`initial-${i}`} className="opacity-50">
@@ -57,13 +58,13 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
         }
 
         {medias.length > 0 && medias.map((media, index) => (
-          <div 
-            key={`${media.id}-${index}`} 
+          <div
+            key={`${media.id}-${index}`}
             onClick={() => goToDetails(media)}
             className="cursor-pointer group relative transition-all duration-500"
           >
             <MovieCard movie={media} />
-            
+
             <div className="md:mt-4 mt-2 px-1 space-y-1">
               <p className="text-[10px] font-black uppercase text-muted tracking-tighter truncate">
                 {media.title || media.name}
@@ -72,7 +73,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
             </div>
           </div>
         ))}
-        {isFetchingNextPage && 
+        {isFetchingNextPage &&
           Array.from({ length: 20 }).map((_, i) => (
             <div key={`more-${i}`} className="opacity-50">
               <MovieSkeleton />
@@ -82,7 +83,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
       </div>
 
       <div ref={observerTarget} className="h-40 w-full" />
-      
+
       {!hasNextPage && medias.length > 0 && (
         <div className="flex flex-col items-center py-20 space-y-4">
           <div className="h-px w-20 bg-border" />
