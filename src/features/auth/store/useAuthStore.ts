@@ -62,10 +62,8 @@ export const useAuthStore = create<AuthState>()(
         try {
           const { data } = await api.post('/register', formData);
           set({ isLoading: false });
-          console.log('Registration successful:', data.message);
           return data.message;
         } catch (error: any) {
-          console.log("asofihw", error.response)
           set({
             isLoading: false,
             error: error.response?.data?.errors || 'Registration failed'

@@ -43,7 +43,7 @@ const UserListPage = () => {
 
           ))}
         </div>
-      ) : history.length > 0 ? (
+      ) : history && history.length > 0 ? (
         <MovieGrid movies={history} isLoading={isLoading} />
       ) : (
         <div className="col-span-full py-20 text-center">

@@ -121,30 +121,7 @@ const ProfilePage = () => {
                   onChange={(e) => setFormData({ ...formData, [activeModal!]: e.target.value })}
                   required
                 />
-                {
-                  activeModal === 'password' && (
-                    <>
-                      <input
-                        type={activeModal === 'password' ? 'password' : 'text'}
-                        autoFocus
-                        className="auth-input"
-                        placeholder={`Enter new ${activeModal}`}
-                        value={activeModal === 'password' ? formData.password : activeModal === 'name' ? formData.name : formData.email}
-                        onChange={(e) => setFormData({ ...formData, [activeModal!]: e.target.value })}
-                        required
-                      />
-                      <input
-                        type={activeModal === 'password' ? 'password' : 'text'}
-                        autoFocus
-                        className="auth-input"
-                        placeholder={`Enter new ${activeModal}`}
-                        value={activeModal === 'password' ? formData.password : activeModal === 'name' ? formData.name : formData.email}
-                        onChange={(e) => setFormData({ ...formData, [activeModal!]: e.target.value })}
-                        required
-                      />
-                    </>
-                  )
-                }
+
               </div>
               <button type="submit" className="auth-btn">Confirm Changes</button>
             </form>

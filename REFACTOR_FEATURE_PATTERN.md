@@ -1,235 +1,131 @@
-# Refactoring Guide: Feature-Based Folder Structure
+# Codebase Architecture: Feature-Based Folder Structure
 
-This document outlines the design patterns, target architecture, and step-by-step process for refactoring the **CINEPRISM Frontend** codebase from a mixed folder structure to a standardized **Feature-Based Pattern**.
+This document outlines the design patterns, directory architecture, and coding conventions for the **CINEPRISM Frontend** codebase, which has been refactored and standardized into a **Feature-Based Pattern**.
 
 ---
 
 ## 1. Core Philosophy of Feature-Based Architecture
 
-In a feature-based folder structure (often referred to as Feature-Driven or Domain-Driven React Architecture), code is grouped by **business domain/feature** rather than by technical role (e.g., hooks, pages, components). 
+In this architecture (often referred to as Feature-Driven React Architecture), code is grouped by **business domain/feature** rather than by technical role (e.g., hooks, pages, components).
 
 ### Key Benefits
 * **High Cohesion**: All code related to a single business capability (e.g., Authentication, Subscription, Media Browsing) lives in one folder. If you change a feature, you work inside that folder.
-* **Low Coupling**: Features communicate with each other through explicit public interfaces (via `index.ts` files acting as API boundaries), reducing spaghetti imports.
-* **Scalability**: As the application grows, adding new features is as simple as adding a new feature folder, without cluttering global directories.
+* **Low Coupling**: Features are isolated from each other. Communication across features is limited, and shared logic is explicitly placed in the `shared/` directory, reducing spaghetti code.
+* **Scalability**: As the application grows, adding new features is as simple as adding a new feature folder under `src/features/`, without cluttering global directories.
 * **Developer Velocity**: Finding components, API hooks, queries, and state management for a specific feature is fast and intuitive.
 
 ---
 
-## 2. Directory Structure Comparison
+## 2. Directory Structure
 
-### Current Structure (Mixed Pattern)
-At present, the project has a partially implemented `features/` directory but retains separate global folders for pages, hooks, Redux/Zustand stores, UI components, and React Query queries, leading to scattering of related logic:
+The codebase is organized into three primary structural zones:
+1. **`src/app/`**: Global App Shell configurations, core routing guards, and the primary HTTP client.
+2. **`src/features/`**: Business domains. Each subdirectory represents a self-contained feature module containing its own pages, components, hooks, stores, and types.
+3. **`src/shared/`**: Global infrastructure and UI blocks (layout wrapper, navbar, sidebar, buttons, alerts, landing/404 pages) that do not belong to a single feature.
+
+Below is the complete, current file layout:
 
 ```
 src/
-├── app/
+├── app/                              # Global App Shell & Entry Configurations
 │   ├── api/
-│   │   └── axios.ts
-│   ├── pages/            <-- Contains pages from all features mixed together
-│   │   ├── AuthCard.tsx
-│   │   ├── GenrsPage.tsx
-│   │   ├── HomePage.tsx
-│   │   ├── LandingPage.tsx
-│   │   ├── LoginPage.tsx
-│   │   ├── MediaDetailsPage.tsx
-│   │   ├── MediaPage.tsx
-│   │   ├── NotFoundPage.tsx
-│   │   ├── ProfilePage.tsx
-│   │   ├── RegisterPage.tsx
-│   │   ├── SearchPage.tsx
-│   │   ├── UserListPage.tsx
-│   │   └── VIPPurchasePage.tsx
+│   │   └── axios.ts                  # Axios client configured with baseURL and interceptors
 │   ├── routes/
-│   │   └── ProtectedRoute.tsx
+│   │   └── ProtectedRoute.tsx        # Router guard checking for auth tokens
 │   └── store/
-│       ├── themeStore .ts
-│       └── useAuthStore.ts
-├── components/          <-- Global components directory (some feature-specific)
-│   ├── auth/            <-- Auth-specific components
-│   ├── layout/          <-- App shell layouts
-│   ├── shared/          <-- General helpers
-│   └── ui/              <-- UI controls (some feature-specific like VipCard.tsx)
-├── features/
-│   └── media/           <-- Partial media feature implementation
+│       └── themeStore.ts             # Global layout & theme state (Zustand)
+│
+├── features/                         # Business Domains
+│   │
+│   ├── auth/                         # Authentication & Account Access
+│   │   ├── api/                      # (Placeholder for auth-specific api handlers)
+│   │   ├── components/               # Auth components (AuthLayout, OTPModal, OTPInput)
+│   │   ├── pages/                    # Auth pages (LoginPage, RegisterPage, AuthCard)
+│   │   ├── store/                    # useAuthStore.ts (Zustand auth state & api client logic)
+│   │   └── types/
+│   │       └── index.ts              # Common types (User interface definition)
+│   │
+│   ├── media/                        # Media Browsing, Genre lists, Detail views, and Search
+│   │   ├── api/
+│   │   │   └── mediaQueries.ts       # React Query hooks (useSearch, useGenres, useMediaDetails, etc.)
+│   │   ├── components/               # Media display and rows
+│   │   │   ├── skeleton/             # Loading skeleton components (MovieSkeleton, MovieDetailSkeleton, SpotlightSkeleton)
+│   │   │   ├── Hero.tsx              # Large media billboard banner
+│   │   │   ├── MovieCard.tsx         # Media poster thumbnail card
+│   │   │   ├── MovieRow.tsx          # Row slider of movie cards
+│   │   │   ├── Spotlight.tsx         # Featured slider carousel
+│   │   │   ├── MovieGrid.tsx         # Flex/grid layout for movies
+│   │   │   └── InfiniteGrid.tsx      # Infinite scrolling media grid
+│   │   ├── pages/
+│   │   │   ├── HomePage.tsx          # Main "/browse" hub
+│   │   │   ├── MediaDetailsPage.tsx  # Detailed view ("/details/:type/:id")
+│   │   │   ├── MediaPage.tsx         # Paginated category overview ("/media/:type")
+│   │   │   ├── GenrsPage.tsx         # Genre filtering ("media/genres/movie")
+│   │   │   └── SearchPage.tsx        # Search interface ("/search")
+│   │   ├── types/
+│   │   │   └── media.type.ts         # TypeScript types for Movie, TV series, etc.
+│   │   └── utils/
+│   │       ├── getImageUrl.ts        # Helper converting paths to TMDB image URLs
+│   │       └── useMediaNavigation.ts # Custom navigation utility for media routes
+│   │
+│   ├── subscription/                 # VIP Membership & Billing
+│   │   ├── api/
+│   │   │   ├── useGetPayments.ts     # React Query hooks fetching payments
+│   │   │   ├── useGetPlans.ts        # React Query hooks fetching membership plans
+│   │   │   └── usePurchase.ts        # React Query mutation hook for submitting slips
+│   │   ├── components/
+│   │   │   └── VipCard.tsx           # VIP tier pricing display
+│   │   ├── hooks/
+│   │   │   └── usePurchaseBroadcast.ts # Echo broadcast listener hook for real-time slip approvals
+│   │   ├── lib/
+│   │   │   └── echo.ts               # Laravel Echo websocket config
+│   │   └── pages/
+│   │       └── VIPPurchasePage.tsx   # Payment slip submission page
+│   │
+│   └── user/                         # Profiles & Personal Watchlists
 │       ├── api/
-│       ├── components/
-│       ├── hooks/
-│       ├── types/
-│       └── utils/
-├── hooks/               <-- Global hooks (some feature-specific)
-│   ├── subscription/    <-- Subscription-specific hooks
-│   └── usePurchaseBroadcast.ts
-├── queries/
-│   └── mediaQueries.ts  <-- Mixed media queries and user list queries
-├── shared/              <-- Duplicate shared layout assets and components
-│   └── ui/
-│       ├── components/media/Hero.tsx, Spotlight.tsx
-│       └── media/Spotlight.tsx
-└── App.tsx
-```
-
-### Proposed Structure (Standardized Feature-Based)
-In the new architecture, we organize all code under two primary zones:
-1. **`src/features/`**: Sub-folders grouped by domain. Each folder contains its own api hooks, pages, components, hooks, and types.
-2. **`src/shared/`**: Global reusable items (common UI components, app layout, configuration, global state) that do not belong to a single feature.
-
-```
-src/
-├── app/                      <-- Global App Shell & Entry Configurations
-│   ├── api/
-│   │   └── axios.ts          # Global axios client
-│   ├── providers/
-│   │   └── QueryProvider.tsx # TanStack Query configuration
-│   ├── routes/
-│   │   ├── AppRoutes.tsx     # Router configuration
-│   │   └── ProtectedRoute.tsx# Route guard
-│   └── store/
-│       └── themeStore.ts     # Global UI/Theme state (fixed typo name)
+│       │   └── useListQueries.ts     # React Query hooks (useGetLists, useAddToLists, useRemoveFromLists)
+│       └── pages/
+│           ├── ProfilePage.tsx       # User profile edit & settings page ("/profile")
+│           └── UserListPage.tsx      # Watchlists & Favorites view ("/mylist/:type")
 │
-├── features/                 <-- Business Domains
+├── shared/                           # Reusable UI & Core Shell
+│   ├── components/                   # Generic elements
+│   │   ├── Alert.tsx                 # Alert alerts and messages
+│   │   ├── BackButton.tsx            # Navigation back helper
+│   │   ├── Logo.tsx                  # CinePrism logo SVG
+│   │   ├── ScrollToTop.tsx           # Router navigation window reset
+│   │   ├── Spinner.tsx               # Simple CSS loader/spinner
+│   │   └── ThemeToggle.tsx           # Color scheme toggle
 │   │
-│   ├── auth/                 <-- Authentication Feature
-│   │   ├── api/              # Auth API calls (login, register, verify-code)
-│   │   ├── components/       # Auth components (OTPInput, OTPModal, AuthLayout)
-│   │   ├── pages/            # Auth pages (LoginPage, RegisterPage, AuthCard)
-│   │   ├── store/            # useAuthStore (Zustand auth state)
-│   │   ├── types/            # User, AuthState declarations
-│   │   └── index.ts          # Public exports
+│   ├── layout/                       # App frame and layout structures
+│   │   ├── MainLayout.tsx            # Base page container with navigation elements
+│   │   ├── Navbar.tsx                # Desktop top navigation header
+│   │   ├── Sidebar.tsx               # Desktop sidebar panel
+│   │   ├── MobileHeader.tsx          # Mobile header bar
+│   │   └── BottomNav.tsx             # Mobile navigation footer
 │   │
-│   ├── media/                <-- Media / Browse / Search Feature
-│   │   ├── api/              # Popular, trending, search, genres, media details queries
-│   │   ├── components/       # MovieCard, MovieRow, Hero, Spotlight, InfiniteGrid, skeletons
-│   │   ├── pages/            # HomePage, MediaDetailsPage, MediaPage, GenresPage, SearchPage
-│   │   ├── types/            # Movie, TV, Genre, Media types
-│   │   ├── utils/            # getImageUrl, useMediaNavigation
-│   │   └── index.ts          # Public exports
-│   │
-│   ├── subscription/         <-- Billing & VIP Membership Feature
-│   │   ├── api/              # useGetPlans, useGetPayments, useCreatePurchase
-│   │   ├── components/       # VipCard
-│   │   ├── hooks/            # usePurchaseBroadcast
-│   │   ├── pages/            # VIPPurchasePage
-│   │   └── index.ts          # Public exports
-│   │
-│   └── user/                 <-- User Lists, Watchlist, Profile Feature
-│       ├── api/              # Watchlist, favorites, recents (useGetLists, useAddToLists, etc.)
-│       ├── pages/            # ProfilePage, UserListPage
-│       └── index.ts          # Public exports
+│   └── pages/                        # Non-feature page entrypoints
+│       ├── LandingPage.tsx           # Landing/marketing page ("/")
+│       └── NotFoundPage.tsx          # Standard 404 page
 │
-├── shared/                   <-- Global Shared Infrastructure
-│   ├── components/           # UI elements (Alert, BackButton, ScrollToTop, Spinner, Logo)
-│   ├── layout/               # MainLayout, Sidebar, Navbar, BottomNav, MobileHeader
-│   └── pages/                # Generic/Utility pages
-│       ├── LandingPage.tsx   # Marketing landing page
-│       └── NotFoundPage.tsx  # Fallback 404 page
+├── assets/                           # Global static files
+│   └── images/
+│       ├── auth_bg.jpg               # Login/register background image
+│       ├── default-poster.png        # Media poster image fallback
+│       └── tv_display.png            # Static mockup asset
 │
-├── App.css
-├── App.tsx
-├── index.css
-└── main.tsx
+├── App.css                           # Root layouts and variables
+├── App.tsx                           # Central router mapping paths to pages
+├── index.css                         # Tailwind CSS initialization & global base styles
+└── main.tsx                          # App entrypoint initializing QueryClient
 ```
 
 ---
 
-## 3. Step-by-Step Refactoring Process
+## 3. Historical File Relocation Log
 
-Follow these steps sequentially to move the codebase to the target architecture safely.
-
-### Step 1: Initialize New Feature Folders
-Create the necessary feature folders to support the division of labor:
-* `src/features/auth/` (with `api`, `components`, `pages`, `store`, `types`)
-* `src/features/subscription/` (with `api`, `components`, `hooks`, `pages`)
-* `src/features/user/` (with `api`, `pages`)
-* Create `src/shared/components/` and `src/shared/layout/` structures.
-
-### Step 2: Migrate Shared Resources
-Consolidate layout and generic UI elements into the global `src/shared` directory to clear out `src/components`:
-1. Move `src/components/layout/*` to `src/shared/layout/`.
-2. Move `src/components/shared/*` to `src/shared/components/`.
-3. Move `src/components/ui/Alert.tsx` to `src/shared/components/Alert.tsx`.
-4. Move `src/components/layout/ThemeToggle.tsx` and `src/components/layout/Logo.tsx` to `src/shared/components/` as they are general UI blocks used within the layout.
-5. Move `src/app/pages/LandingPage.tsx` and `src/app/pages/NotFoundPage.tsx` to `src/shared/pages/` (or keep them directly in a unified routes system, but classified as shared pages).
-6. Resolve duplicates under `src/shared/ui/`:
-   * Clean up the redundant directories and merge `Hero.tsx` and `Spotlight.tsx` into `src/features/media/components/`.
-
-### Step 3: Refactor the `auth` Feature
-Gather auth-related scripts and pages in `src/features/auth`:
-1. **Types**: Create `src/features/auth/types/index.ts` containing the `User` and `AuthState` interface definitions.
-2. **Store**: Move `src/app/store/useAuthStore.ts` to `src/features/auth/store/useAuthStore.ts`.
-3. **Components**: Move `src/components/auth/AuthLayout.tsx`, `OTPInput.tsx`, and `OTPModal.tsx` to `src/features/auth/components/`.
-4. **Pages**: Move `src/app/pages/LoginPage.tsx`, `RegisterPage.tsx`, and `AuthCard.tsx` to `src/features/auth/pages/`.
-5. **Entrypoint**: Create `src/features/auth/index.ts` to expose essential elements:
-   ```typescript
-   export { default as LoginPage } from './pages/LoginPage';
-   export { default as RegisterPage } from './pages/RegisterPage';
-   export { default as AuthCard } from './pages/AuthCard';
-   export { useAuthStore } from './store/useAuthStore';
-   export type { User } from './types';
-   ```
-
-### Step 4: Refactor the `media` Feature
-Consolidate the rest of the media services and components:
-1. **Query Migration**: Split queries inside `src/queries/mediaQueries.ts`.
-   * Move the media-specific hooks (`useSearch`, `useGenres`, `useMediaDetails`) into `src/features/media/api/mediaQueries.ts` (or individual files in `src/features/media/api/`).
-2. **Pages**: Move media-related pages from `src/app/pages/` to `src/features/media/pages/`:
-   * `HomePage.tsx`
-   * `MediaDetailsPage.tsx` (renamed from `Details` imports for clarity)
-   * `MediaPage.tsx`
-   * `GenrsPage.tsx` (suggest renaming to `GenresPage.tsx`)
-   * `SearchPage.tsx`
-3. **Components**: Incorporate the duplicate/legacy media layout assets (like `Hero.tsx` and `Spotlight.tsx` from `src/shared/ui/`) directly into `src/features/media/components/`.
-4. **Entrypoint**: Create `src/features/media/index.ts`:
-   ```typescript
-   export { default as HomePage } from './pages/HomePage';
-   export { default as MediaDetailsPage } from './pages/MediaDetailsPage';
-   export { default as MediaPage } from './pages/MediaPage';
-   export { default as GenresPage } from './pages/GenrsPage';
-   export { default as SearchPage } from './pages/SearchPage';
-   ```
-
-### Step 5: Refactor the `subscription` Feature
-Isolate payment and membership tools:
-1. **API/Hooks**: Move `src/hooks/subscription/*` (`useGetPayments.ts`, `useGetPlans.ts`, `usePurchase.ts`) to `src/features/subscription/api/`.
-2. **Hooks**: Move `src/hooks/usePurchaseBroadcast.ts` to `src/features/subscription/hooks/usePurchaseBroadcast.ts`.
-3. **Components**: Move `src/components/ui/VipCard.tsx` to `src/features/subscription/components/VipCard.tsx`.
-4. **Pages**: Move `src/app/pages/VIPPurchasePage.tsx` to `src/features/subscription/pages/VIPPurchasePage.tsx`.
-5. **Entrypoint**: Create `src/features/subscription/index.ts`:
-   ```typescript
-   export { default as VIPPurchasePage } from './pages/VIPPurchasePage';
-   export { usePurchaseBroadcast } from './hooks/usePurchaseBroadcast';
-   ```
-
-### Step 6: Refactor the `user` Feature
-Gather personal lists and profiles:
-1. **API/Queries**: Move the user list queries (`useGetLists`, `useAddToLists`, `useRemoveFromLists`) from `src/queries/mediaQueries.ts` into `src/features/user/api/listQueries.ts`.
-2. **Pages**: Move `src/app/pages/ProfilePage.tsx` and `src/app/pages/UserListPage.tsx` to `src/features/user/pages/`.
-3. **Entrypoint**: Create `src/features/user/index.ts`:
-   ```typescript
-   export { default as ProfilePage } from './pages/ProfilePage';
-   export { default as UserListPage } from './pages/UserListPage';
-   export { useGetLists, useAddToLists, useRemoveFromLists } from './api/listQueries';
-   ```
-
-### Step 7: Update Routing, Imports, and Clean Up
-1. **Theme Store Fix**: Rename `src/app/store/themeStore .ts` to `src/app/store/themeStore.ts` (removing the accidental space in the filename) and update imports.
-2. **App.tsx Routing**: Update all routes to import directly from feature gateways (`index.ts` files):
-   ```typescript
-   import { LoginPage, RegisterPage, AuthCard } from './features/auth';
-   import { HomePage, MediaPage, GenresPage, SearchPage, MediaDetailsPage } from './features/media';
-   import { VIPPurchasePage } from './features/subscription';
-   import { ProfilePage, UserListPage } from './features/user';
-   import MainLayout from './shared/layout/MainLayout';
-   import LandingPage from './shared/pages/LandingPage';
-   import NotFoundPage from './shared/pages/NotFoundPage';
-   ```
-3. **Delete Empty Directories**: Remove the old global folders `src/queries/`, `src/components/`, `src/hooks/`, and empty folders within `src/app/pages/`.
-
----
-
-## 4. File Relocation Mapping Table
-
-The following table details the path transformations for every file in the refactoring process:
+The following table details the path transformations executed during the refactoring process:
 
 | Original Path | Target Path | Notes |
 | :--- | :--- | :--- |
@@ -246,7 +142,7 @@ The following table details the path transformations for every file in the refac
 | `src/app/pages/HomePage.tsx` | `src/features/media/pages/HomePage.tsx` | Main browse portal |
 | `src/app/pages/MediaDetailsPage.tsx` | `src/features/media/pages/MediaDetailsPage.tsx` | Detailed view of movies/shows |
 | `src/app/pages/MediaPage.tsx` | `src/features/media/pages/MediaPage.tsx` | Media listings page |
-| `src/app/pages/GenrsPage.tsx` | `src/features/media/pages/GenrsPage.tsx` | Genre browse page (recommend renaming to `GenresPage.tsx`) |
+| `src/app/pages/GenrsPage.tsx` | `src/features/media/pages/GenrsPage.tsx` | Genre browse page (`GenrsPage.tsx`) |
 | `src/app/pages/SearchPage.tsx` | `src/features/media/pages/SearchPage.tsx` | Dedicated search experience |
 | `src/shared/ui/components/media/Hero.tsx` | `src/features/media/components/Hero.tsx` | Promo billboard hero |
 | `src/shared/ui/components/media/Spotlight.tsx` | `src/features/media/components/Spotlight.tsx` | Spotlight row slider component |
@@ -258,7 +154,7 @@ The following table details the path transformations for every file in the refac
 | `src/components/ui/VipCard.tsx` | `src/features/subscription/components/VipCard.tsx`| VIP features card display |
 | `src/app/pages/VIPPurchasePage.tsx` | `src/features/subscription/pages/VIPPurchasePage.tsx` | Slip purchase upload portal |
 | **User/Lists Feature** | | |
-| `src/queries/mediaQueries.ts` (subset) | `src/features/user/api/listQueries.ts` | `useGetLists`, `useAddToLists`, `useRemoveFromLists` |
+| `src/queries/mediaQueries.ts` (subset) | `src/features/user/api/useListQueries.ts` | `useGetLists`, `useAddToLists`, `useRemoveFromLists` |
 | `src/app/pages/ProfilePage.tsx` | `src/features/user/pages/ProfilePage.tsx` | User profile, session, and info |
 | `src/app/pages/UserListPage.tsx` | `src/features/user/pages/UserListPage.tsx` | Lists browser (Watchlist, Favorites) |
 | **Shared Shell & UI Infrastructure** | | |
@@ -279,17 +175,20 @@ The following table details the path transformations for every file in the refac
 
 ---
 
-## 5. Architectural Principles for Feature Boundaries
+## 4. Architectural Principles for Feature Boundaries
 
-To maintain this directory layout, developers should follow these coding conventions:
+To maintain this directory layout and prevent code degradation:
 
-1. **Strict Feature Isolation (Encapsulation)**:
-   * A component in `features/auth/` should **never** import directly from internal modules of `features/media/` (e.g., `import { MovieCard } from '../media/components/MovieCard'`).
-   * If an item is needed outside its feature, it must be exported from the feature's `index.ts` file, and imported from the feature boundary (e.g., `import { MovieCard } from '@/features/media'`).
+### 1. Concept of Strict Feature Isolation
+* A component or page inside `features/auth/` should **never** import directly from internal modules of another feature (e.g., `import { MovieCard } from '../media/components/MovieCard'`).
+* Feature boundaries must be respected:
+  * If a component, hook, or utility is domain-independent and used across **three or more features**, it belongs in `src/shared/`.
+  * If it belongs to a specific domain (e.g. `Movie` types under `features/media`), keep it there and reference it using relative pathing.
 
-2. **When to Move Code to `shared/`**:
-   * If a component, hook, or utility is used across **three or more features** and does not represent a specific business domain, it belongs in `src/shared/`.
-   * Examples: `Alert`, generic custom inputs, theme status hooks, local storage wrappers.
+### 2. Relative Imports and Path Mapping
+* Use explicit, clean relative paths when importing modules.
+* Avoid importing components or hooks from files deep in folders of other features. Keep interactions modularized.
 
-3. **No Direct Inter-Feature Database/API Queries**:
-   * If feature A requires data controlled by feature B, it should utilize queries or hooks exported from feature B's public boundary, rather than rewriting Axios/Query instances pointing to the other domain's backend endpoints.
+### 3. API Query Isolation
+* Keep queries associated with specific backend routes organized under their respective features (e.g., watchlists under `features/user/api/useListQueries.ts`, payments under `features/subscription/api/`).
+* Avoid combining queries from different domain routes into a single queries file.
