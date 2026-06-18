@@ -1,4 +1,4 @@
-import { Home, Film, Tv, Clock, Heart, Settings, ChevronLeft, Search, Crown, Bookmark, LayoutGrid, LogOut } from 'lucide-react';
+import { Home, Film, Tv, Clock, Settings, ChevronLeft, Search, Crown, LayoutGrid, LogOut, User } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from '../components/Logo';
@@ -18,8 +18,8 @@ const Sidebar = () => {
     { icon: Tv, label: 'TV Shows', path: '/media/tv' },
     { icon: LayoutGrid, label: 'Genres', path: '/media/genres/movie' },
     { icon: Clock, label: 'Recent', path: '/mylist/recent' },
-    { icon: Heart, label: 'Favorite', path: '/mylist/favorite' },
-    { icon: Bookmark, label: 'Bookmark', path: '/mylist/watchlist' },
+    { icon: User, label: 'Profile', path: '/profile' },
+
   ];
 
   return (
@@ -102,19 +102,6 @@ const Sidebar = () => {
 
       <div className="p-4 border-t border-border/50 bg-surface-2/30 backdrop-blur-md">
         <ThemeToggle />
-
-        <NavLink
-          to="/settings"
-          className={({ isActive }) => `
-            flex items-center gap-4 p-3.5 rounded-xl transition-all group
-            ${isActive ? 'bg-accent text-black font-black' : 'text-dim hover:text-main hover:bg-surface-2'}
-          `}
-        >
-          <Settings size={20} strokeWidth={1.5} className={`${isCollapsed ? 'mx-auto' : ''} group-hover:rotate-45 transition-transform duration-500`} />
-          {!isCollapsed && (
-            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Settings</span>
-          )}
-        </NavLink>
 
         <div className={`
             flex items-center gap-4 p-3.5 rounded-xl transition-all group

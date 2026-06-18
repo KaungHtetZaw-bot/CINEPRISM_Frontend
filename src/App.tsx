@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
-import LandingPage from './shared/pages/LandingPage';
-import ProtectedRoute from './app/routes/ProtectedRoute';
 import { LoginPage, RegisterPage, AuthCard } from './features/auth';
 import { HomePage, MediaPage, GenresPage, SearchPage, MediaDetailsPage } from './features/media';
 import { VIPPurchasePage } from './features/subscription';
 import { ProfilePage, UserListPage } from './features/user';
+import ProtectedRoute from './app/routes/ProtectedRoute';
+import LandingPage from './shared/pages/LandingPage';
 import MainLayout from './shared/layout/MainLayout';
 import NotFoundPage from './shared/pages/NotFoundPage';
+import './App.css';
 
 const App = () => {
   return (
@@ -23,11 +23,10 @@ const App = () => {
             <Route path="/browse" element={<HomePage />} />
             <Route path="/mylist/:type" element={<UserListPage />} />
             <Route path='/search' element={<SearchPage />} />
-            <Route path='/media/:type' element={<MediaPage />} />
+            <Route path='/media/:type/:genreId?/:genreName?' element={<MediaPage />} />
             <Route path='/media/genres/movie' element={<GenresPage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/vip-purchase' element={<VIPPurchasePage />} />
-            {/* <Route path="/settings" element={<SettingsPage />} /> */}
           </Route>
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/details/:type/:id" element={<MediaDetailsPage />} />

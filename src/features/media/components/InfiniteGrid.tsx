@@ -2,11 +2,12 @@ import { useEffect, useRef } from 'react';
 import MovieCard from './MovieCard';
 import MovieSkeleton from './skeleton/MovieSkeleton';
 import { useMediaNavigation } from '../utils/useMediaNavigation'
-import { useInfinitePopularMoviesOrTv } from '../api/mediaQueries';
+import { useInfinitePopularMoviesOrTv, useMediaByGenres } from '../api/mediaQueries';
 
 
-const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfinitePopularMoviesOrTv(type);
+const InfiniteGrid = ({ type, genreId, genreName }: { type: 'movie' | 'tv', genreId:string | null, genreName : string | null }) => {
+  
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = genreId? useMediaByGenres(type, genreId) : useInfinitePopularMoviesOrTv(type);
 
   const observerTarget = useRef(null);
   const { goToDetails } = useMediaNavigation();
@@ -39,7 +40,7 @@ const InfiniteGrid = ({ type }: { type: 'movie' | 'tv' }) => {
     <div className="md:py-6 py-0 px-4 lg:px-8">
       <div className="md:mb-10 mb-3 flex items-baseline gap-4">
         <h2 className="md:text-4xl text-2xl font-black italic uppercase tracking-tighter text-main">
-          {type === 'movie' ? 'Cinema' : 'Series'}
+          {type === 'movie' ? 'Cinema' : 'Series'} {genreName && <span className='text-sm not-italic bg-linear-to-r from-accent to-accent-soft bg-clip-text text-transparent'>{genreName}</span>}
         </h2>
         <div className="h-0.5 flex-1 bg-border" />
         <span className="text-[10px] font-bold text-muted uppercase tracking-widest">

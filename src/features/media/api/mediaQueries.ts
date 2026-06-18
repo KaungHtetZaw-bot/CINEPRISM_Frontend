@@ -43,6 +43,24 @@ export const useGenres = (media_type: 'movie' | 'tv') => {
     });
 };
 
+export const useMediaByGenres = (mediaType: 'movie' | 'tv' , genreId: string) => {
+    return useInfiniteQuery({
+        queryKey: ['popular', mediaType],
+        initialPageParam: 1,
+        queryFn: async ({ pageParam }) => {
+            const { data } = await api.get(`/media/genre/${mediaType}/${genreId}?page=${pageParam}`)
+            console.log("genres",data)
+            return data;
+        },
+        getNextPageParam: (lastPage, pages) => {
+            return pages.length < lastPage.total_pages
+                ? pages.length + 1
+                : undefined;
+        },
+        staleTime: 1000 * 60 * 30,
+    });
+};
+
 export const useSearch = (query: string) => {
     return useQuery({
         queryKey: ['search', query],

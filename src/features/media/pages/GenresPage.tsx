@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useGenres } from '../api/mediaQueries';
+import { useNavigate } from 'react-router-dom';
 
 interface Genre {
   id: number;
@@ -9,16 +10,20 @@ interface Genre {
 type MediaType = 'movie' | 'tv';
 
 export default function GenresPage() {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<MediaType>('movie');
   const [selectedGenre, setSelectedGenre] = useState<number | null>(null);
-
-  // Dynamically fetch based on the active tab state
   const { data: genresData = [] } = useGenres(activeTab);
 
   const handleTabChange = (type: MediaType) => {
     setActiveTab(type);
-    setSelectedGenre(null); // Clear selected filter when changing category
+    setSelectedGenre(null);
   };
+
+  const showByGenre =async (genre:Genre) => {
+    setSelectedGenre(genre.id)
+    navigate(`/media/${activeTab}/${genre.id}/${genre.name}`)
+  }
 
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100 font-sans px-6 py-12 md:px-12 lg:px-24 selection:bg-[#e2b616] selection:text-black">
@@ -63,7 +68,7 @@ export default function GenresPage() {
           return (
             <button
               key={genre.id}
-              onClick={() => setSelectedGenre(genre.id)}
+              onClick={() => showByGenre(genre)}
               className={`
                 relative group flex flex-col justify-end items-start p-6 h-36 rounded-xl transition-all duration-300 ease-out border overflow-hidden text-left focus:outline-none focus:ring-2 focus:ring-[#e2b616] focus:ring-offset-2 focus:ring-offset-neutral-950
                 ${isSelected
