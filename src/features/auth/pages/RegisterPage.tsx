@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import Alert from "../../../shared/components/Alert";
 import { User, Mail, Lock, Loader2, ArrowRight } from "lucide-react";
@@ -8,7 +8,6 @@ import OTPModal from "../components/OTPModal";
 
 const RegisterPage = () => {
   const { register, verifyOTP, error, isLoading } = useAuthStore();
-  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -30,8 +29,8 @@ const RegisterPage = () => {
     try {
       await register(formData);
       setShowOTP(true);
-    } catch (err: any) {
-      // Error is handled by useAuthStore and caught by the useEffect below
+    } catch {
+      // Error is stored in the auth store and shown by the Alert below
     }
   };
 
@@ -39,28 +38,20 @@ const RegisterPage = () => {
     try {
       await verifyOTP(formData, code);
       navigate('/browse');
-    } catch (err: any) {
+    } catch {
+      // Error is stored in the auth store and shown by the Alert below
     }
   };
-
-  useEffect(() => {
-    if (error) {
-      setShowAlert(true);
-    }
-  }, [error]);
 
   return (
     <AuthLayout title="Create Account">
       {/* ERROR FEEDBACK */}
-      {showAlert && error && (
+      {error && (
         <div className="mb-6">
           <Alert
             message={error}
             type="error"
-            onClose={() => {
-              setShowAlert(false);
-              useAuthStore.setState({ error: null });
-            }}
+            onClose={() => useAuthStore.setState({ error: null })}
           />
         </div>
       )}

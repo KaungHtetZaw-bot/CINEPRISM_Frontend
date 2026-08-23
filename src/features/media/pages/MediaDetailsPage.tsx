@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Play, Heart, Star, Bookmark } from 'lucide-react';
 import { useMediaDetails } from '../api/mediaQueries';
-import { useAddToLists } from '../../user/api/useListQueries';
+import { useAddToLists, useRemoveFromLists } from '../../user/api/useListQueries';
 import MovieDetailSkeleton from '../components/skeleton/MovieDetailSkeleton';
 import BackButton from '../../../shared/components/BackButton';
 import { getImageUrl } from '../utils/getImageUrl';
@@ -14,16 +14,30 @@ const Details = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { data: selectedMedia, isLoading } = useMediaDetails(type!, id!);
   const { mutate: addToWatchlist } = useAddToLists('watchlist');
+  const { mutate: removeFromWatchlist } = useRemoveFromLists('watchlist');
   const { mutate: addToFavorite } = useAddToLists('favorite');
+  const { mutate: removeFromFavorite } = useRemoveFromLists('favorite');
 
+  // NOTE: isFav/isBookmarked are display-only until a "my lists" endpoint
+  // exposes the user's saved items for this media
   const toggleWatchlist = () => {
+    if (!selectedMedia) return;
+    if (isBookmarked) {
+      removeFromWatchlist(selectedMedia);
+    } else {
+      addToWatchlist(selectedMedia);
+    }
     setIsBookmarked(!isBookmarked);
-    addToWatchlist(selectedMedia!);
   };
 
   const toggleFavorite = () => {
+    if (!selectedMedia) return;
+    if (isFav) {
+      removeFromFavorite(selectedMedia);
+    } else {
+      addToFavorite(selectedMedia);
+    }
     setIsFav(!isFav);
-    addToFavorite(selectedMedia!);
   };
 
   if (isLoading || !selectedMedia) return <MovieDetailSkeleton />;
@@ -84,7 +98,7 @@ const Details = () => {
               </div>
               <div className="hidden md:block h-4 w-px bg-border" />
               <div className="flex flex-wrap gap-2">
-                {movie.genres?.slice(0, 2).map((g: any) => (
+                {movie.genres?.slice(0, 2).map((g) => (
                   <span key={g.id} className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest bg-surface-2/50 backdrop-blur-sm border border-border text-main px-2.5 py-1 rounded-full">
                     {g.name}
                   </span>
@@ -123,11 +137,11 @@ const Details = () => {
               <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-dim">Key Personnel</h3>
             </div>
             <div className="flex gap-4 md:gap-8 overflow-x-auto no-scrollbar pb-4 -mx-6 px-6 md:mx-0 md:px-0">
-              {movie.credits?.cast?.slice(0, 10).map((person: any) => (
+              {movie.credits?.cast?.slice(0, 10).map((person) => (
                 <div key={person.id} className="group shrink-0 w-28 md:w-36">
                   <div className="relative aspect-[3/4] mb-3 overflow-hidden rounded-sm border border-border">
                     <img
-                      src={`https://image.tmdb.org/t/p/w300${person.profile_path}`}
+                      src={getImageUrl(person.profile_path, 'w300')}
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                       alt={person.name}
                       loading="lazy"

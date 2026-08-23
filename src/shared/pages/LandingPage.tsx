@@ -2,6 +2,7 @@
 
 import tvDisplay from '../../assets/images/tv_display.png';
 import { ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import MovieRow from '../../features/media/components/MovieRow';
 import Hero from '../../features/media/components/Hero';
 import Navbar from '../layout/Navbar';
@@ -37,10 +38,9 @@ const FeatureSection = () => {
 
 const Footer = () => {
   const links = [
-    ['FAQ', 'Investor Relations', 'Ways to Watch', 'Corporate Information', 'Only on Netflix'],
+    ['FAQ', 'Ways to Watch', 'Corporate Information'],
     ['Help Center', 'Jobs', 'Terms of Use', 'Contact Us'],
-    ['Account', 'Redeem Gift Cards', 'Privacy', 'Speed Test'],
-    ['Media Center', 'Buy Gift Cards', 'Cookie Preferences', 'Legal Notices']
+    ['Account', 'Privacy', 'Legal Notices']
   ];
 
   return (
@@ -76,7 +76,7 @@ const Footer = () => {
           </div>
         </div>
         <p className="text-muted text-xs">
-          © 2026 YourCinema. All rights reserved. Built with precision for the best viewing experience.
+          © 2026 CinePrism. All rights reserved. Built with precision for the best viewing experience.
         </p>
       </div>
     </footer>
@@ -133,14 +133,12 @@ const LandingPage = () => {
             Ready to watch? Enter your email to create or restart your membership.
           </h3>
           <div className="flex flex-col md:flex-row gap-2 max-w-3xl mx-auto h-auto md:h-16">
-            <input
-              type="email"
-              placeholder="Email address"
-              className="flex-1 bg-surface-2 border border-border px-6 py-4 text-main rounded-md md:rounded-l-sm focus:outline-none focus:ring-2 ring-accent transition-all"
-            />
-            <button className="bg-accent text-black font-black px-10 py-4 text-xl md:text-2xl flex items-center justify-center gap-2 hover:bg-accent-soft transition-all rounded-md md:rounded-r-sm active:scale-95">
+            <Link
+              to="/register"
+              className="flex-1 bg-accent text-black font-black px-10 py-4 text-xl md:text-2xl flex items-center justify-center gap-2 hover:bg-accent-soft transition-all rounded-md active:scale-95"
+            >
               Get Started <ChevronRight size={28} />
-            </button>
+            </Link>
           </div>
         </section>
         <Footer />

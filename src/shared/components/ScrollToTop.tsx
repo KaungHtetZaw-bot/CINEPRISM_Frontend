@@ -44,29 +44,3 @@ const ScrollToTop = ({ mainRef }: ScrollToTopProps) => {
 };
 
 export default ScrollToTop;
-
-
-{/* <button
-            onClick={scrollToTop}
-            className="absolute bottom-10 right-5 z-50 group flex flex-col items-center gap-2 animate-in fade-in slide-in-from-bottom-4 duration-500"
-          >
-            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-500 group-hover:text-accent transition-colors duration-300">
-              Ascend
-            </span>
-            <div className="relative p-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-sm overflow-hidden transition-all duration-500 group-hover:border-accent group-hover:bg-white/10 group-active:scale-90 shadow-2xl">
-              <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-white/20 group-hover:border-accent" />
-              <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-white/20 group-hover:border-accent" />
-              
-              <svg 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                className="w-5 h-5 text-white group-hover:text-accent transition-transform group-hover:-translate-y-1 duration-500"
-                strokeWidth="2.5" 
-                strokeLinecap="square"
-              >
-                <path d="M12 19V5M5 12l7-7 7 7" />
-              </svg>
-            </div>
-            <div className="w-px h-10 bg-linear-to-b from-white/20 to-transparent group-hover:from-cinema-gold group-hover:h-14 transition-all duration-500" />
-          </button> */}

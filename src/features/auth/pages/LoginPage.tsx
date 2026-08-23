@@ -83,7 +83,7 @@ const LoginPage = () => {
 
       <div className="mt-8 flex flex-col items-center gap-4 text-sm">
         <div className="text-dim font-medium uppercase tracking-wider text-[11px] md:text-xs">
-          <span className="opacity-60">New to YourCinema?</span>
+          <span className="opacity-60">New to CinePrism?</span>
           <Link to="/register" className="ml-2 text-main hover:text-accent transition-colors underline-offset-4 hover:underline">
             Sign up now.
           </Link>

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getImageUrl } from '../utils/getImageUrl';
+import type { Movie } from '../types/media.type';
 
-const Hero = ({ movie }: { movie: any }) => {
+const Hero = ({ movie }: { movie: Movie | undefined }) => {
   const isLoading = !movie;
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');

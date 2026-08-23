@@ -36,6 +36,10 @@
   --bg-surface-1: #18181c;
   --bg-surface-2: #202024;
 
+  /* RGB triplets for alpha composition (must match the hex values above) */
+  --bg-app-rgb: 15 15 18;
+  --bg-surface-1-rgb: 24 24 28;
+
   /* Text */
   --text-primary: #f4f4f5;
   --text-secondary: #c7c7cc;
@@ -62,6 +66,9 @@
   --bg-surface-1: #ffffff;
   --bg-surface-2: #ededf0;
 
+  --bg-app-rgb: 245 245 247;
+  --bg-surface-1-rgb: 255 255 255;
+
   --text-primary: #111113;
   --text-secondary: #3a3a40;
   --text-muted: #6b6b74;
@@ -82,6 +89,9 @@
   --bg-app: #050507;
   --bg-surface-1: #101014;
   --bg-surface-2: #16161b;
+
+  --bg-app-rgb: 5 5 7;
+  --bg-surface-1-rgb: 16 16 20;
 
   --text-primary: #ffffff;
   --text-secondary: #d6d6d6;
@@ -139,7 +149,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--bg-app);
-  color: var(--text-main);
+  color: var(--text-primary);
   font-family: var(--font-sans);
 }
 

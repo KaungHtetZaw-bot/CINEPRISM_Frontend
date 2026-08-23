@@ -6,10 +6,15 @@ interface RetryRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
-const api = axios.create({
-  baseURL:
+export function getApiBaseUrl(): string {
+  return (
     import.meta.env.VITE_API_BASE_URL ||
-    `http://${window.location.hostname}:8000/api`,
+    `http://${window.location.hostname}:8000/api`
+  );
+}
+
+const api = axios.create({
+  baseURL: getApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -36,6 +41,37 @@ api.interceptors.request.use(
 /* =========================
    Response Interceptor
 ========================= */
+
+// Single-flight refresh: concurrent 401s wait for one shared refresh call
+let refreshPromise: Promise<string> | null = null;
+
+function refreshAccessToken(): Promise<string> {
+  if (!refreshPromise) {
+    refreshPromise = axios
+      .post(
+        `${api.defaults.baseURL}/refresh`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${useAuthStore.getState().token}`,
+          },
+        }
+      )
+      .then((response) => {
+        const newToken: string | undefined = response.data?.access_token;
+        if (!newToken) throw new Error('No access token');
+
+        useAuthStore.getState().setToken(newToken);
+        localStorage.setItem('token', newToken);
+        return newToken;
+      })
+      .finally(() => {
+        refreshPromise = null;
+      });
+  }
+  return refreshPromise;
+}
+
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
@@ -45,39 +81,23 @@ api.interceptors.response.use(
     const isAuthRoute =
       originalRequest?.url?.includes('/login') ||
       originalRequest?.url?.includes('/register') ||
-      originalRequest?.url?.includes('/refresh');
+      originalRequest?.url?.includes('/refresh') ||
+      originalRequest?.url?.includes('/verify-code');
 
     if (status === 401 && !originalRequest._retry && !isAuthRoute) {
       originalRequest._retry = true;
 
       try {
-        const refreshResponse = await axios.post(
-          `${api.defaults.baseURL}/refresh`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${useAuthStore.getState().token}`,
-            },
-          }
-        );
-
-        const newToken = refreshResponse.data.access_token;
-        if (!newToken) throw new Error('No access token');
-
-        useAuthStore.getState().setToken(newToken);
-        localStorage.setItem('token', newToken);
+        const newToken = await refreshAccessToken();
 
         // Safe because headers is AxiosHeaders internally
-        originalRequest.headers.set(
-          'Authorization',
-          `Bearer ${newToken}`
-        );
+        originalRequest.headers.set('Authorization', `Bearer ${newToken}`);
 
         return api(originalRequest);
-      } catch (refreshError) {
+      } catch {
         useAuthStore.getState().logout();
         window.location.href = '/login';
-        return Promise.reject(refreshError);
+        return Promise.reject(error);
       }
     }
 

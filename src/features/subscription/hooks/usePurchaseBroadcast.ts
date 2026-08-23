@@ -4,6 +4,12 @@ import { createEcho } from '../lib/echo';
 import { useAuthStore } from '../../auth/store/useAuthStore';
 import type { User } from '../../auth/types';
 
+declare global {
+  interface Window {
+    Echo?: ReturnType<typeof createEcho>;
+  }
+}
+
 /**
  * Subscribes the logged-in customer to purchase approve/reject broadcasts (Laravel Reverb).
  * No-ops if Reverb env is missing.
@@ -23,33 +29,29 @@ export function usePurchaseBroadcast() {
 
     try {
       echoInstance = createEcho(token);
-      (window as any).Echo = echoInstance; // Now it will show in console
+      window.Echo = echoInstance;
     } catch (e) {
       console.error('Echo init failed:', e);
       return;
     }
 
     const channelName = `App.Models.User.${user.id}`;
-    // Use echoInstance here, not "echo"
     const channel = echoInstance.private(channelName);
 
     // Note: Make sure your Laravel Event uses these exact dot-names
     channel.listen('.purchase.approved', (payload: { user: User; purchase_id: number }) => {
-      console.log('Event received: Approved', payload);
       if (payload?.user) setUser(payload.user);
 
       queryClient.invalidateQueries({ queryKey: ['purchases'] });
     });
 
     channel.listen('.purchase.rejected', () => {
-      console.log('Event received: Rejected');
       queryClient.invalidateQueries({ queryKey: ['purchases'] });
     });
 
     return () => {
-      console.log("Cleaning up Echo connection...");
       echoInstance.disconnect();
-      (window as any).Echo = undefined;
+      window.Echo = undefined;
     };
   }, [token, user?.id, setUser, queryClient]);
 }

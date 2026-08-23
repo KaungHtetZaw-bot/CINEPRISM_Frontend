@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom';
 import { ChevronLeft, Terminal } from 'lucide-react';
 
+// Generated once per module load so the ref is stable across re-renders
+const REF_ID = Math.random().toString(36).substring(7).toUpperCase();
+
 const NotFoundPage = () => {
   return (
    <div className="min-h-screen bg-app flex flex-col items-center justify-center p-6 text-center transition-colors duration-500">
@@ -44,7 +47,7 @@ const NotFoundPage = () => {
           <div className="flex items-center gap-4 opacity-30">
             <div className="h-px w-8 bg-muted" />
             <span className="text-[9px] font-mono text-muted uppercase">
-              Ref: {Math.random().toString(36).substring(7).toUpperCase()}
+              Ref: {REF_ID}
             </span>
             <div className="h-px w-8 bg-muted" />
           </div>

@@ -4,11 +4,12 @@ import { Crown, Upload, ChevronDown, Check, Loader2, X, CreditCard, Copy, Sparkl
 import { useCreatePurchase } from "../api/usePurchase";
 import { useGetPlans } from "../api/useGetPlans";
 import { useGetPayments } from "../api/useGetPayments";
+import type { Plan, PaymentAccount } from "../types";
 
 const VIPPurchasePage = () => {
   const navigate = useNavigate();
-  const [selectedPlan, setSelectedPlan] = useState<any>(null);
-  const [selectedAccount, setSelectedAccount] = useState<any>(null);
+  const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
+  const [selectedAccount, setSelectedAccount] = useState<PaymentAccount | null>(null);
   const [isPlanOpen, setIsPlanOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -126,7 +127,7 @@ const VIPPurchasePage = () => {
             {isPaymentOpen && (
               <div className="absolute z-50 w-full mt-2 bg-surface-2 border border-border rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2">
                 <div className="max-h-[40vh] overflow-y-auto no-scrollbar">
-                  {payments?.map((acc: any) => (
+                  {payments?.map((acc: PaymentAccount) => (
                     <div
                       key={acc.id}
                       onClick={() => { setSelectedAccount(acc); setIsPaymentOpen(false); }}
@@ -181,7 +182,7 @@ const VIPPurchasePage = () => {
             </button>
             {isPlanOpen && (
               <div className="absolute z-40 w-full mt-2 bg-surface-2 border border-border rounded-2xl shadow-2xl overflow-hidden">
-                {plans?.map((plan: any) => (
+                {plans?.map((plan: Plan) => (
                   <div
                     key={plan.id}
                     onClick={() => { setSelectedPlan(plan); setIsPlanOpen(false); }}

@@ -7,15 +7,14 @@ import { useInfinitePopularMoviesOrTv, useMediaByGenres } from '../api/mediaQuer
 
 const InfiniteGrid = ({ type, genreId, genreName }: { type: 'movie' | 'tv', genreId:string | null, genreName : string | null }) => {
   
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = genreId? useMediaByGenres(type, genreId) : useInfinitePopularMoviesOrTv(type);
+  // Hooks must be called unconditionally; `enabled` picks the active query
+  const popularQuery = useInfinitePopularMoviesOrTv(type, !genreId);
+  const genreQuery = useMediaByGenres(type, genreId ?? '', !!genreId);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = genreId ? genreQuery : popularQuery;
 
   const observerTarget = useRef(null);
   const { goToDetails } = useMediaNavigation();
   const medias = data?.pages.flatMap((page) => page.results) || [];
-
-  useEffect(() => {
-    fetchNextPage();
-  }, [type, fetchNextPage]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

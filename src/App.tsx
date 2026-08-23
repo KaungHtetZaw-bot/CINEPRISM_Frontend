@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { LoginPage, RegisterPage, AuthCard } from './features/auth';
+import { LoginPage, RegisterPage } from './features/auth';
 import { HomePage, MediaPage, GenresPage, SearchPage, MediaDetailsPage } from './features/media';
 import { VIPPurchasePage } from './features/subscription';
 import { ProfilePage, UserListPage } from './features/user';
@@ -7,7 +7,6 @@ import ProtectedRoute from './app/routes/ProtectedRoute';
 import LandingPage from './shared/pages/LandingPage';
 import MainLayout from './shared/layout/MainLayout';
 import NotFoundPage from './shared/pages/NotFoundPage';
-import './App.css';
 
 const App = () => {
   return (
@@ -16,7 +15,6 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/auth" element={<AuthCard />} />
 
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>

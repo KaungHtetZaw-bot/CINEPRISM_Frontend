@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useInfiniteQuery } from '@tanstack/react-query';
 import api from "../../../app/api/axios";
+import type { Movie } from "../types/media.type";
 
 export const useTrendingMedia = () => {
     return useQuery({
@@ -14,10 +15,11 @@ export const useTrendingMedia = () => {
 };
 
 
-export const useInfinitePopularMoviesOrTv = (mediaType: 'movie' | 'tv') => {
+export const useInfinitePopularMoviesOrTv = (mediaType: 'movie' | 'tv', enabled = true) => {
     return useInfiniteQuery({
         queryKey: ['popular', mediaType],
         initialPageParam: 1,
+        enabled,
         queryFn: async ({ pageParam }) => {
             const { data } = await api.get(`/media/popular/${mediaType}?page=${pageParam}`)
             return data;
@@ -35,21 +37,22 @@ export const useGenres = (media_type: 'movie' | 'tv') => {
     return useQuery({
         queryKey: ['genres', media_type],
         queryFn: async () => {
-            const data = await api.get(`/media/genres/${media_type}`);
-            console.log('Fetched genres:', data);
-            return data?.data?.results || data?.data || [];
+            const { data } = await api.get(`/media/genres/${media_type}`);
+            return data?.results || [];
         },
         staleTime: 1000 * 60 * 60,
     });
 };
 
-export const useMediaByGenres = (mediaType: 'movie' | 'tv' , genreId: string) => {
+export const useMediaByGenres = (mediaType: 'movie' | 'tv' , genreId: string, enabled = true) => {
     return useInfiniteQuery({
-        queryKey: ['popular', mediaType],
+        // Must be unique from popular movies, otherwise genre results
+        // overwrite the 'popular' cache
+        queryKey: ['media-by-genre', mediaType, genreId],
         initialPageParam: 1,
+        enabled: enabled && !!genreId,
         queryFn: async ({ pageParam }) => {
             const { data } = await api.get(`/media/genre/${mediaType}/${genreId}?page=${pageParam}`)
-            console.log("genres",data)
             return data;
         },
         getNextPageParam: (lastPage, pages) => {
@@ -77,7 +80,7 @@ export const useSearch = (query: string) => {
 };
 
 export const useMediaDetails = (type: 'movie' | 'tv', id: string) => {
-    return useQuery({
+    return useQuery<Movie>({
         queryKey: ['details', type!, id!],
         queryFn: async () => {
             const { data } = await api.get(`/media/detail/${type}/${id}`);

@@ -1,22 +1,63 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   LogOut, User, Mail, ShieldCheck,
   Clock, Bookmark, Heart, ChevronRight,
   Edit3, KeyRound, X
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import api from '../../../app/api/axios';
 import { useAuthStore } from '../../auth/store/useAuthStore';
+
+type ActiveModal = null | 'name' | 'email' | 'password';
 
 const ProfilePage = () => {
   const { user, logout } = useAuthStore();
+  const queryClient = useQueryClient();
 
-  const [activeModal, setActiveModal] = useState<null | 'name' | 'email' | 'password'>(null);
+  const [activeModal, setActiveModal] = useState<ActiveModal>(null);
   const [formData, setFormData] = useState({ name: user?.name || '', email: user?.email || '', password: '' });
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
-  const handleUpdate = (e: React.FormEvent) => {
+  const isVip = !!user?.is_vip && (!user?.vip_expires_at || new Date(user.vip_expires_at) > new Date());
+
+  useEffect(() => {
+    if (activeModal) {
+      setSaveError(null);
+    }
+  }, [activeModal]);
+
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(`Updating ${activeModal}:`, formData);
-    setActiveModal(null);
+    if (!user || !activeModal || isSaving) return;
+
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      if (activeModal === 'password') {
+        await api.patch(`/users/${user.id}/change-password`, {
+          password: formData.password,
+          password_confirmation: formData.password,
+        });
+      } else {
+        await api.patch(`/users/${user.id}/change-profile`, { [activeModal]: formData[activeModal] });
+        useAuthStore.setState({ user: { ...user, [activeModal]: formData[activeModal] } });
+      }
+      queryClient.invalidateQueries();
+      setActiveModal(null);
+    } catch (err: unknown) {
+      const message =
+        (err as { response?: { data?: { message?: string; errors?: string | string[] } } })?.response?.data;
+      setSaveError(
+        (typeof message?.errors === 'string' ? message.errors : message?.errors?.[0]) ||
+          message?.message ||
+          'Update failed. Please check your input.'
+      );
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -33,14 +74,17 @@ const ProfilePage = () => {
               </h1>
               <button
                 onClick={() => setActiveModal('name')}
+                aria-label="Edit name"
                 className="p-1.5 hover:bg-surface-2 rounded-full text-muted hover:text-accent transition-all"
               >
                 <Edit3 size={16} />
               </button>
             </div>
             <div className="flex items-center gap-2 mt-1">
-              <ShieldCheck size={14} className="text-accent" />
-              <span className="text-[10px] font-bold text-muted uppercase tracking-widest">Premium Account</span>
+              <ShieldCheck size={14} className={isVip ? 'text-accent' : 'text-muted'} />
+              <span className="text-[10px] font-bold text-muted uppercase tracking-widest">
+                {isVip ? 'VIP Member' : 'Standard Account'}
+              </span>
             </div>
           </div>
         </div>
@@ -106,14 +150,20 @@ const ProfilePage = () => {
           <div className="bg-surface-2 border border-border w-full max-w-md p-8 rounded-sm shadow-2xl animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-black uppercase tracking-tighter italic text-main">Update {activeModal}</h2>
-              <button onClick={() => setActiveModal(null)} className="text-muted hover:text-main"><X size={20} /></button>
+              <button onClick={() => setActiveModal(null)} aria-label="Close" className="text-muted hover:text-main"><X size={20} /></button>
             </div>
+
+            {activeModal === 'email' && (
+              <p className="text-xs text-muted mb-4 -mt-3 italic">
+                Changing your email requires verification and your current password.
+              </p>
+            )}
 
             <form onSubmit={handleUpdate} className="space-y-6">
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-muted">New {activeModal}</label>
                 <input
-                  type={activeModal === 'password' ? 'password' : 'text'}
+                  type={activeModal === 'password' ? 'password' : activeModal === 'email' ? 'email' : 'text'}
                   autoFocus
                   className="auth-input"
                   placeholder={`Enter new ${activeModal}`}
@@ -121,9 +171,15 @@ const ProfilePage = () => {
                   onChange={(e) => setFormData({ ...formData, [activeModal!]: e.target.value })}
                   required
                 />
-
               </div>
-              <button type="submit" className="auth-btn">Confirm Changes</button>
+
+              {saveError && (
+                <p className="text-xs font-bold text-rose-500">{saveError}</p>
+              )}
+
+              <button type="submit" disabled={isSaving} className="auth-btn disabled:opacity-50 disabled:pointer-events-none">
+                {isSaving ? 'Saving…' : 'Confirm Changes'}
+              </button>
             </form>
           </div>
         </div>

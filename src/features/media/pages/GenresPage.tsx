@@ -26,12 +26,12 @@ export default function GenresPage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 font-sans px-6 py-12 md:px-12 lg:px-24 selection:bg-[#e2b616] selection:text-black">
+    <div className="min-h-screen bg-app text-main font-sans px-6 py-12 md:px-12 lg:px-24 selection:bg-accent selection:text-black">
 
       {/* Header Section */}
       <header className="mb-10 max-w-2xl">
         <h1 className="text-4xl font-extrabold tracking-tight mb-3">
-          Explore <span className="text-[#e2b616]">Genres</span>
+          Explore <span className="text-accent">Genres</span>
         </h1>
         <p className="text-neutral-400 text-lg font-normal leading-relaxed">
           Select a category to discover your next favorite cinematic masterpiece, curated directly from the CinePrism database.
@@ -43,7 +43,7 @@ export default function GenresPage() {
         <button
           onClick={() => handleTabChange('movie')}
           className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all duration-200 uppercase tracking-wider focus:outline-none ${activeTab === 'movie'
-            ? 'bg-[#e2b616] text-neutral-950 shadow-md'
+            ? 'bg-accent text-neutral-950 shadow-md'
             : 'text-neutral-400 hover:text-neutral-200'
             }`}
         >
@@ -52,7 +52,7 @@ export default function GenresPage() {
         <button
           onClick={() => handleTabChange('tv')}
           className={`flex-1 py-2.5 text-sm font-bold rounded-lg transition-all duration-200 uppercase tracking-wider focus:outline-none ${activeTab === 'tv'
-            ? 'bg-[#e2b616] text-neutral-950 shadow-md'
+            ? 'bg-accent text-neutral-950 shadow-md'
             : 'text-neutral-400 hover:text-neutral-200'
             }`}
         >
@@ -70,30 +70,30 @@ export default function GenresPage() {
               key={genre.id}
               onClick={() => showByGenre(genre)}
               className={`
-                relative group flex flex-col justify-end items-start p-6 h-36 rounded-xl transition-all duration-300 ease-out border overflow-hidden text-left focus:outline-none focus:ring-2 focus:ring-[#e2b616] focus:ring-offset-2 focus:ring-offset-neutral-950
+                relative group flex flex-col justify-end items-start p-6 h-36 rounded-xl transition-all duration-300 ease-out border overflow-hidden text-left focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-neutral-950
                 ${isSelected
-                  ? 'bg-neutral-900 border-[#e2b616] shadow-lg shadow-[#e2b616]/10'
+                  ? 'bg-neutral-900 border-accent shadow-lg shadow-accent/10'
                   : 'bg-neutral-900/40 border-neutral-800/80 hover:bg-neutral-900 hover:border-neutral-700'
                 }
               `}
             >
               {/* Subtle background glow effect on hover */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#e2b616]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
               {/* Corner Accent Line */}
               <div
-                className={`absolute top-0 right-0 h-1 w-12 transition-all duration-300 ${isSelected ? 'bg-[#e2b616]' : 'bg-transparent group-hover:bg-neutral-700'
+                className={`absolute top-0 right-0 h-1 w-12 transition-all duration-300 ${isSelected ? 'bg-accent' : 'bg-transparent group-hover:bg-neutral-700'
                   }`}
               />
 
               {/* Decorative Minimalist ID Indicator */}
-              <span className={`text-[10px] uppercase tracking-widest font-bold mb-auto transition-colors duration-300 ${isSelected ? 'text-[#e2b616]' : 'text-neutral-600 group-hover:text-neutral-500'
+              <span className={`text-[10px] uppercase tracking-widest font-bold mb-auto transition-colors duration-300 ${isSelected ? 'text-accent' : 'text-neutral-600 group-hover:text-neutral-500'
                 }`}>
                 CP-{genre.id}
               </span>
 
               {/* Genre Name */}
-              <h3 className={`text-lg font-bold tracking-wide transition-colors duration-200 ${isSelected ? 'text-[#e2b616]' : 'text-neutral-200 group-hover:text-white'
+              <h3 className={`text-lg font-bold tracking-wide transition-colors duration-200 ${isSelected ? 'text-accent' : 'text-neutral-200 group-hover:text-white'
                 }`}>
                 {genre.name}
               </h3>
@@ -106,7 +106,7 @@ export default function GenresPage() {
       {selectedGenre && (
         <div className="mt-12 p-4 bg-neutral-900/60 border border-neutral-800 rounded-lg flex items-center justify-between">
           <p className="text-neutral-300 text-sm font-medium">
-            Filtering <span className="text-white font-bold uppercase">{activeTab === 'movie' ? 'Movie' : 'TV Show'}</span> catalog by: <span className="text-[#e2b616] font-bold">
+            Filtering <span className="text-white font-bold uppercase">{activeTab === 'movie' ? 'Movie' : 'TV Show'}</span> catalog by: <span className="text-accent font-bold">
               {genresData.find((g: Genre) => g.id === selectedGenre)?.name}
             </span>
           </p>

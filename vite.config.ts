@@ -22,7 +22,8 @@ export default defineConfig({
     host: true,
     proxy: {
       "/api": {
-        target: "http://192.168.110.129:8000",
+        // Override with BACKEND_URL env var; defaults to the LAN dev machine
+        target: process.env.BACKEND_URL || "http://192.168.110.129:8000",
         changeOrigin: true,
         secure: false,
       },

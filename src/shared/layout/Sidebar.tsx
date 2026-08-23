@@ -1,4 +1,4 @@
-import { Home, Film, Tv, Clock, Settings, ChevronLeft, Search, Crown, LayoutGrid, LogOut, User } from 'lucide-react';
+import { Home, Film, Tv, Clock, ChevronLeft, Search, Crown, LayoutGrid, LogOut, User } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Logo from '../components/Logo';

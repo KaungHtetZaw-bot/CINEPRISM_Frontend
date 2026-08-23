@@ -1,20 +1,13 @@
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
+import { getApiBaseUrl } from '../../../app/api/axios';
 
 declare global {
   interface Window {
     Pusher: typeof Pusher;
   }
 }
-Pusher.logToConsole = true;
 window.Pusher = Pusher;
-
-function apiBase(): string {
-  return (
-    import.meta.env.VITE_API_BASE_URL ||
-    `http://${window.location.hostname}:8000/api`
-  );
-}
 
 export function createEcho(token: string): Echo<'reverb'> {
   const scheme = import.meta.env.VITE_REVERB_SCHEME ?? 'http';
@@ -33,7 +26,7 @@ export function createEcho(token: string): Echo<'reverb'> {
     forceTLS: scheme === 'https',
     enabledTransports: ['ws', 'wss'],
     cluster: '',
-    authEndpoint: `${apiBase()}/broadcasting/auth`,
+    authEndpoint: `${getApiBaseUrl()}/broadcasting/auth`,
     auth: {
       headers: {
         Authorization: `Bearer ${token}`,

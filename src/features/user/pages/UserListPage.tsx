@@ -44,7 +44,7 @@ const UserListPage = () => {
           ))}
         </div>
       ) : history && history.length > 0 ? (
-        <MovieGrid movies={history} isLoading={isLoading} />
+        <MovieGrid movies={history} isLoading={isLoading} removeFromList={type as FlagType} />
       ) : (
         <div className="col-span-full py-20 text-center">
           <p className="text-muted text-xs font-black uppercase tracking-[0.3em]">No history found</p>
