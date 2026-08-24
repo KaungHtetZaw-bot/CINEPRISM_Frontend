@@ -1,19 +1,11 @@
-import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../types/media.type';
-import { useAddToLists } from '../../user/api/useListQueries';
+import { useMediaNavigation } from '../utils/useMediaNavigation';
 import SpotlightSkeleton from './skeleton/SpotlightSkeleton';
 import { getImageUrl } from '../utils/getImageUrl';
 
 const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) => {
-  const navigate = useNavigate();
-  const { mutate: addToRecent } = useAddToLists('recent');
+  const { goToDetails } = useMediaNavigation();
 
-  const moreInfo = (movie: Movie) => {
-    addToRecent(movie);
-    const mediaType = movie.type || movie.media_type || (movie.title ? 'movie' : 'tv');
-
-    navigate(`/details/${mediaType}/${movie.id}`);
-  }
   if (isLoading || !movie) {
     return <SpotlightSkeleton />;
   }
@@ -52,7 +44,7 @@ const Spotlight = ({ movie, isLoading }: { movie?: Movie; isLoading: boolean }) 
           </button>
 
           <button
-            onClick={() => moreInfo(movie)}
+            onClick={() => goToDetails(movie)}
             className="px-8 py-3 bg-surface-2/70 text-main font-bold rounded-sm backdrop-blur-md border border-border hover:bg-surface-2/90 transition"
           >
             More Info

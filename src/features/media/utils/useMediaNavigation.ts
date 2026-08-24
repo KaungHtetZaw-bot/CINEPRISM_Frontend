@@ -12,7 +12,7 @@ export const useMediaNavigation = () => {
   const goToDetails = (media: Movie) => {
     addToRecent(media);
     const mediaType = media.media_type || (media.title ? 'movie' : 'tv');
-    navigate(`/details/${mediaType}/${media.id}`, {
+    navigate(`/media/${mediaType}/${media.id}`, {
       state: { from: location.state?.from || location.pathname }
     });
   };

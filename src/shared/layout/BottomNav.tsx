@@ -1,5 +1,6 @@
 import { Home, Tv, Search, User, Film } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { isActiveNavItem } from './navActive';
 
 const BottomNav = () => {
   const { pathname } = useLocation();
@@ -28,7 +29,7 @@ const BottomNav = () => {
                           shadow-[0_25px_50px_-12px_var(--shadow-color)]">
             
             {navItems.map((item) => {
-              const isActive = pathname === item.path;
+              const isActive = isActiveNavItem(pathname, item);
               return (
                 <Link
                   key={item.label}

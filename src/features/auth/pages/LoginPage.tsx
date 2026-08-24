@@ -88,13 +88,6 @@ const LoginPage = () => {
             Sign up now.
           </Link>
         </div>
-
-        <Link
-          to="/forgot-password"
-          className="text-dim/50 text-[10px] uppercase tracking-widest hover:text-main transition-colors"
-        >
-          Forgot Password?
-        </Link>
       </div>
     </AuthLayout>
   );

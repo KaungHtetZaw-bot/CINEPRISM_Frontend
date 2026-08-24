@@ -4,6 +4,14 @@ import MovieSkeleton from './skeleton/MovieSkeleton';
 import { useMediaNavigation } from '../utils/useMediaNavigation'
 import { useInfinitePopularMoviesOrTv, useMediaByGenres } from '../api/mediaQueries';
 
+/** "sci-fi-fantasy" -> "Sci Fi Fantasy" */
+const prettifySlug = (slug: string) =>
+  slug
+    .split('-')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
 
 const InfiniteGrid = ({ type, genreId, genreName }: { type: 'movie' | 'tv', genreId:string | null, genreName : string | null }) => {
   
@@ -39,7 +47,7 @@ const InfiniteGrid = ({ type, genreId, genreName }: { type: 'movie' | 'tv', genr
     <div className="md:py-6 py-0 px-4 lg:px-8">
       <div className="md:mb-10 mb-3 flex items-baseline gap-4">
         <h2 className="md:text-4xl text-2xl font-black italic uppercase tracking-tighter text-main">
-          {type === 'movie' ? 'Cinema' : 'Series'} {genreName && <span className='text-sm not-italic bg-linear-to-r from-accent to-accent-soft bg-clip-text text-transparent'>{genreName}</span>}
+          {type === 'movie' ? 'Cinema' : 'Series'} {genreName && <span className='text-sm not-italic bg-linear-to-r from-accent to-accent-soft bg-clip-text text-transparent'>{prettifySlug(genreName)}</span>}
         </h2>
         <div className="h-0.5 flex-1 bg-border" />
         <span className="text-[10px] font-bold text-muted uppercase tracking-widest">
